@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import { RecoilRoot } from 'recoil';
 import NavBar from './components/Navbar';
 import reportWebVitals from './reportWebVitals';
