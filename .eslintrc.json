@@ -21,7 +21,15 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-use-before-define": "off",
+        "linebreak-style": ["error", "windows"],
         "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+        "react/function-component-definition": [
+            2,
+            {
+              "namedComponents": "function-declaration"
+            }
+          ],
         "import/extensions": [
             "error",
             "ignorePackages",
@@ -31,7 +39,14 @@
               "ts": "never",
               "tsx": "never"
             }
-         ]
+         ],
+         "max-len": ["warn", 130, {
+            "ignoreUrls": true,
+            "ignoreComments": true,
+            "ignoreRegExpLiterals": true,
+            "ignoreStrings": true,
+            "ignoreTemplateLiterals": true
+          }]
     },
     "settings": {
         "import/resolver": {
