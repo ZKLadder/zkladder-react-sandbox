@@ -5,7 +5,7 @@ import {
 import { useRecoilState } from 'recoil';
 import { walletState } from '../state/wallet';
 import logo from '../images/zk_favicon.png';
-import style from '../styles/Navbar';
+import style from '../styles/navbar';
 import { connect, disconnect } from '../utils/walletConnect';
 import { shortenAddress, weiToEth } from '../utils/address';
 import networks from '../constants/networks';
