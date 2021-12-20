@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Form, Button } from 'react-bootstrap';
-/* eslint-disable import/no-extraneous-dependencies */ // @TODO Remove this line when SDK is published to NPM
-import Zkl from 'zkladder-sdk-ts';
+import Zkl from '@zkladder/zkladder-sdk-ts';
 import { nftState } from '../../state/nftContract';
 import { walletState } from '../../state/wallet';
 import errorStyle from '../../styles/error';
