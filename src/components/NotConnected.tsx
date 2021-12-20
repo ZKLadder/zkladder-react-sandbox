@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import bodyStyle from '../styles/Body';
+import bodyStyle from '../styles/body';
 
 function NotConnected() {
   return (

@@ -1,9 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 import { atom } from 'recoil';
+import { WalletStateInterface } from '../interfaces/wallet';
 
 const walletState = atom({
   key: 'walletState',
-  default: { isConnected: false },
+  default: { isConnected: false } as WalletStateInterface,
   dangerouslyAllowMutability: true,
 });
 
