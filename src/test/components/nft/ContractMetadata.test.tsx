@@ -12,6 +12,7 @@ const initializeState = (settings:any) => {
       name: jest.fn(() => ('ZKL-Test')),
       symbol: jest.fn(() => ('ZKLT')),
       totalSupply: jest.fn(),
+      address: '0x1234567890abce',
     },
   });
 };

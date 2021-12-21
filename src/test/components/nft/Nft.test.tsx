@@ -18,6 +18,7 @@ const initializeQueryState = (settings:any) => {
       name: jest.fn(() => ('ZKL-Test')),
       symbol: jest.fn(() => ('ZKLT')),
       totalSupply: jest.fn(() => (7)),
+      address: '0x1234567890abce',
     },
   });
 };
@@ -33,6 +34,7 @@ const initializeAllTokensState = (settings:any) => {
       totalSupply: jest.fn(),
       getAllTokens: jest.fn(() => []),
       getAllTokensOwnedBy: jest.fn(() => []),
+      address: '0x1234567890abce',
     },
   });
 };
