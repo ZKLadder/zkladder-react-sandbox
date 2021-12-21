@@ -28,9 +28,9 @@ describe('Body component tests', () => {
       </RecoilRoot>,
     );
 
+    // @TODO expand this test suite once routing has been properly added
     await waitFor(() => {
       expect(screen.queryByText('Please connect your wallet')).not.toBeInTheDocument();
-      expect(screen.queryByText('You are now connected')).toBeVisible();
     });
   });
 });

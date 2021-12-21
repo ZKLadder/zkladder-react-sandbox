@@ -15,8 +15,15 @@ const selectContract = () => {
   return (
     <Form.Group>
       <Form.Label>Enter an NFT contract address to get started</Form.Label>
-      <Form.Control onChange={(event) => { setFormEntry(event.target.value); }} type="text" style={{ width: '60%' }} placeholder="0x..." />
+      <Form.Control
+        data-testid="addressForm"
+        onChange={(event) => { setFormEntry(event.target.value); }}
+        type="text"
+        style={{ width: '60%' }}
+        placeholder="0x..."
+      />
       <Button
+        data-testid="selectButton"
         style={{ marginTop: '10px' }}
         className="btn"
         onClick={async () => {

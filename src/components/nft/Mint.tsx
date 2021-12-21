@@ -12,6 +12,7 @@ function Mint() {
   return (
     <div>
       <Button
+        data-testid="mintButton"
         style={{ marginTop: '20px', marginRight: '20px' }}
         className="btn"
         onClick={async () => {
@@ -30,11 +31,12 @@ function Mint() {
         }}
       >
         {' '}
-        Mint a new Token
+        Mint a new token
         {' '}
 
       </Button>
       <Button
+        data-testid="allTokensButton"
         style={{ marginTop: '20px', marginRight: '20px' }}
         className="btn"
         onClick={async () => {
@@ -47,6 +49,7 @@ function Mint() {
 
       </Button>
       <Button
+        data-testid="myTokensButton"
         style={{ marginTop: '20px' }}
         className="btn"
         onClick={async () => {

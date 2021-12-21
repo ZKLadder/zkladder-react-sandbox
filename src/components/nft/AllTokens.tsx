@@ -32,7 +32,6 @@ function AllTokens() {
     try {
       const allMyTokens = await instance.getAllTokensOwnedBy(address[0]);
       setLoadingState(false);
-
       setDataState(allMyTokens);
     } catch (error:any) {
       setLoadingState(false);
@@ -70,6 +69,7 @@ function AllTokens() {
   return (
     <div>
       <Button
+        data-testid="backButton"
         style={{ marginTop: '20px' }}
         className="btn"
         onClick={async () => {
