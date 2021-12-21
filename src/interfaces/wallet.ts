@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 interface WalletStateInterface {
-  address?:string,
+  address?:string[],
   balance?:number,
   provider?:any,
   chainId?:string,

@@ -22,12 +22,14 @@ function TokenQuery() {
       <p><Form.Label>{`Total Minted Supply: ${totalSupply}`}</Form.Label></p>
       {/* Token Data Section */}
       <Form.Control
+        data-testid="tokenQueryForm"
         onChange={(event) => { setTokenId(parseInt(event.target.value, 10)); }}
         type="text"
         style={{ width: '60%' }}
         placeholder="Enter a token ID"
       />
       <Button
+        data-testid="tokenQueryButton"
         style={{ marginTop: '20px' }}
         className="btn"
         onClick={async () => {
@@ -38,7 +40,7 @@ function TokenQuery() {
             const tokenUri: string = await nftInstance.tokenUri(tokenId);
             const tokenOwner: string = await nftInstance.ownerOf(tokenId);
             const approved: string = await nftInstance.getApproved(tokenId);
-            setLoadingState(false);
+            setLoadingState({ dataLoading: false });
             setTokenData({
               tokenOwner, tokenUri, approved,
             });
@@ -55,7 +57,7 @@ function TokenQuery() {
       </Button>
       <br />
       {loadingState.dataLoading ? <Spinner style={{ margin: '20px' }} animation="border" role="status" /> : undefined}
-      {errorState.dataError ? <p style={errorStyle}>{errorState.loadingError}</p> : undefined}
+      {errorState.dataError ? <p style={errorStyle}>{errorState.dataError}</p> : undefined}
       {tokenData.tokenUri
         ? (
           <div>
@@ -71,12 +73,14 @@ function TokenQuery() {
             {loadingState.transferLoading ? <Spinner style={{ margin: '20px' }} animation="border" role="status" /> : undefined}
             {errorState.transferError ? <p style={errorStyle}>{errorState.transferError}</p> : undefined}
             <Form.Control
+              data-testid="transferForm"
               onChange={(event) => { setTransferAddress(event.target.value); }}
               type="text"
               style={{ width: '60%', marginTop: '20px' }}
               placeholder="Enter another user's ETH address for transfer"
             />
             <Button
+              data-testid="transferButton"
               style={{ marginTop: '20px' }}
               className="btn"
               onClick={async () => {
