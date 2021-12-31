@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Card, Form, Button, Row, Col,
 } from 'react-bootstrap';
@@ -9,10 +9,6 @@ import FileView from './FileView';
 
 function DirectoryExplorer() {
   const [view, setViewState] = useRecoilState(viewState) as any;
-
-  useEffect(() => {
-
-  }, []);
 
   return (
     <div>
