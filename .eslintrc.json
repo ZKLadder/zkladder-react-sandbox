@@ -21,6 +21,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "import/prefer-default-export": "off",
         "no-use-before-define": "off",
         "linebreak-style": 0,
         "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],

@@ -5,6 +5,8 @@ import userEvent from '@testing-library/user-event';
 import NavBar from '../../components/Navbar';
 import { connect, disconnect } from '../../utils/walletConnect';
 
+jest.mock('@zkladder/zkladder-sdk-ts', () => (jest.fn()));
+
 jest.mock('../../utils/walletConnect', () => ({
   connect: jest.fn(),
   disconnect: jest.fn(),
