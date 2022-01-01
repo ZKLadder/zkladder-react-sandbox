@@ -1,14 +1,16 @@
+import { Nft } from '@zkladder/zkladder-sdk-ts';
+
 interface NftStateInterface {
   isSelected:boolean,
   address?: string,
-  instance?: any, // @TODO import the NFT module interface definition
+  instance?: Nft,
   refreshCounter:number
 }
 
 interface NftContractMetadata {
   name?: string,
   symbol?: string,
-  totalSupply?: string,
+  totalSupply?: number,
   address?: string
 }
 

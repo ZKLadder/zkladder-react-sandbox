@@ -4,6 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Zkl from '@zkladder/zkladder-sdk-ts';
 import SelectContract from '../../../components/nft/SelectContract';
+import { walletState } from '../../../state/wallet';
 
 const mockNft = jest.fn();
 
@@ -11,10 +12,17 @@ jest.mock('@zkladder/zkladder-sdk-ts', () => (jest.fn()));
 
 describe('Contract Metadata component tests', () => {
   const mockZkl = Zkl as jest.Mocked<any>;
-  mockZkl.prototype.nft = mockNft;
+  mockZkl.nft = mockNft;
+
+  const mockZklState = (settings:any) => {
+    settings.set(walletState, {
+      zkLadder: mockZkl,
+    });
+  };
+
   test('It renders', async () => {
     render(
-      <RecoilRoot>
+      <RecoilRoot initializeState={mockZklState}>
         <SelectContract />
       </RecoilRoot>,
     );
@@ -28,7 +36,7 @@ describe('Contract Metadata component tests', () => {
   test('Clicking connect calls the nft service', async () => {
     mockNft.mockResolvedValueOnce({});
     render(
-      <RecoilRoot>
+      <RecoilRoot initializeState={mockZklState}>
         <SelectContract />
       </RecoilRoot>,
     );
@@ -47,7 +55,7 @@ describe('Contract Metadata component tests', () => {
   test('Errors are displayed correctly', async () => {
     mockNft.mockRejectedValueOnce({ message: 'An error occured' });
     render(
-      <RecoilRoot>
+      <RecoilRoot initializeState={mockZklState}>
         <SelectContract />
       </RecoilRoot>,
     );

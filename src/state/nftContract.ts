@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { atom, selector } from 'recoil';
 import { NftStateInterface, NftContractMetadata, Views } from '../interfaces/nft';
 

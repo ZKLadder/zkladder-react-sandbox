@@ -19,7 +19,7 @@ function Mint() {
           try {
             setLoadingState(true);
             setErrorState(undefined);
-            await nft.instance.mintAndWait();
+            await nft.instance?.mintAndWait();
             setLoadingState(false);
             setNftState({
               ...nft, refreshCounter: nft.refreshCounter + 1,
