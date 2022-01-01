@@ -12,7 +12,7 @@
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@walletconnect/web3-provider": "^1.6.6",
-    "@zkladder/zkladder-sdk-ts": "^1.0.1",
+    "@zkladder/zkladder-sdk-ts": "^1.0.3",
     "assert-browserify": "^2.0.0",
     "buffer": "^6.0.3",
     "http-browserify": "^1.7.0",
