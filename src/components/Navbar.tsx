@@ -21,7 +21,8 @@ function ZKLNavbar() {
       if (chainId !== wallet.chainId) setWalletState({ ...wallet, chainId: parseInt(chainId?.toString(16), 16) });
     });
     wallet.provider.on('accountsChanged', (accounts:string[]) => {
-      if (accounts[0] !== wallet.address[0]) setWalletState({ ...wallet, address: accounts });
+      if (accounts.length < 1) setWalletState({ isConnected: false });
+      if (accounts.length > 0 && accounts[0] !== wallet.address[0]) setWalletState({ ...wallet, address: accounts });
     });
   }
 
