@@ -1,9 +1,9 @@
-import { Nft } from '@zkladder/zkladder-sdk-ts';
+import { NftWhitelisted } from '@zkladder/zkladder-sdk-ts';
 
 interface NftStateInterface {
   isSelected:boolean,
   address?: string,
-  instance?: Nft,
+  instance?: NftWhitelisted,
   refreshCounter:number
 }
 

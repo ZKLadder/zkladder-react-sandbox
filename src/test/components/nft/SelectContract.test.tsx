@@ -6,13 +6,13 @@ import Zkl from '@zkladder/zkladder-sdk-ts';
 import SelectContract from '../../../components/nft/SelectContract';
 import { walletState } from '../../../state/wallet';
 
-const mockNft = jest.fn();
+const mockNftWhitelisted = jest.fn();
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => (jest.fn()));
 
-describe('Contract Metadata component tests', () => {
+describe('Select Contract component tests', () => {
   const mockZkl = Zkl as jest.Mocked<any>;
-  mockZkl.nft = mockNft;
+  mockZkl.nftWhitelisted = mockNftWhitelisted;
 
   const mockZklState = (settings:any) => {
     settings.set(walletState, {
@@ -34,7 +34,7 @@ describe('Contract Metadata component tests', () => {
   });
 
   test('Clicking connect calls the nft service', async () => {
-    mockNft.mockResolvedValueOnce({});
+    mockNftWhitelisted.mockResolvedValueOnce({});
     render(
       <RecoilRoot initializeState={mockZklState}>
         <SelectContract />
@@ -48,12 +48,12 @@ describe('Contract Metadata component tests', () => {
     await userEvent.click(selectButton);
 
     await waitFor(() => {
-      expect(mockNft).toHaveBeenCalledWith('0x123456789');
+      expect(mockNftWhitelisted).toHaveBeenCalledWith('0x123456789');
     });
   });
 
   test('Errors are displayed correctly', async () => {
-    mockNft.mockRejectedValueOnce({ message: 'An error occured' });
+    mockNftWhitelisted.mockRejectedValueOnce({ message: 'An error occured' });
     render(
       <RecoilRoot initializeState={mockZklState}>
         <SelectContract />
@@ -67,7 +67,7 @@ describe('Contract Metadata component tests', () => {
     await userEvent.click(selectButton);
 
     await waitFor(() => {
-      expect(mockNft).toHaveBeenCalledWith('0x123456789');
+      expect(mockNftWhitelisted).toHaveBeenCalledWith('0x123456789');
       expect(screen.getByText('An error occured')).toBeVisible();
     });
   });
