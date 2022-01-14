@@ -9,4 +9,5 @@ export default {
     marginBottom: '25px',
     boxShadow: 'inset -1px 0 0 rgba(0, 0, 0, .1)',
     borderRadius: 2,
+  },
 };
