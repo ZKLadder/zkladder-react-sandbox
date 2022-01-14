@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
 import NavBar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import Body from './components/Body';
 import reportWebVitals from './reportWebVitals';
 
@@ -9,7 +10,7 @@ ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
       <NavBar />
-      {/* @TODO add sidebar */}
+      <Sidebar />
       <Body />
     </RecoilRoot>
   </React.StrictMode>,
