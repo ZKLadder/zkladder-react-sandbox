@@ -28,7 +28,7 @@ const selectContract = () => {
         onClick={async () => {
           try {
             setErrorState(undefined);
-            const nftInstance = await zkLadder.nftWhitelisted(formEntry); // Potentially throws
+            const nftInstance = await zkLadder?.nftWhitelisted(formEntry); // Potentially throws
             setNftState({
               refreshCounter: 1,
               instance: nftInstance,

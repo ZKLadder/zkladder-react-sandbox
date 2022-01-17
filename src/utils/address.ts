@@ -1,5 +1,5 @@
 const shortenAddress = (address: string) => {
-  if (address.length < 10) return address;
+  if (!address || address.length < 10) return address;
   return `${address.substring(0, 6)}...${address.substring(address.length, address.length - 4)}`;
 };
 
