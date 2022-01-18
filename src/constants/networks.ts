@@ -35,4 +35,10 @@ export default {
     chainId: 5777,
     RPCEndpoint: 'http://localhost:7545',
   },
+  31337: {
+    name: 'Hardhat',
+    currency: 'TEST-ETH',
+    chainId: 31337,
+    RPCEndpoint: 'http://localhost:8545',
+  },
 };

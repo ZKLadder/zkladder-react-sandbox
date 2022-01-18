@@ -6,9 +6,10 @@ interface WalletStateInterface {
   address?:string[],
   balance?:number,
   provider?:any,
-  chainId?:string,
+  chainId?:number,
   isConnected:boolean,
-  zkLadder:ZkLadder
+  zkLadder?:ZkLadder,
+  reason?:string
 }
 
 export type { WalletStateInterface };

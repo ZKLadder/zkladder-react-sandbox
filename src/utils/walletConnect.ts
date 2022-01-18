@@ -1,6 +1,8 @@
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { WalletLink } from 'walletlink';
+import signAuthKey from './signAuthKey';
+import { createSession, deleteSession } from './api';
 
 const providerOptions:any = {
   injected: {
@@ -40,26 +42,44 @@ const providerOptions:any = {
 
 const web3Modal = new Web3Modal({
   providerOptions,
+  cacheProvider: true,
 });
 
 const connect = async () => {
+  // Brings up the web3 wallet select modal
   const provider = await web3Modal.connect();
+
+  // Requests accounts (displays 'Connect Account' popup for firstime users)
   const address = await provider.request({ method: 'eth_accounts' });
+
+  // Get chainId and user balance for display
   const chainId = await provider.request({ method: 'eth_chainId' });
-  let balance = await provider.request(
+  const balance = await provider.request(
     {
       method: 'eth_getBalance',
       params: [address?.[0], 'latest'],
     },
   );
-  balance = parseInt(balance.toString(16), 16);
+
   return {
-    provider, address, balance, chainId: parseInt(chainId.toString(16), 16),
+    provider,
+    address,
+    balance: parseInt(balance.toString(16), 16),
+    chainId: parseInt(chainId.toString(16), 16),
   };
+};
+
+const apiSession = async (provider:any, address:string[]) => {
+  // Requests user signs 'Hello from ZKL' message
+  const signature = await signAuthKey(provider, address?.[0]);
+
+  // Creates a cookie storing the user generated signature
+  await createSession(signature);
 };
 
 const disconnect = async () => {
   await web3Modal.clearCachedProvider();
+  await deleteSession();
 };
 
-export { connect, disconnect };
+export { connect, disconnect, apiSession };

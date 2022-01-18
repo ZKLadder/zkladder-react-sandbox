@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
-import NavBar from './components/Navbar';
-import Body from './components/Body';
 import reportWebVitals from './reportWebVitals';
+import Router from './components/Router';
 
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <NavBar />
-      {/* @TODO add sidebar */}
-      <Body />
+      <Router />
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root'),
