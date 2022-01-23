@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import zkLadder from '@zkladder/zkladder-sdk-ts';
 import Login from '../../../components/login/Login';
 import { walletState } from '../../../state/wallet';
 
@@ -28,7 +27,6 @@ jest.mock('../../../utils/walletConnect', () => ({
 
 const mockConnect = connect as jest.Mocked<any>;
 const mockApiSession = apiSession as jest.Mocked<any>;
-const mockZKLadder = zkLadder as jest.Mocked<any>;
 
 describe('Login component tests', () => {
   test('It renders', async () => {
@@ -54,7 +52,7 @@ describe('Login component tests', () => {
     };
 
     mockConnect.mockResolvedValueOnce(mockWallet);
-    mockZKLadder.mockReturnValueOnce({ mock: 'ZKL' });
+    // mockZKLadder.mockReturnValueOnce({ mock: 'ZKL' });
 
     render(
       <RecoilRoot>
@@ -75,7 +73,6 @@ describe('Login component tests', () => {
       expect(walletStateObserver).toHaveBeenCalledWith({
         ...mockWallet,
         isConnected: true,
-        zkLadder: { mock: 'ZKL' },
       });
     });
   });

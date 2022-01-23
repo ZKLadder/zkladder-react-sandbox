@@ -2,27 +2,28 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Zkl from '@zkladder/zkladder-sdk-ts';
+import { MemberNft } from '@zkladder/zkladder-sdk-ts';
 import SelectContract from '../../../components/nft/SelectContract';
-import { walletState } from '../../../state/wallet';
 
-const mockNftWhitelisted = jest.fn();
+// import { walletState } from '../../../state/wallet';
 
-jest.mock('@zkladder/zkladder-sdk-ts', () => (jest.fn()));
+// const mockNftWhitelisted = jest.fn();
+
+jest.mock('../../../config', () => ({
+  ipfs: {
+    projectId: 'mockProjectId',
+    projectSecret: 'mockProjectSecret',
+  },
+}));
+
+jest.mock('@zkladder/zkladder-sdk-ts', () => ({ MemberNft: { setup: jest.fn() } }));
+
+const mockMemberNft = MemberNft as jest.Mocked<any>;
 
 describe('Select Contract component tests', () => {
-  const mockZkl = Zkl as jest.Mocked<any>;
-  mockZkl.nftWhitelisted = mockNftWhitelisted;
-
-  const mockZklState = (settings:any) => {
-    settings.set(walletState, {
-      zkLadder: mockZkl,
-    });
-  };
-
   test('It renders', async () => {
     render(
-      <RecoilRoot initializeState={mockZklState}>
+      <RecoilRoot>
         <SelectContract />
       </RecoilRoot>,
     );
@@ -34,9 +35,9 @@ describe('Select Contract component tests', () => {
   });
 
   test('Clicking connect calls the nft service', async () => {
-    mockNftWhitelisted.mockResolvedValueOnce({});
+    mockMemberNft.setup.mockResolvedValueOnce({});
     render(
-      <RecoilRoot initializeState={mockZklState}>
+      <RecoilRoot>
         <SelectContract />
       </RecoilRoot>,
     );
@@ -48,14 +49,19 @@ describe('Select Contract component tests', () => {
     await userEvent.click(selectButton);
 
     await waitFor(() => {
-      expect(mockNftWhitelisted).toHaveBeenCalledWith('0x123456789');
+      expect(mockMemberNft.setup).toHaveBeenCalledWith({
+        infuraIpfsProjectId: 'mockProjectId',
+        infuraIpfsProjectSecret: 'mockProjectSecret',
+        address: '0x123456789',
+        provider: undefined,
+      });
     });
   });
 
   test('Errors are displayed correctly', async () => {
-    mockNftWhitelisted.mockRejectedValueOnce({ message: 'An error occured' });
+    mockMemberNft.setup.mockRejectedValueOnce({ message: 'An error occured' });
     render(
-      <RecoilRoot initializeState={mockZklState}>
+      <RecoilRoot>
         <SelectContract />
       </RecoilRoot>,
     );
@@ -67,7 +73,12 @@ describe('Select Contract component tests', () => {
     await userEvent.click(selectButton);
 
     await waitFor(() => {
-      expect(mockNftWhitelisted).toHaveBeenCalledWith('0x123456789');
+      expect(mockMemberNft.setup).toHaveBeenCalledWith({
+        infuraIpfsProjectId: 'mockProjectId',
+        infuraIpfsProjectSecret: 'mockProjectSecret',
+        address: '0x123456789',
+        provider: undefined,
+      });
       expect(screen.getByText('An error occured')).toBeVisible();
     });
   });

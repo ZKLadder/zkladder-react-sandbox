@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { walletState } from '../../state/wallet';
+import { Ipfs as IpfsService } from '@zkladder/zkladder-sdk-ts';
 import { ipfsState, viewState } from '../../state/ipfs';
 import Directories from './Directories';
 import DirectoryExplorer from './DirectoryExplorer';
+import config from '../../config';
 
 function Ipfs() {
-  const { zkLadder } = useRecoilValue(walletState);
   const [ipfs, setIpfsState] = useRecoilState(ipfsState);
   const { view } = useRecoilValue(viewState);
 
   useEffect(() => {
     if (!ipfs.exists) {
-      const ipfsInstance = zkLadder?.ipfs(
-      process.env.REACT_APP_IPFS_ID as string,
-      process.env.REACT_APP_IPFS_SECRET as string,
+      const ipfsInstance = new IpfsService(
+      config.ipfs.projectId as string,
+      config.ipfs.projectSecret as string,
       );
       setIpfsState({ instance: ipfsInstance, exists: true });
     }

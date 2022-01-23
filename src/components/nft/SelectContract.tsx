@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Form, Button } from 'react-bootstrap';
+import { MemberNft } from '@zkladder/zkladder-sdk-ts';
 import { nftState } from '../../state/nftContract';
 import { walletState } from '../../state/wallet';
 import errorStyle from '../../styles/error';
 import { WalletStateInterface } from '../../interfaces/wallet';
+import config from '../../config';
 
 const selectContract = () => {
   const [formEntry, setFormEntry] = useState('');
   const [errorState, setErrorState] = useState();
   const setNftState = useSetRecoilState(nftState);
-  const { zkLadder } = useRecoilValue(walletState) as WalletStateInterface;
+  const { provider } = useRecoilValue(walletState) as WalletStateInterface;
   return (
     <Form.Group>
       <Form.Label>Enter an NFT contract address to get started</Form.Label>
@@ -28,7 +30,12 @@ const selectContract = () => {
         onClick={async () => {
           try {
             setErrorState(undefined);
-            const nftInstance = await zkLadder?.nftWhitelisted(formEntry); // Potentially throws
+            const nftInstance = await MemberNft.setup({ // Potentially throws
+              address: formEntry,
+              provider,
+              infuraIpfsProjectId: config.ipfs.projectId as string,
+              infuraIpfsProjectSecret: config.ipfs.projectSecret as string,
+            });
             setNftState({
               refreshCounter: 1,
               instance: nftInstance,

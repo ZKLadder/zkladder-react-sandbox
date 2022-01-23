@@ -5,7 +5,6 @@ import {
   Route,
 } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import Zkl from '@zkladder/zkladder-sdk-ts';
 import Login from './login/Login';
 import NavBar from './Navbar';
 import Body from './Body';
@@ -83,10 +82,8 @@ function ZklRouter() {
           address, balance, provider, chainId,
         } = await connect();
 
-        // @TODO Instantiate with a real projectID
-        const zkLadder = new Zkl('12345', provider);
         setWalletState({
-          address, balance, provider, chainId, zkLadder, isConnected: true,
+          address, balance, provider, chainId, isConnected: true,
         });
       }
       setLoadingState(false);

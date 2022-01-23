@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { HttpOptions } from '../interfaces/api';
-
+import config from '../config';
 /**
  * Generalized request wrapper used by other ZKL API functions
  * For a full list of endpoints:
@@ -15,7 +15,7 @@ const request = async (options: HttpOptions) => {
         ...options.headers,
         Accept: '*/*',
       },
-      baseURL: process.env.REACT_APP_ZKL_API || 'http://zkladder.us-east-1.elasticbeanstalk.com/api',
+      baseURL: config.api.url,
       withCredentials: true,
     });
     return response.data;
