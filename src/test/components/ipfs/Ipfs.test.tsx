@@ -6,6 +6,8 @@ import Ipfs from '../../../components/ipfs/Ipfs';
 
 const mockInstance = jest.fn();
 
+jest.mock('@zkladder/zkladder-sdk-ts', () => ({}));
+
 const initializeAllDirectoriesState = (settings:any) => {
   settings.set(ipfsState, {
     exists: true,

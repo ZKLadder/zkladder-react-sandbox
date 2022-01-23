@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Card, Button, Container, Image,
 } from 'react-bootstrap';
-import Zkl from '@zkladder/zkladder-sdk-ts';
 import { useRecoilState } from 'recoil';
 import loginStyle from '../../styles/login';
 import { connect, apiSession } from '../../utils/walletConnect';
@@ -49,11 +48,8 @@ function Login() {
 
               await apiSession(provider, address);
 
-              // @TODO Instantiate with a real projectID
-              const zkLadder = new Zkl('12345', provider);
-
               setWalletState({
-                address, balance, provider, chainId, zkLadder, isConnected: true,
+                address, balance, provider, chainId, isConnected: true,
               });
             } catch (error:any) {
               setLoading({});

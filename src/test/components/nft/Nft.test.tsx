@@ -4,6 +4,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { nftState, viewState } from '../../../state/nftContract';
 import Nft from '../../../components/nft/Nft';
 
+jest.mock('@zkladder/zkladder-sdk-ts', () => ({}));
+
 const initializeNotSelectedState = (settings:any) => {
   settings.set(nftState, {
     isSelected: false,
