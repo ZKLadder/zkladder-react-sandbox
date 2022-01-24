@@ -2,7 +2,8 @@ import React from 'react';
 import { Card, Spinner } from 'react-bootstrap';
 import bodyStyle from '../styles/body';
 // import Nft from './nft/Nft';
-import Ipfs from './ipfs/Ipfs';
+// import Ipfs from './ipfs/Ipfs';
+import DeployMemberNft from './memberNft/Deploy';
 // Routing logic happens in this component
 
 function Body() {
@@ -11,7 +12,7 @@ function Body() {
       <Card.Body style={bodyStyle.cardText}>
         <React.Suspense fallback={<Spinner animation="border" role="status" />}>
           {/* @TODO Return module showcase components depending on current route when isConnected == true */}
-          <Ipfs />
+          <DeployMemberNft />
         </React.Suspense>
       </Card.Body>
     </Card>

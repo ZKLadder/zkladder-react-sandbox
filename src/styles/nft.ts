@@ -15,4 +15,22 @@ const tokenListItem = {
   overflow: 'auto',
 };
 
-export default { tokenInfo, tokenCard, tokenListItem };
+const deployField = {
+  width: '60%',
+};
+
+const deployRow = {
+  marginLeft: 'auto',
+  marginBottom: '25px',
+};
+
+const tooltip = {
+  marginLeft: '15px',
+  alignItems: 'center',
+  marginTop: 'auto',
+  marginBottom: 'auto',
+};
+
+export default {
+  tokenInfo, tokenCard, tokenListItem, deployField, tooltip, deployRow,
+};
