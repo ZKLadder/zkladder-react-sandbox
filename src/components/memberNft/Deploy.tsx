@@ -27,11 +27,15 @@ function Deploy() {
   const [error, setError] = useState() as any;
   return (
     <div>
+      {/* Modal Component */}
       <FileUploadModal show={modalOpen} onHide={() => setModalOpen(false)} />
+
+      {/* Deployment Configs */}
       <Form.Group>
         <Form.Label> Member NFT Deployment </Form.Label>
         <hr />
 
+        {/* Name field */}
         <Row style={nftStyles.deployRow}>
           <Form.Control
             value={deploymentConfig.name}
@@ -57,6 +61,7 @@ function Deploy() {
           </OverlayTrigger>
         </Row>
 
+        {/* Symbol field */}
         <Row style={nftStyles.deployRow}>
           <Form.Control
             value={deploymentConfig.symbol}
@@ -82,6 +87,7 @@ function Deploy() {
           </OverlayTrigger>
         </Row>
 
+        {/* baseUri field */}
         <Row style={nftStyles.deployRow}>
           <Form.Control
             value={deploymentConfig.baseUri}
@@ -111,6 +117,7 @@ function Deploy() {
           </Button>
         </Row>
 
+        {/* Beneficiary Address field */}
         <Row style={nftStyles.deployRow}>
           <Form.Control
             value={deploymentConfig.beneficiary}
@@ -142,6 +149,7 @@ function Deploy() {
           </Col>
         </Row>
 
+        {/* Deploy Button */}
         <Button
           data-testid="selectButton"
           style={{ marginTop: '10px' }}
@@ -165,6 +173,8 @@ function Deploy() {
         >
           Deploy new Member NFT contract
         </Button>
+
+        {/* Success, Error, and Loading indicators */}
         {contractAddress ? (
           <div style={{ marginTop: '20px' }}>
             Contract Address

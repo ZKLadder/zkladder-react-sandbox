@@ -35,17 +35,23 @@ function FileUploadModal({ show, onHide }:{show:boolean, onHide:Function}) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
+      {/* Modal Header */}
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
           Upload to IPFS
         </Modal.Title>
       </Modal.Header>
+
+      {/* Modal Body */}
       <Modal.Body>
+
         {/* Drag and Drop Section */}
         <div {...getRootProps({ style })}>
           <input data-testid="fileInput" {...getInputProps()} />
           <p>Drag and drop a file to get started</p>
         </div>
+
+        {/* File to be Uploaded Section */}
         <ListGroup style={{ maxHeight: '170px', overflow: 'auto' }}>
           {acceptedFiles.map((file:any) => (
             <ListGroup.Item key={file.name}>
@@ -59,6 +65,8 @@ function FileUploadModal({ show, onHide }:{show:boolean, onHide:Function}) {
             </ListGroup.Item>
           ))}
         </ListGroup>
+
+        {/* Add Files to IPFS Button */}
         {acceptedFiles.length > 0
           ? (
             <Button
@@ -91,10 +99,14 @@ function FileUploadModal({ show, onHide }:{show:boolean, onHide:Function}) {
             </Button>
           ) : null}
       </Modal.Body>
+
+      {/* Modal Footed */}
       <Modal.Footer>
         <Row>
           {loading ? <Loading /> : null}
           {error ? <Error text={error} /> : null}
+
+          {/* IPFS CID's */}
           {ipfsCids.fileHash ? <Col xs={6}><CopyToClipboard text={ipfsCids.fileHash} /></Col> : null}
           {ipfsCids.withDirectory ? <Col xs={6}><CopyToClipboard text={ipfsCids.withDirectory} /></Col> : null}
         </Row>
