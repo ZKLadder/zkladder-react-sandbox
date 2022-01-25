@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Body from '../../components/Body';
 
-jest.mock('../../components/memberNft/deploy', () => ({
+jest.mock('../../components/memberNft/Deploy', () => ({
   __esModule: true,
   default: () => <p>DEPLOY MEMBER NFT</p>,
 }));
