@@ -96,11 +96,11 @@ function ZklRouter() {
   if (loadingState) return (<Loading />);
 
   return (wallet.isConnected
-    ? ( // Authenticated Route
+    ? ( // Authenticated Routes
       <Router>
         <Routes>
           <Route
-            path="/"
+            path="/*"
             element={(
               <div>
                 <NavBar />
@@ -112,7 +112,7 @@ function ZklRouter() {
           />
         </Routes>
       </Router>
-    ) : ( // Unauthenticated Route
+    ) : ( // Unauthenticated Routes
       <Router>
         <Routes>
           <Route

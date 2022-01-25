@@ -1,15 +1,82 @@
-/* eslint-disable */
 import React from 'react';
 import { RecoilRoot } from 'recoil';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import Body from '../../components/Body';
-import { walletState } from '../../state/wallet';
 
-const initializeState = (settings:any) => {
-  settings.set(walletState, { isConnected: true });
-};
+jest.mock('../../components/memberNft/deploy', () => ({
+  __esModule: true,
+  default: () => <p>DEPLOY MEMBER NFT</p>,
+}));
 
-// @TODO Refactor test suite when routing is added
+jest.mock('../../components/nft/Nft', () => ({
+  __esModule: true,
+  default: () => <p>NFT</p>,
+}));
+
+jest.mock('../../components/ipfs/Ipfs', () => ({
+  __esModule: true,
+  default: () => <p>IPFS</p>,
+}));
+
 describe('Body component tests', () => {
-  test('Empty test', async () => {});
+  test('It renders the default route', async () => {
+    render(
+      <RecoilRoot>
+        <MemoryRouter>
+          <Body />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('DEPLOY MEMBER NFT')).toBeVisible();
+  });
+
+  test('It renders the deploy-nft route', async () => {
+    render(
+      <RecoilRoot>
+        <MemoryRouter initialEntries={['/deploy-nft']}>
+          <Body />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('DEPLOY MEMBER NFT')).toBeVisible();
+  });
+
+  test('It renders the ipfs route', async () => {
+    render(
+      <RecoilRoot>
+        <MemoryRouter initialEntries={['/ipfs']}>
+          <Body />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('IPFS')).toBeVisible();
+  });
+
+  test('It renders the nft route', async () => {
+    render(
+      <RecoilRoot>
+        <MemoryRouter initialEntries={['/nft']}>
+          <Body />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('NFT')).toBeVisible();
+  });
+
+  test('All other routes fallback to defaukt', async () => {
+    render(
+      <RecoilRoot>
+        <MemoryRouter initialEntries={['/not-a-real-route']}>
+          <Body />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('DEPLOY MEMBER NFT')).toBeVisible();
+  });
 });
