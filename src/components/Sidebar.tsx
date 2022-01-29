@@ -2,30 +2,30 @@ import React from 'react';
 import {
   Nav,
   Navbar,
-  NavDropdown,
-  ListGroup,
+  Container,
 } from 'react-bootstrap';
-import sidebarStyle from '../styles/sidebar';
+import icon from '../images/zk_favicon.png';
 
 function Sidebar() {
   return (
-    <div className="sidebar" style={sidebarStyle.nav}>
-      <Navbar collapseOnSelect expand="lg" className="sidebar-nav">
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="flex-column">
-            <NavDropdown title="NFTs">
-              <ListGroup.Item href="#">Item 1.1</ListGroup.Item>
-              <ListGroup.Item href="#">Item 1.2</ListGroup.Item>
-              <ListGroup.Item href="#">Item 1.3</ListGroup.Item>
-            </NavDropdown>
-            <NavDropdown title="IFPS">
-              <ListGroup.Item href="#">Item 2.1</ListGroup.Item>
-              <ListGroup.Item href="#">Item 2.2</ListGroup.Item>
-              <ListGroup.Item href="#">Item 2.3</ListGroup.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
+    <div>
+      <Navbar collapseOnSelect expand="md" bg="info" variant="dark" className="position-absolute">
+        <Container>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav">
+            <img
+              src={icon}
+              width="30px"
+              alt="ZKL"
+            />
+          </Navbar.Toggle>
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="flex-column">
+              <Nav.Link href="#home">Home</Nav.Link>
+              <Nav.Link href="#features">Features</Nav.Link>
+              <Nav.Link href="#pricing">Pricing</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
       </Navbar>
     </div>
   );
