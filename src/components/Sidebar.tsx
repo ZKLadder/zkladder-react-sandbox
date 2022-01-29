@@ -8,8 +8,8 @@ import icon from '../images/zk_favicon.png';
 
 function Sidebar() {
   return (
-    <div>
-      <Navbar collapseOnSelect expand="md" bg="info" variant="dark" className="position-absolute">
+    <div className="float-left">
+      <Navbar collapseOnSelect expand="md" bg="info" variant="dark">
         <Container>
           <Navbar.Toggle aria-controls="responsive-navbar-nav">
             <img

@@ -1,5 +1,5 @@
 export default {
   sidebar: {
-    position: 'absolute',
+    backgroundColor: '',
   },
 };
