@@ -2,7 +2,7 @@ import { atom, selector } from 'recoil';
 import { NftStateInterface, NftContractMetadata, Views } from '../interfaces/nft';
 
 const viewState = atom({
-  key: 'viewState',
+  key: 'nftViewState',
   default: 'tokenQuery' as Views,
 });
 

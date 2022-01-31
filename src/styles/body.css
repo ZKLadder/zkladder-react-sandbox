@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Avenir Next';
+  src: url("../../public/Avenir_Next.otf"); /* File to be stored at your site */
+  }
+
+* {
+  font-family: "Avenir Next" !important;
+}
+.background-container {
+  width: 100%;
+  position: fixed;
+  height: 66%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-width:0;
+  border-radius:0;
+}

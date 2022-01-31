@@ -3,15 +3,16 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
 } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import Login from './login/Login';
-import NavBar from './Navbar';
 import Body from './Body';
 import { walletState } from '../state/wallet';
 import { getSession, deleteSession } from '../utils/api';
 import { connect, apiSession } from '../utils/walletConnect';
 import Loading from './shared/Loading';
+import MemberMint from './zkl-member-mint/MemberMint';
 
 let timeOutId:any;
 
@@ -30,6 +31,7 @@ function ZklRouter() {
       } catch (error) {
         setWalletState({
           isConnected: false,
+          isMember: false,
           reason: 'Attempted to switch to an non-whitelisted account',
         });
       }
@@ -47,7 +49,7 @@ function ZklRouter() {
       if (chainId !== wallet.chainId) updateChainId(chainId);
     });
     wallet.provider.on('accountsChanged', (accounts:string[]) => {
-      if (accounts.length < 1) setWalletState({ isConnected: false });
+      if (accounts.length < 1) setWalletState({ isConnected: false, isMember: false });
       if (accounts.length > 0 && accounts[0] !== wallet?.address?.[0]) updateAccount(accounts);
     });
   }
@@ -83,7 +85,16 @@ function ZklRouter() {
         } = await connect();
 
         setWalletState({
-          address, balance, provider, chainId, isConnected: true,
+          address, balance, provider, chainId, isConnected: true, isMember: true,
+        });
+      }
+
+      if (cachedProvider && !session) {
+        const {
+          address, balance, provider, chainId,
+        } = await connect();
+        setWalletState({
+          address, balance, provider, chainId, isConnected: true, isMember: false,
         });
       }
       setLoadingState(false);
@@ -95,15 +106,15 @@ function ZklRouter() {
   // Loading spinner while app fetches auth
   if (loadingState) return (<Loading />);
 
-  return (wallet.isConnected
-    ? ( // Authenticated Routes
+  // Authenticated Routes
+  if (wallet.isConnected && wallet.isMember) {
+    return (
       <Router>
         <Routes>
           <Route
             path="/*"
             element={(
               <div>
-                <NavBar />
                 {/* @TODO Add Sidebar here */}
                 <Body />
                 {/* @TODO Add Modal element when switching accounts and awaiting signature */}
@@ -112,16 +123,26 @@ function ZklRouter() {
           />
         </Routes>
       </Router>
-    ) : ( // Unauthenticated Routes
-      <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={<Login />}
-          />
-        </Routes>
-      </Router>
-    )
+    );
+  }
+
+  // Public Routes
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={<Login />}
+        />
+        <Route
+          path="/mint"
+          element={<MemberMint />}
+        />
+
+        {/* Default Route */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 }
 

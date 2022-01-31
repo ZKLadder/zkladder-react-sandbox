@@ -23,6 +23,7 @@ const request = async (options: HttpOptions) => {
     const method = error.config?.method;
     const baseUrl = error.config?.baseURL;
     const path = error.config?.url;
+    if (error.status === 400) throw new Error('It appears your account does not have access');
     throw new Error(`${error.message}, Method:[${method}], URL:[${baseUrl}${path}]`);
   }
 };
