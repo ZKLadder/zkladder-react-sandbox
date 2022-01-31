@@ -6,7 +6,8 @@ interface WalletStateInterface {
   provider?:any,
   chainId?:number,
   isConnected:boolean,
-  reason?:string
+  isMember:boolean,
+  reason?:string,
 }
 
 export type { WalletStateInterface };

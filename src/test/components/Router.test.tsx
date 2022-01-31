@@ -16,7 +16,7 @@ Object.defineProperty(window, 'localStorage', {
   value: storage,
 });
 
-jest.mock('../../components/Navbar', () => ({
+jest.mock('../../components/navbar/Navbar', () => ({
   __esModule: true,
   default: () => <p>NAVBAR</p>,
 }));
@@ -94,7 +94,6 @@ describe('ZklRouter component tests', () => {
 
     await waitFor(() => {
       expect(screen.queryByText('LOGIN')).not.toBeInTheDocument();
-      expect(screen.getByText('NAVBAR')).toBeVisible();
       expect(screen.getByText('BODY')).toBeVisible();
     });
   });
