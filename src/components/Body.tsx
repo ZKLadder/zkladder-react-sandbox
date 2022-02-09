@@ -5,15 +5,15 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import bodyStyle from '../styles/body';
+import '../styles/body.css';
 import Nft from './nft/Nft';
 import Ipfs from './ipfs/Ipfs';
 import DeployMemberNft from './memberNft/Deploy';
 
 function Body() {
   return (
-    <Card className="mx-auto" style={bodyStyle.card}>
-      <Card.Body style={bodyStyle.cardText}>
+    <Card className="mx-auto body-card">
+      <Card.Body className="mx-auto body-cardText">
         <React.Suspense fallback={<Spinner animation="border" role="status" />}>
           <Routes>
             <Route

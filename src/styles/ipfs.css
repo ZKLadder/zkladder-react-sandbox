@@ -1,0 +1,14 @@
+.file-drop-zone {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-width: 4;
+  border-radius: 2;
+  border-color: rgb(232, 29, 103);
+  border-style: dashed;
+  background-color: #ffffff;
+  color: rgb(232, 29, 103);
+  outline: none;
+  transition: border .24s ease-in-out;
+};

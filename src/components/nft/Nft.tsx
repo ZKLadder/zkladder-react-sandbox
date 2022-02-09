@@ -6,6 +6,7 @@ import Tokens from './TokenQuery';
 import SelectContract from './SelectContract';
 import Mint from './Mint';
 import AllTokens from './AllTokens';
+import Whitelist from './Whitelist';
 
 function Nft() {
   const nft = useRecoilValue(nftState);
@@ -20,6 +21,8 @@ function Nft() {
             <Tokens />
             <hr />
             <Mint />
+            <hr />
+            <Whitelist />
           </div>
         )
         : <AllTokens />}

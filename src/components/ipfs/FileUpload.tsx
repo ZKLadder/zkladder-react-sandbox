@@ -1,13 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   Spinner, Button, ListGroup, Badge,
 } from 'react-bootstrap';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useDropzone } from 'react-dropzone';
 import { ipfsState, viewState } from '../../state/ipfs';
-import errorStyle from '../../styles/error';
-import ipfsStyle from '../../styles/ipfs';
+import '../../styles/error.css';
+import '../../styles/ipfs.css';
 import { FileUploadProps } from '../../interfaces/ipfs';
 
 function FileUpload(props: FileUploadProps) {
@@ -25,14 +25,10 @@ function FileUpload(props: FileUploadProps) {
     },
   });
 
-  const style = useMemo(() => ({
-    ...ipfsStyle.fileDropZone,
-  }), []);
-
   return (
     <div>
       {/* Drag and Drop Section */}
-      <div {...getRootProps({ style })}>
+      <div className="file-drop-zone" {...getRootProps({})}>
         <input data-testid="fileInput" {...getInputProps()} />
         <p>Drag and drop a file or directory</p>
       </div>
@@ -105,7 +101,7 @@ function FileUpload(props: FileUploadProps) {
                   <p>This may take a minute ...</p>
                 </div>
               ) : undefined}
-              {error ? <p style={errorStyle}>{error}</p> : undefined}
+              {error ? <p className="error">{error}</p> : undefined}
             </div>
           ) : null}
       </aside>

@@ -1,0 +1,32 @@
+.tokenInfo {
+  margin-right: 20px;
+  overflow: auto;
+};
+
+.tokenCard  {
+  padding: 15px;
+  margin-top: 15px;
+};
+
+.tokenListItem {
+  margin-top: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+  overflow: auto;
+};
+
+.deployField {
+  width: '60%',
+};
+
+.deployRow {
+  margin-left: auto;
+  margin-bottom: 25px;
+};
+
+.tooltip {
+  margin-left: 15px;
+  align-items: center;
+  margin-top: auto;
+  margin-bottom: auto;
+};

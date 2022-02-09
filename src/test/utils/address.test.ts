@@ -1,5 +1,5 @@
 /* eslint-disable no-loss-of-precision */
-import { shortenAddress, weiToEth } from '../../utils/address';
+import { shortenAddress, weiToEth, hashString } from '../../utils/address';
 
 describe('shortenAddress', () => {
   test('shortenAddress functions as expected', () => {
@@ -20,5 +20,11 @@ describe('shortenAddress', () => {
 describe('weiToEth', () => {
   test('weiToEth functions as expected', () => {
     expect(weiToEth(12345678912345678)).toStrictEqual(0.0123);
+  });
+});
+
+describe('hashString', () => {
+  test('hashString functions as expected', () => {
+    expect(hashString('12345678912345678')).toStrictEqual(1222314937);
   });
 });

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   Modal, Button, ListGroup, Badge, Row, Col,
 } from 'react-bootstrap';
@@ -9,7 +9,7 @@ import { Ipfs } from '@zkladder/zkladder-sdk-ts';
 import Error from '../shared/Error';
 import Loading from '../shared/Loading';
 import CopyToClipboard from '../shared/CopyToClipboard';
-import ipfsStyle from '../../styles/ipfs';
+import '../../styles/ipfs.css';
 import config from '../../config';
 
 function FileUploadModal({ show, onHide }:{show:boolean, onHide:Function}) {
@@ -24,9 +24,6 @@ function FileUploadModal({ show, onHide }:{show:boolean, onHide:Function}) {
     },
   });
 
-  const style = useMemo(() => ({
-    ...ipfsStyle.fileDropZone,
-  }), []);
   return (
     <Modal
       show={show}
@@ -46,7 +43,7 @@ function FileUploadModal({ show, onHide }:{show:boolean, onHide:Function}) {
       <Modal.Body>
 
         {/* Drag and Drop Section */}
-        <div {...getRootProps({ style })}>
+        <div className="file-drop-zone" {...getRootProps({ })}>
           <input data-testid="fileInput" {...getInputProps()} />
           <p>Drag and drop a file to get started</p>
         </div>

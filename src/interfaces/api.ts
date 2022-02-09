@@ -8,4 +8,17 @@ interface HttpOptions{
   headers?: AxiosRequestHeaders; // request headers
 }
 
-export type { HttpOptions };
+interface StoreVoucherOptions{
+  contractAddress: string,
+  userAddress: string,
+  balance:number,
+  signedVoucher: { [key: string]: any }
+}
+
+interface GetVoucherOptions{
+  contractAddress: string,
+  userAddress: string,
+  chainId:number
+}
+
+export type { HttpOptions, StoreVoucherOptions, GetVoucherOptions };

@@ -59,9 +59,9 @@ describe('FileView component', () => {
       expect(screen.getByText('ipfs://qmTHIRD')).toBeVisible();
 
       // Images are rendered with the correct source
-      expect(screen.getByTestId('qmFIRST')).toHaveAttribute('src', 'https://ipfs.first.jpg');
-      expect(screen.getByTestId('qmSECOND')).toHaveAttribute('src', 'https://ipfs.second.jpg');
-      expect(screen.getByTestId('qmTHIRD')).toHaveAttribute('src', 'https://ipfs.third.jpg');
+      expect(screen.getByTestId('qmFIRST')).toHaveAttribute('src', 'ipfs.first.jpg');
+      expect(screen.getByTestId('qmSECOND')).toHaveAttribute('src', 'ipfs.second.jpg');
+      expect(screen.getByTestId('qmTHIRD')).toHaveAttribute('src', 'ipfs.third.jpg');
     });
   });
 
