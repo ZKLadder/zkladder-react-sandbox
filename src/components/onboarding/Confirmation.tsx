@@ -6,9 +6,14 @@ import {
 import '../../styles/onboarding.css';
 import P5Sketch from '../shared/P5Sketch';
 import { onboardingState } from '../../state/onboarding';
+import networks from '../../constants/networks';
+import { walletState } from '../../state/wallet';
 
 function Confirmation() {
   const { mintConfirmation, p5Sketch } = useRecoilValue(onboardingState);
+  const wallet = useRecoilValue(walletState);
+
+  const castNetworks = networks as any;
 
   return (
     <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
@@ -55,7 +60,7 @@ function Confirmation() {
         <Col className="confirmation-item" lg={12}>
           <span className="description">
             <b>TX HASH: </b>
-            {mintConfirmation.txHash}
+            <a target="_blank" className="confirmation-link" href={`${castNetworks[wallet?.chainId as number]?.blockExplorer}${mintConfirmation.txHash}`} rel="noreferrer">{mintConfirmation.txHash}</a>
           </span>
         </Col>
       </Row>
