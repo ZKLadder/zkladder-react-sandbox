@@ -3,11 +3,11 @@ import {
   Alert, Container, Row,
 } from 'react-bootstrap';
 
-function Loading({ text }:{text:string}) {
+function Error({ text }:{text:string}) {
   return (
     <Container>
       <Row>
-        <Alert variant="danger" className="mx-auto" style={{ marginTop: '30px' }}>
+        <Alert variant="danger" style={{ marginTop: '30px' }}>
           {text}
         </Alert>
       </Row>
@@ -15,4 +15,4 @@ function Loading({ text }:{text:string}) {
   );
 }
 
-export default Loading;
+export default Error;

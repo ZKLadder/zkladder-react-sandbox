@@ -5,7 +5,7 @@ import {
 import { QuestionCircle } from 'react-bootstrap-icons';
 import { useRecoilValue } from 'recoil';
 import { MemberNft } from '@zkladder/zkladder-sdk-ts';
-import nftStyles from '../../styles/nft';
+import '../../styles/nft.css';
 import { walletState } from '../../state/wallet';
 import FileUploadModal from '../ipfs/FileUploadModal';
 import Error from '../shared/Error';
@@ -36,11 +36,11 @@ function Deploy() {
         <hr />
 
         {/* Name field */}
-        <Row style={nftStyles.deployRow}>
+        <Row className="deployRow">
           <Form.Control
             value={deploymentConfig.name}
             type="text"
-            style={nftStyles.deployField}
+            className="deployField"
             placeholder="Enter a name for your Member NFT contract..."
             onChange={(event) => {
               setDeploymentConfig({ ...deploymentConfig, name: event.target.value });
@@ -57,16 +57,16 @@ function Deploy() {
               </Popover>
       )}
           >
-            <QuestionCircle style={nftStyles.tooltip} />
+            <QuestionCircle className="tooltip" />
           </OverlayTrigger>
         </Row>
 
         {/* Symbol field */}
-        <Row style={nftStyles.deployRow}>
+        <Row className="deployRow">
           <Form.Control
             value={deploymentConfig.symbol}
             type="text"
-            style={nftStyles.deployField}
+            className="deployField"
             placeholder="Enter a symbol for your Member NFT contract..."
             onChange={(event) => {
               setDeploymentConfig({ ...deploymentConfig, symbol: event.target.value });
@@ -83,16 +83,16 @@ function Deploy() {
               </Popover>
       )}
           >
-            <QuestionCircle style={nftStyles.tooltip} />
+            <QuestionCircle className="tooltip" />
           </OverlayTrigger>
         </Row>
 
         {/* baseUri field */}
-        <Row style={nftStyles.deployRow}>
+        <Row className="deployRow">
           <Form.Control
             value={deploymentConfig.baseUri}
             type="text"
-            style={nftStyles.deployField}
+            className="deployField"
             placeholder="Enter an image or other form of content URI..."
             onChange={(event) => {
               setDeploymentConfig({ ...deploymentConfig, baseUri: event.target.value });
@@ -110,7 +110,7 @@ function Deploy() {
               </Popover>
       )}
           >
-            <QuestionCircle style={nftStyles.tooltip} />
+            <QuestionCircle className="tooltip" />
           </OverlayTrigger>
           <Button onClick={() => { setModalOpen(true); }} style={{ marginLeft: '20px' }}>
             Upload new file to IPFS
@@ -118,11 +118,11 @@ function Deploy() {
         </Row>
 
         {/* Beneficiary Address field */}
-        <Row style={nftStyles.deployRow}>
+        <Row className="deployRow">
           <Form.Control
             value={deploymentConfig.beneficiary}
             type="text"
-            style={nftStyles.deployField}
+            className="deployField"
             placeholder="Enter a beneficiary address..."
             onChange={(event) => {
               setDeploymentConfig({ ...deploymentConfig, beneficiary: event.target.value });
@@ -140,7 +140,7 @@ function Deploy() {
               </Popover>
       )}
           >
-            <QuestionCircle style={nftStyles.tooltip} />
+            <QuestionCircle className="tooltip" />
           </OverlayTrigger>
           <Col xs={12}>
             <Form.Text className="text-muted">

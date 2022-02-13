@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-  request, getSession, createSession, deleteSession,
+  request, getSession, createSession, deleteSession, storeVoucher, getVoucher,
 } from '../../utils/api';
 
 jest.mock('axios', () => ({ request: jest.fn() }));
@@ -55,7 +55,7 @@ describe('Generic ZKL API request wrapper', () => {
       });
       expect(true).toBe(false); // should be unreachable
     } catch (error) {
-      expect(error).toStrictEqual(new Error('Not working, Method:[get], URL:[a/base/urla/test/url]'));
+      expect(error).toStrictEqual(new Error('API error'));
     }
   });
 });
@@ -120,5 +120,58 @@ describe('deleteSession tests', () => {
     });
 
     expect(response).toStrictEqual({ session: 'mocked' });
+  });
+});
+
+describe('storeVoucher tests', () => {
+  test('storeVoucher correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { voucher: 'mocked' } });
+
+    const voucherOptions = {
+      contractAddress: '0xcontract',
+      userAddress: '0xuser',
+      balance: 10,
+      signedVoucher: { mock: 'voucher' },
+    };
+    const response = await storeVoucher(voucherOptions);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'post',
+      url: '/v1/vouchers',
+      data: voucherOptions,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'http://zkladder.us-east-1.elasticbeanstalk.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ voucher: 'mocked' });
+  });
+});
+
+describe('getVoucher tests', () => {
+  test('getVoucher correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { voucher: 'mocked' } });
+
+    const voucherOptions = {
+      contractAddress: '0xcontract',
+      userAddress: '0xuser',
+      chainId: 10,
+    };
+    const response = await getVoucher(voucherOptions);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'get',
+      url: '/v1/vouchers',
+      params: voucherOptions,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'http://zkladder.us-east-1.elasticbeanstalk.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ voucher: 'mocked' });
   });
 });

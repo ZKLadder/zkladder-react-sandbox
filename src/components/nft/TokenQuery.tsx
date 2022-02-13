@@ -5,8 +5,8 @@ import {
 import { useRecoilValue } from 'recoil';
 import { nftState, nftContractMetadataState } from '../../state/nftContract';
 import { walletState } from '../../state/wallet';
-import errorStyle from '../../styles/error';
-import nftStyle from '../../styles/nft';
+import '../../styles/error.css';
+import '../../styles/nft.css';
 
 function TokenQuery() {
   const { instance: nftInstance } = useRecoilValue(nftState);
@@ -57,21 +57,21 @@ function TokenQuery() {
       </Button>
       <br />
       {loadingState.dataLoading ? <Spinner style={{ margin: '20px' }} animation="border" role="status" /> : undefined}
-      {errorState.dataError ? <p style={errorStyle}>{errorState.dataError}</p> : undefined}
+      {errorState.dataError ? <p className="error">{errorState.dataError}</p> : undefined}
       {tokenData.tokenUri
         ? (
           <div>
             <br />
             <ListGroup horizontal="lg" className="list-inline" style={{ maxWidth: '100%' }}>
-              <ListGroup.Item style={nftStyle.tokenInfo}>{`Token URI : ${tokenData.tokenUri}`}</ListGroup.Item>
-              <ListGroup.Item style={nftStyle.tokenInfo}>{`Owned by : ${tokenData.tokenOwner}`}</ListGroup.Item>
-              <ListGroup.Item style={nftStyle.tokenInfo}>{`Approved operator : ${tokenData.approved}`}</ListGroup.Item>
+              <ListGroup.Item className="tokenInfo">{`Token URI : ${tokenData.tokenUri}`}</ListGroup.Item>
+              <ListGroup.Item className="tokenInfo">{`Owned by : ${tokenData.tokenOwner}`}</ListGroup.Item>
+              <ListGroup.Item className="tokenInfo">{`Approved operator : ${tokenData.approved}`}</ListGroup.Item>
             </ListGroup>
 
             {/* Transfer token section */}
             <br />
             {loadingState.transferLoading ? <Spinner style={{ margin: '20px' }} animation="border" role="status" /> : undefined}
-            {errorState.transferError ? <p style={errorStyle}>{errorState.transferError}</p> : undefined}
+            {errorState.transferError ? <p className="error">{errorState.transferError}</p> : undefined}
             <Form.Control
               data-testid="transferForm"
               onChange={(event) => { setTransferAddress(event.target.value); }}

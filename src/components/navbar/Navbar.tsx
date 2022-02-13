@@ -1,12 +1,12 @@
 import React from 'react';
-import MintNavbar from './variants/MintNavbar';
+import OnboardingNavbar from './variants/Onboarding';
 
 function ZKLNavbar({ variant }:{
-    variant:'memberMint' | 'authenticated' | 'unauthenticated'
+    variant:'onboarding' | 'authenticated' | 'unauthenticated'
   }) {
-  if (variant === 'memberMint') {
+  if (variant === 'onboarding') {
     return (
-      <MintNavbar />
+      <OnboardingNavbar />
     );
   }
   return <p>yo</p>;

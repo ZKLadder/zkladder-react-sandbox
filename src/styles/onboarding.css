@@ -1,0 +1,156 @@
+.content-wrapper{
+  background-color: #FAFAFA;
+  margin-top:20px;
+  margin-left:2vw;
+  margin-right:4vw;
+  border-radius:10px;
+}
+
+.sidebar {
+  padding-left:25px;
+  padding-top:60px;
+  border-radius:10px;
+  box-shadow:10px 10px 10px #D0D0D0;
+}
+
+.title {
+  margin-top:15px;
+  font-size:26px;
+  font-weight:bold;
+  color:#DB0056;
+}
+
+.description{
+  color:#DB0056;
+  margin-top:15px;
+  font-size:16px;
+}
+
+.footer {
+  color:#DB0056;
+  background: rgba(0,0,0,0.0) !important;
+  border-width:0px;
+}
+
+.connect-button{
+  padding:20px;
+  background-color: #4eb9b1;
+  border-radius:10px !important;
+  border-width: 0px;
+  color: white;
+  margin-right: 5px;
+  margin-top:5px;
+  font-size:24px;
+  font-weight:bold;
+}
+
+.file-upload{
+  border-radius: 5px;
+  border-style: dashed;
+  border-width:3px;
+  border-color:#4EB9B1;
+  height:98%;
+  width:98%;
+}
+
+.upload-wrapper{
+  position:relative;
+  background-color:white;
+  padding:15px;
+  border-radius:10px;
+  min-width:250px;
+  max-width:40vw;
+  max-height:50vh;
+}
+
+.image-preview{
+  max-width:100%;
+  max-height:90%;
+  object-fit:contain;
+}
+
+.cancel-icon{
+  position:absolute;
+  top: 92%;
+  right:1%;
+  color:#4EB9B1;
+}
+
+.cancel-icon:hover{
+  cursor: pointer;
+}
+
+.active-button{
+  margin-top:10px;
+  background-color:#4EB9B1;
+  color:white;
+  padding:15px;
+  border-width:0px;
+  font-weight: bold;
+  border-radius:10px;
+}
+
+.inactive-button {
+  margin-top:10px;
+  background-color:darkgray !important;
+  color:lightgray;
+  padding:15px;
+  border-width:0px;
+  font-weight: bold;
+  border-radius:10px;
+}
+
+.transparent-button {
+  margin-top:10px;
+  background-color: transparent !important;
+  color:#4EB9B1;
+  padding:15px;
+  border-width:0px;
+  font-weight: bold;
+  border-radius:10px;
+}
+
+.transparent-button:hover {
+  color:#DB0056
+}
+
+a{
+  color:#16434B;
+}
+
+.progress-bar{
+  background-color:#DB0056;
+}
+
+canvas{
+  height:inherit !important;
+  width:inherit !important;
+  aspect-ratio:9/5 !important;
+ 
+}
+
+.p5Sketch{
+  width:100% !important;
+  
+}
+
+.confirmation-wrapper{
+  position:relative;
+  margin-left:0px;
+  background-color:white;
+  padding:15px;
+  border-radius:10px;
+  min-width:250px;
+  width:40vw;
+}
+
+.confirmation-item{
+  background-color:#F5F5F5;
+  padding:15px;
+  margin:5px;
+  border-radius:5px;
+}
+
+.confirmation-link{
+  color:#1c8b84;
+}

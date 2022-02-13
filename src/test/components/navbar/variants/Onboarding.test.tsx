@@ -2,7 +2,7 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import MintNavbar from '../../../../components/navbar/variants/MintNavbar';
+import Onboarding from '../../../../components/navbar/variants/Onboarding';
 import { connect, disconnect, apiSession } from '../../../../utils/walletConnect';
 import { walletState } from '../../../../state/wallet';
 
@@ -35,7 +35,7 @@ describe('Navbar tests', () => {
         settings.set(walletState, mockWalletState);
       }}
       >
-        <MintNavbar />
+        <Onboarding />
       </RecoilRoot>,
     );
 
@@ -53,7 +53,7 @@ describe('Navbar tests', () => {
         settings.set(walletState, mockWalletState);
       }}
       >
-        <MintNavbar />
+        <Onboarding />
       </RecoilRoot>,
     );
 
@@ -90,7 +90,7 @@ describe('Navbar tests', () => {
         settings.set(walletState, mockWalletState);
       }}
       >
-        <MintNavbar />
+        <Onboarding />
       </RecoilRoot>,
     );
 

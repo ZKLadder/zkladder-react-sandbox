@@ -5,7 +5,7 @@ import {
 import { useRecoilValue } from 'recoil';
 import { IpfsApiResponse } from '@zkladder/zkladder-sdk-ts/dist/interfaces/ipfs';
 import { ipfsState, viewState } from '../../state/ipfs';
-import errorStyle from '../../styles/error';
+import '../../styles/error.css';
 
 function FileView() {
   const { instance } = useRecoilValue(ipfsState);
@@ -37,9 +37,9 @@ function FileView() {
       {files.slice(0, 100).map((file:IpfsApiResponse) => (
         <Col>
           <Card key={file.Hash} style={{ marginBottom: '10px', maxWidth: '25rem' }}>
-            <a aria-label="View" target="_blank" href={`https://${file.gatewayUrl}`} rel="noreferrer">
+            <a aria-label="View" target="_blank" href={file.gatewayUrl} rel="noreferrer">
               {(file.Name.toLowerCase().endsWith('png') || file.Name.toLowerCase().endsWith('jpg'))
-                ? <Card.Img data-testid={file.Hash} variant="top" src={`https://${file.gatewayUrl}`} style={{ maxHeight: '20rem' }} />
+                ? <Card.Img data-testid={file.Hash} variant="top" src={`${file.gatewayUrl}`} style={{ maxHeight: '20rem' }} />
                 : <p data-testid={`${file.Hash}-file`} style={{ margin: '10px' }}>View File Data</p>}
             </a>
             <Card.Body>
@@ -53,7 +53,7 @@ function FileView() {
 
       ))}
       {loading ? <Spinner style={{ marginTop: '20px' }} animation="border" role="status" /> : undefined}
-      {error ? <p style={errorStyle}>{error}</p> : undefined}
+      {error ? <p className="error">{error}</p> : undefined}
     </Row>
   );
 }

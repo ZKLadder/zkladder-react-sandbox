@@ -3,7 +3,7 @@ import {
   Card, Button, Container, Image,
 } from 'react-bootstrap';
 import { useRecoilState } from 'recoil';
-import loginStyle from '../../styles/login';
+import '../../styles/login.css';
 import { connect, apiSession } from '../../utils/walletConnect';
 import { walletState } from '../../state/wallet';
 import logo from '../../images/zk_logo.png';
@@ -19,15 +19,14 @@ function Login() {
   }) as any;
   return (
     <Container className="d-flex vh-100">
-      <Card className="mx-auto m-auto align-self-center" style={loginStyle.card}>
+      <Card className="mx-auto m-auto align-self-center login-card">
 
         {/* ZKL logo */}
-        <Image data-testid="logo" fluid style={loginStyle.logo} src={logo} />
+        <Image data-testid="logo" fluid className="login-logo" src={logo} />
 
         {/* Connect wallet button */}
         <Button
-          style={loginStyle.cardText}
-          className="mx-auto"
+          className="login-cardText mx-auto"
           data-testid="connectButton"
           onClick={async () => {
             setErrorState(false);

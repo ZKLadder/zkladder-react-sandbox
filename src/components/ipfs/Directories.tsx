@@ -4,8 +4,8 @@ import {
 } from 'react-bootstrap';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { ipfsState, viewState } from '../../state/ipfs';
-import nftStyle from '../../styles/nft';
-import errorStyle from '../../styles/error';
+import '../../styles/nft.css';
+import '../../styles/error.css';
 import FileUpload from './FileUpload';
 
 function Directories() {
@@ -41,7 +41,7 @@ function Directories() {
       <div style={{ maxHeight: '260px', overflow: 'auto' }}>
         {directories.length > 0
           ? directories.slice(0, 10).map((hash:string) => (
-            <Card key={hash} data-testid={hash} style={nftStyle.tokenCard}>
+            <Card key={hash} data-testid={hash} className="tokenCard">
               <Row>
                 <Col xs={10}>
                   <Card.Title
@@ -117,7 +117,7 @@ function Directories() {
           <p style={{ marginTop: '5px' }}>This may take a minute ...</p>
         </div>
       ) : undefined}
-      {error ? <p style={errorStyle}>{error}</p> : undefined}
+      {error ? <p className="error">{error}</p> : undefined}
       <hr />
 
       {/* Create a New Directory */}

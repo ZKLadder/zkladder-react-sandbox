@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { HttpOptions } from '../interfaces/api';
+import { HttpOptions, StoreVoucherOptions, GetVoucherOptions } from '../interfaces/api';
 import config from '../config';
 /**
  * Generalized request wrapper used by other ZKL API functions
@@ -20,11 +20,7 @@ const request = async (options: HttpOptions) => {
     });
     return response.data;
   } catch (error: any) {
-    const method = error.config?.method;
-    const baseUrl = error.config?.baseURL;
-    const path = error.config?.url;
-    if (error.status === 400) throw new Error('It appears your account does not have access');
-    throw new Error(`${error.message}, Method:[${method}], URL:[${baseUrl}${path}]`);
+    throw new Error(error?.response?.data?.message || 'API error');
   }
 };
 
@@ -53,10 +49,30 @@ const deleteSession = async () => {
   return response;
 };
 
+const storeVoucher = async (options: StoreVoucherOptions) => {
+  const response = await request({
+    method: 'post',
+    url: '/v1/vouchers',
+    data: options,
+  });
+  return response;
+};
+
+const getVoucher = async (options: GetVoucherOptions) => {
+  const response = await request({
+    method: 'get',
+    url: '/v1/vouchers',
+    params: options,
+  });
+  return response;
+};
+
 export {
   getSession,
   createSession,
   deleteSession,
+  storeVoucher,
+  getVoucher,
 
   // exported for unit testing
   request,

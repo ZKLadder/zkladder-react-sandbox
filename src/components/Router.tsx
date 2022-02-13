@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
@@ -9,10 +10,10 @@ import { useRecoilState } from 'recoil';
 import Login from './login/Login';
 import Body from './Body';
 import { walletState } from '../state/wallet';
-import { getSession, deleteSession } from '../utils/api';
-import { connect, apiSession } from '../utils/walletConnect';
+import { getSession } from '../utils/api';
+import { connect, disconnect } from '../utils/walletConnect';
 import Loading from './shared/Loading';
-import MemberMint from './zkl-member-mint/MemberMint';
+import Onboarding from './onboarding/Onboarding';
 
 let timeOutId:any;
 
@@ -22,36 +23,53 @@ function ZklRouter() {
 
   // Respond to user switching account outside of application
   const updateAccount = async (accounts:string[]) => {
-    if (timeOutId) clearTimeout(timeOutId);
-    timeOutId = setTimeout(async () => {
-      try {
-        await deleteSession();
-        await apiSession(wallet.provider, accounts);
-        setWalletState({ ...wallet, address: accounts });
-      } catch (error) {
-        setWalletState({
-          isConnected: false,
-          isMember: false,
-          reason: 'Attempted to switch to an non-whitelisted account',
-        });
-      }
-    }, 1000);
+    await disconnect();
+    setWalletState({
+      isConnected: false,
+      isMember: false,
+      reason: 'We detected an account switch occur in your wallet. Please log in again with your new account',
+    });
+
+    // Commenting out due to issues switching from a Member Account to a Non-Member Account from the crypto wallet
+    // @TODO: See if there is a way to support account switching without destroying the session
+    /**
+     if (accounts.length < 1) {
+      await disconnect();
+      setWalletState({ isConnected: false, isMember: false });
+    }
+
+    if (accounts.length > 0 && accounts[0] !== wallet?.address?.[0]) {
+      if (timeOutId) clearTimeout(timeOutId);
+      timeOutId = setTimeout(async () => {
+        try {
+          await deleteSession();
+          await apiSession(wallet.provider, accounts);
+          setWalletState({ ...wallet, address: accounts });
+        } catch (error) {
+          setWalletState({
+            isConnected: false,
+            isMember: false,
+            reason: 'Attempted to switch to an non-whitelisted account',
+          });
+        }
+      }, 1000);
+    } */
   };
 
   // Respond to user switching chainId outside of application
   const updateChainId = (chainId:number) => {
-    setWalletState({ ...wallet, chainId: parseInt(chainId?.toString(16), 16) });
+    if (chainId !== wallet.chainId) {
+      if (timeOutId) clearTimeout(timeOutId);
+      timeOutId = setTimeout(async () => {
+        setWalletState({ ...wallet, chainId: parseInt(chainId?.toString(16), 16) });
+      }, 200);
+    }
   };
 
   // Listen for changes in metamask outside of app
   if (wallet.isConnected) {
-    wallet.provider.on('chainChanged', (chainId:number) => {
-      if (chainId !== wallet.chainId) updateChainId(chainId);
-    });
-    wallet.provider.on('accountsChanged', (accounts:string[]) => {
-      if (accounts.length < 1) setWalletState({ isConnected: false, isMember: false });
-      if (accounts.length > 0 && accounts[0] !== wallet?.address?.[0]) updateAccount(accounts);
-    });
+    wallet.provider.on('chainChanged', updateChainId);
+    wallet.provider.on('accountsChanged', updateAccount);
   }
 
   // Update wallet balance in response to account or chainId changing
@@ -136,7 +154,7 @@ function ZklRouter() {
         />
         <Route
           path="/mint"
-          element={<MemberMint />}
+          element={<Onboarding />}
         />
 
         {/* Default Route */}

@@ -5,4 +5,16 @@ const shortenAddress = (address: string) => {
 
 const weiToEth = (balance: number) => parseFloat((balance / 10 ** 18).toFixed(4));
 
-export { shortenAddress, weiToEth };
+/* eslint-disable no-bitwise */
+const hashString = (dataUrl:string) => {
+  let hash = 0;
+
+  for (let i = 0; i < dataUrl.length; i += 1) {
+    const char = dataUrl.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash &= hash;
+  }
+  return hash;
+};
+
+export { shortenAddress, weiToEth, hashString };
