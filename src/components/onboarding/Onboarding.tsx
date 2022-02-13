@@ -17,6 +17,7 @@ function Onboarding() {
   const [onboarding, setOnboardingState] = useRecoilState(onboardingState);
   const { isConnected, isMember } = useRecoilValue(walletState);
 
+  // If user disconnects at any point - push back to first step
   useEffect(() => {
     if (isConnected === false) {
       setOnboardingState({ currentStep: 1 } as any);

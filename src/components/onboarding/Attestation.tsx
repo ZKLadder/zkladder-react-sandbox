@@ -26,9 +26,11 @@ function Attestation() {
 
   return (
     <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+      {/* Title */}
       <p className="title">
         UPLOAD YOUR TOKEN SEED
       </p>
+      {/* Description */}
       <p className="description">
         Your token seed is what will make your ZKL NFT 1 of a kind and will affect how your NFT generation looks.
         Ideally your token seed will be an image of something important to you, and can serve
@@ -40,6 +42,7 @@ function Attestation() {
         {acceptedFiles.length
           ? (
             <div style={{ display: 'flex', height: '320px' }}>
+              {/* Image dropzone */}
               <img data-testid="imagePreview" alt={acceptedFiles[0].name} className="image-preview" src={URL.createObjectURL(acceptedFiles[0])} />
               <XCircleFill
                 data-testid="removeImage"
@@ -53,13 +56,14 @@ function Attestation() {
           )
           : (
             <div data-testid="dropzone" {...getRootProps({ style: { height: '40vh' } })}>
+              {/* File Preview */}
               <Card className="file-upload" />
               <input data-testid="fileInput" {...getInputProps()} />
-
             </div>
           )}
       </div>
 
+      {/* Upload button */}
       <Button
         disabled={acceptedFiles.length < 1}
         className={`${acceptedFiles.length > 0 ? 'active-button' : 'inactive-button'}`}
@@ -72,6 +76,7 @@ function Attestation() {
               setOnboardingState({
                 ...onboarding,
                 currentStep: 3,
+                // hash and store uploaded image dataUrl as seed value
                 attestationHash: hashString(dataUrl),
               });
             };

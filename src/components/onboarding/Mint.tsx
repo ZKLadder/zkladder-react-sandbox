@@ -19,10 +19,10 @@ function Mint() {
   const [onboarding, setOnboardingState] = useRecoilState(onboardingState);
   const [progress, setProgress] = useState(0);
 
+  // Generate P5 compatible sketch function from IPFS hosted generative script
   async function getZKAnimation() {
     const response = await fetch(config.zkl.memberSketchCid);
     const memberSketch = await response.text();
-
     /* eslint-disable no-new-func */
     const parsedMemberSketch = Function(memberSketch);
     setOnboardingState({
@@ -31,6 +31,7 @@ function Mint() {
     });
   }
 
+  // Activate progress bar and fetch ZKL script when progress == 100
   useEffect(() => {
     if (progress !== 100) {
       setTimeout(() => {
@@ -43,14 +44,18 @@ function Mint() {
 
   return (
     <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+      {/* Title */}
       <p className="title">
         PREVIEW AND MINT YOUR MEMBER NFT
       </p>
+
+      {/* Description */}
       <p className="description">
         We are using code to generate NFT artwork based off of your attestation upload.
         This will be the “cover art” of your member token and profile.
       </p>
 
+      {/* P5 Canvas || Progress Bar */}
       <div className="upload-wrapper">
         {onboarding.p5Sketch && progress === 100
           ? (
@@ -73,6 +78,7 @@ function Mint() {
       </div>
       <Row>
         <Col lg={3}>
+          {/* Mint Button */}
           <Button
             className="active-button"
             onClick={async () => {
@@ -123,7 +129,6 @@ function Mint() {
                   },
                 });
               } catch (err:any) {
-                console.log(err);
                 setError(err.message || 'There was a problem minting your NFT - please reach out to our tech team');
               }
             }}
@@ -132,6 +137,7 @@ function Mint() {
           </Button>
         </Col>
         <Col lg={9}>
+          {/* Use Different Image Button */}
           <Button
             className="transparent-button"
             onClick={async () => {
@@ -146,6 +152,8 @@ function Mint() {
 
           </Button>
         </Col>
+
+        {/* Secondary Description || Loading Indicator */}
         <Col lg={6} style={{ display: 'block' }}>
           {loading ? (<Loading text={loading} />)
             : (
@@ -158,6 +166,7 @@ function Mint() {
         </Col>
       </Row>
 
+      {/* Error Indicator */}
       {error ? (<Error text={error} />) : null}
 
     </Container>

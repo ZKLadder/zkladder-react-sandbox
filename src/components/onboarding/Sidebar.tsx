@@ -17,16 +17,19 @@ function MemberMintSidebar() {
         width="205"
         height="35"
       />
+      {/* Title */}
       <p className="title">
         MINT YOUR ZKLADDER MEMBER NFT
       </p>
 
+      {/* Description */}
       <p className="description">
         Welcome to the party!
         You are here because you received an invitation to the ZKL community and your ETH address has been whitelisted.
         Let’s get started:
       </p>
 
+      {/* Steps list */}
       <ListGroup style={{ borderRadius: '10px' }}>
         <SidebarStep
           step={1}
@@ -49,6 +52,7 @@ function MemberMintSidebar() {
           isActivated={currentStep === 4}
         />
 
+        {/* Help link */}
         <ListGroup.Item className="footer">
           <QuestionCircle size={20} style={{ marginRight: '5px' }} />
           <p style={{ display: 'inline' }}>

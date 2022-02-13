@@ -17,21 +17,26 @@ function Confirmation() {
 
   return (
     <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+      {/* Title */}
       <p className="title">
         CONFIRMATION: WELCOME TO ZK LADDER!
       </p>
+
+      {/* Description */}
       <p className="description">
         You are now a part of the club.
         Below is your confirmation, you can see manage your NFT on your dashboard.
       </p>
 
+      {/* P5 Canvas */}
       <div className="upload-wrapper">
         <P5Sketch
           config={{}}
           sketch={p5Sketch.sketch as any}
         />
-
       </div>
+
+      {/* MemberNFT Description Fields */}
       <Row className="confirmation-wrapper" style={{ marginTop: '10px' }}>
         <Col className="confirmation-item" lg={12}>
           <span className="description">
@@ -64,17 +69,20 @@ function Confirmation() {
           </span>
         </Col>
       </Row>
+
+      {/* Secondary Description */}
       <p className="description">
         This member token gives you access to the ZK Ladder platform to create and manage NFTs/FTs and engage with your community.
         You will also have access to a professional network that can assist you in setting up your DAO, project or NFT launches.
         Get started below.
       </p>
 
+      {/* Go to Dashboard Button */}
       <Button
         style={{ marginBottom: '10px' }}
         className="active-button"
         onClick={async () => {
-          // @TODO SET ROUTE
+          // @TODO CREATE SESSION AND SET ROUTE
         }}
       >
         GO TO MEMBER DASHBOARD

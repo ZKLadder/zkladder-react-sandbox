@@ -22,6 +22,7 @@ function ConnectWallet() {
   const [loading, setLoading] = useState() as any;
   const [onboarding, setOnboardingState] = useRecoilState(onboardingState);
 
+  // Check if user accessing page is already connected
   useEffect(() => {
     async function checkConnection() {
       try {
@@ -62,13 +63,18 @@ function ConnectWallet() {
 
   return (
     <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+      {/* Title */}
       <p className="title">
         CONNECT YOUR WALLET
       </p>
+
+      {/* Description */}
       <p className="description">
         Using the wallet with the ETH address listed below,
         connect using your Metamask, Coinbase Wallet or any Wallet Connect compatible.
       </p>
+
+      {/* Connect button */}
       <Button
         data-testid="connectButton"
         className="connect-button"
@@ -82,6 +88,7 @@ function ConnectWallet() {
             setLoading('Connecting wallet...');
             providerDetails = await connect();
             setLoading('Checking whitelist...');
+            // Attempt to instantiate instance of MemberNft
             zklMemberNft = await MemberNft.setup({
               provider: providerDetails?.provider,
               address: config.zkl.memberNft,
@@ -89,6 +96,7 @@ function ConnectWallet() {
               infuraIpfsProjectSecret: config.ipfs.projectSecret,
             });
 
+            // Attempt to get voucher from ZKL API
             mintVoucher = await getVoucher({
               userAddress: providerDetails.address[0],
               contractAddress: config.zkl.memberNft,
@@ -102,13 +110,16 @@ function ConnectWallet() {
 
           try {
             setLoading('Awaiting signature...');
+            // Attempt to create an API session
             await apiSession(
               providerDetails?.provider,
               providerDetails?.address,
             );
+            // If the session is created successfully, the user is already a member and should not be minting
             setLoading(false);
             setError(existingMemberMessage);
           } catch (err:any) {
+            // If session creation fails because of no access, the user can continue as they are not already a member
             if (err?.message === 'Your Eth account does not have access') {
               setWalletState({ ...providerDetails, isConnected: true, isMember: false });
               setOnboardingState({
@@ -117,7 +128,7 @@ function ConnectWallet() {
                 mintVoucher,
                 currentStep: 2,
               });
-            } else {
+            } else { // If any other error is thrown then it is a legitimate error
               setLoading(false);
               setError(err.message);
               await disconnect();
@@ -128,10 +139,14 @@ function ConnectWallet() {
         <QrCode size={36} style={{ marginRight: '8px' }} />
         Connect Your Wallet
       </Button>
+
+      {/* Secondary Description */}
       <p className="description">
         After selecting your wallet, you will be asked to sign a signature request to connect to ZK Ladder
         and the Ethereum blockchain. This will allow you to mint the ZK Ladder member token and give you access to the network.
       </p>
+
+      {/* Error and Loading indicators */}
       {error ? (<Error text={error} />) : null}
       {loading ? (<Loading text={loading} />) : null}
 
