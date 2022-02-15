@@ -23,6 +23,14 @@ jobs:
         ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       run: npm set //npm.pkg.github.com/:_authToken $ACCESS_TOKEN
 
+    - name: Cache NPM # leverage npm cache on repeated workflow runs if package.json didn't change
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     - name: Install dependencies
       run: npm ci
 
