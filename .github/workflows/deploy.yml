@@ -15,6 +15,14 @@ jobs:
     - name: Setup node
       uses: actions/setup-node@v2
 
+    - name: Set NPM Registry
+      run: npm set registry https://npm.pkg.github.com/zkladder
+
+    - name: Inject Personal Access Token
+      env:
+        ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      run: npm set //npm.pkg.github.com/:_authToken $ACCESS_TOKEN
+
     - name: Install dependencies
       run: npm install
 
