@@ -23,6 +23,7 @@ module.exports = {
           https: require.resolve('https-browserify'),
           os: require.resolve('os-browserify'),
           buffer: require.resolve('buffer'),
+          url: require.resolve('url'),
         },
       },
     },

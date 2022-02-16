@@ -12,7 +12,7 @@ import CopyToClipboard from '../shared/CopyToClipboard';
 import '../../styles/ipfs.css';
 import config from '../../config';
 
-function FileUploadModal({ show, onHide }:{show:boolean, onHide:Function}) {
+function FileUploadModal({ show, onHide }:{show:boolean, onHide:()=>void}) {
   const [acceptedFiles, setAcceptedFiles] = useState([]) as any;
   const [ipfsCids, setIpfsCids] = useState({ fileHash: '', withDirectory: '' });
   const [error, setError] = useState();
