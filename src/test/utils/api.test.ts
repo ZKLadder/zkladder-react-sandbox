@@ -22,7 +22,7 @@ describe('Generic ZKL API request wrapper', () => {
       headers: {
         Accept: '*/*',
       },
-      baseURL: process.env.REACT_APP_ZKL_API || 'http://zkladder.us-east-1.elasticbeanstalk.com/api',
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
       withCredentials: true,
     });
   });
@@ -72,7 +72,7 @@ describe('getSession tests', () => {
       headers: {
         Accept: '*/*',
       },
-      baseURL: process.env.REACT_APP_ZKL_API || 'http://zkladder.us-east-1.elasticbeanstalk.com/api',
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
       withCredentials: true,
     });
 
@@ -95,7 +95,7 @@ describe('createSession tests', () => {
       data: {
         signature: '0xmockSig',
       },
-      baseURL: process.env.REACT_APP_ZKL_API || 'http://zkladder.us-east-1.elasticbeanstalk.com/api',
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
       withCredentials: true,
     });
 
@@ -115,7 +115,7 @@ describe('deleteSession tests', () => {
       headers: {
         Accept: '*/*',
       },
-      baseURL: process.env.REACT_APP_ZKL_API || 'http://zkladder.us-east-1.elasticbeanstalk.com/api',
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
       withCredentials: true,
     });
 
@@ -142,7 +142,7 @@ describe('storeVoucher tests', () => {
       headers: {
         Accept: '*/*',
       },
-      baseURL: process.env.REACT_APP_ZKL_API || 'http://zkladder.us-east-1.elasticbeanstalk.com/api',
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
       withCredentials: true,
     });
 
@@ -168,7 +168,7 @@ describe('getVoucher tests', () => {
       headers: {
         Accept: '*/*',
       },
-      baseURL: process.env.REACT_APP_ZKL_API || 'http://zkladder.us-east-1.elasticbeanstalk.com/api',
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
       withCredentials: true,
     });
 
