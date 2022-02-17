@@ -38,6 +38,11 @@ jobs:
 
     - name: Build static file
       run: npm run build
+      env:
+        generate_sourcemap: false
+        REACT_APP_ZKL_API: https://api.zkladder.com/api
+        REACT_APP_INFURA_IPFS_ID: ${{secrets.INFURA_IPFS_ID}}
+        REACT_APP_INFURA_IPFS_SECRET: ${{secrets.INFURA_IPFS_SECRET}}
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
