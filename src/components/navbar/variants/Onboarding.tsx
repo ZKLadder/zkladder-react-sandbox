@@ -21,7 +21,7 @@ function MemberMintNavbar() {
   const [errorState, setErrorState] = useState() as any;
 
   return (
-    <Navbar className="member-mint" variant="dark" bg="light" expand="lg">
+    <Navbar className="member-mint" expand="lg">
       <Container>
         <Navbar.Brand>
 
