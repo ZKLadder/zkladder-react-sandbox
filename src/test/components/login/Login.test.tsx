@@ -73,6 +73,7 @@ describe('Login component tests', () => {
       expect(walletStateObserver).toHaveBeenCalledWith({
         ...mockWallet,
         isConnected: true,
+        isMember: true,
       });
     });
   });

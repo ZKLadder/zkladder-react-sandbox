@@ -48,7 +48,7 @@ function Login() {
               await apiSession(provider, address);
 
               setWalletState({
-                address, balance, provider, chainId, isConnected: true,
+                address, balance, provider, chainId, isConnected: true, isMember: true,
               });
             } catch (error:any) {
               setLoading({});
