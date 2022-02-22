@@ -4,6 +4,12 @@ import { createSession, deleteSession } from '../../utils/api';
 
 const mockRequest = jest.fn();
 
+Object.defineProperty(window, 'location', {
+  configurable: true,
+  writable: true,
+  value: { reload: jest.fn() },
+});
+
 jest.mock('web3modal', () => (jest.fn(() => ({
   connect: () => ({
     request: mockRequest,
@@ -23,13 +29,14 @@ const mockDeleteSession = deleteSession as jest.Mocked<any>;
 
 describe('connect function', () => {
   test('connect function calls dependencies and returns correct response', async () => {
-    mockRequest.mockResolvedValueOnce(['0xmockAddress'])
+    mockRequest.mockResolvedValueOnce({})
+      .mockResolvedValueOnce(['0xmockAddress'])
       .mockResolvedValueOnce({ toString: () => ('0x123') }) // chainId
       .mockResolvedValueOnce({ toString: () => ('0x2020') }); // balance
 
     const result = await connect();
 
-    expect(mockRequest).toHaveBeenCalledTimes(3);
+    expect(mockRequest).toHaveBeenCalledTimes(4);
     expect(mockRequest).toHaveBeenCalledWith({
       method: 'eth_accounts',
     });
@@ -67,6 +74,7 @@ describe('disconnect function', () => {
     const result = await disconnect();
 
     expect(mockDeleteSession).toHaveBeenCalledTimes(1);
+    expect(window.location.reload as jest.Mocked<any>).toHaveBeenCalledTimes(1);
     expect(result).toBe(undefined);
   });
 });
