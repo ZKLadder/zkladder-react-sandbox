@@ -100,7 +100,7 @@ function ZklRouter() {
       if (session && cachedProvider) {
         const {
           address, balance, provider, chainId,
-        } = await connect();
+        } = await connect(false);
 
         setWalletState({
           address, balance, provider, chainId, isConnected: true, isMember: true,
@@ -110,7 +110,7 @@ function ZklRouter() {
       if (cachedProvider && !session) {
         const {
           address, balance, provider, chainId,
-        } = await connect();
+        } = await connect(false);
         setWalletState({
           address, balance, provider, chainId, isConnected: true, isMember: false,
         });

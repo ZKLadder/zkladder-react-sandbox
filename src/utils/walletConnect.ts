@@ -19,7 +19,7 @@ const providerOptions:any = {
   },
   'custom-walletlink': {
     display: {
-      logo: 'https://raw.githubusercontent.com/walletlink/walletlink/master/web/src/images/wallets/coinbase-wallet.svg',
+      logo: 'https://media-exp1.licdn.com/dms/image/C560BAQHsPlWyC0Ksxg/company-logo_200_200/0/1620063222443?e=2159024400&v=beta&t=OgyA4B7O1XGHCfGbnbf1uIYZ6BEMo7864JRJqL6JUaY',
       name: 'Coinbase',
       description: 'Scan with WalletLink to connect',
     },
@@ -45,11 +45,23 @@ const web3Modal = new Web3Modal({
   cacheProvider: true,
 });
 
-const connect = async () => {
+const connect = async (requestPermissions:boolean = true) => {
   // Brings up the web3 wallet select modal
   const provider = await web3Modal.connect();
 
-  // Requests accounts (displays 'Connect Account' popup for firstime users)
+  // Requests permissions (displays 'Select Accounts' popup)
+  if (requestPermissions) { // requestPermissions === false anywhere this function is called by a useEffect on load
+    await provider.request({
+      method: 'wallet_requestPermissions',
+      params: [
+        {
+          eth_accounts: {},
+        },
+      ],
+    });
+  }
+
+  // Get connected accounts (as an array of account strings)
   const address = await provider.request({ method: 'eth_accounts' });
 
   // Get chainId and user balance for display
@@ -80,6 +92,7 @@ const apiSession = async (provider:any, address:string[]) => {
 const disconnect = async () => {
   await web3Modal.clearCachedProvider();
   await deleteSession();
+  window.location.reload();
 };
 
 export { connect, disconnect, apiSession };

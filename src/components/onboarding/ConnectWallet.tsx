@@ -51,9 +51,11 @@ function ConnectWallet() {
           });
         }
         if (wallet.isConnected && wallet.isMember) {
+          setLoading(false);
           setError(existingMemberMessage);
         }
       } catch (err:any) {
+        setLoading(false);
         setError(err.message);
       }
     }
@@ -77,7 +79,8 @@ function ConnectWallet() {
       {/* Connect button */}
       <Button
         data-testid="connectButton"
-        className="connect-button"
+        className={wallet.isConnected ? 'connect-button-inactive' : 'connect-button'}
+        disabled={wallet.isConnected}
         onClick={async () => {
           setError(false);
           let providerDetails;
@@ -105,6 +108,9 @@ function ConnectWallet() {
           } catch (err:any) {
             setLoading(false);
             setError(err.message);
+            if (providerDetails) {
+              setWalletState({ ...providerDetails, isConnected: true, isMember: false });
+            }
             return;
           }
 

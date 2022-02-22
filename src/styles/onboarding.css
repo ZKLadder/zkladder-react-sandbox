@@ -44,6 +44,18 @@
   font-weight:bold;
 }
 
+.connect-button-inactive{
+  padding:20px;
+  background-color:darkgray !important;
+  color:lightgray;
+  border-radius:10px !important;
+  border-width: 0px;
+  margin-right: 5px;
+  margin-top:5px;
+  font-size:24px;
+  font-weight:bold;
+}
+
 .file-upload{
   border-radius: 5px;
   border-style: dashed;
