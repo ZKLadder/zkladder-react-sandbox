@@ -16,7 +16,7 @@ import networks from '../../../constants/networks';
 
 const castNetworks = networks as any;
 
-function MemberMintNavbar() {
+function OnboardingNavbar() {
   const [wallet, setWalletState] = useRecoilState(walletState) as any;
   const [errorState, setErrorState] = useState() as any;
 
@@ -121,4 +121,4 @@ function MemberMintNavbar() {
   );
 }
 
-export default MemberMintNavbar;
+export default OnboardingNavbar;
