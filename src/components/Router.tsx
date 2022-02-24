@@ -24,15 +24,16 @@ function ZklRouter() {
   // Respond to user switching account outside of application
   const updateAccount = async (accounts:string[]) => {
     await disconnect();
+
+    // Commenting out due to issues switching from a Member Account to a Non-Member Account from the crypto wallet
+    // @TODO: See if there is a way to support account switching without destroying the session
+    /*
     setWalletState({
       isConnected: false,
       isMember: false,
       reason: 'We detected an account switch occur in your wallet. Please log in again with your new account',
     });
 
-    // Commenting out due to issues switching from a Member Account to a Non-Member Account from the crypto wallet
-    // @TODO: See if there is a way to support account switching without destroying the session
-    /**
      if (accounts.length < 1) {
       await disconnect();
       setWalletState({ isConnected: false, isMember: false });

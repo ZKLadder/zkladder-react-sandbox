@@ -19,6 +19,11 @@ jest.mock('../../components/ipfs/Ipfs', () => ({
   default: () => <p>IPFS</p>,
 }));
 
+jest.mock('../../components/authenticated/dashboard/Dashboard', () => ({
+  __esModule: true,
+  default: () => <p>AUTHENTICATED DASHBOARD</p>,
+}));
+
 describe('Body component tests', () => {
   test('It renders the default route', async () => {
     render(
@@ -29,7 +34,7 @@ describe('Body component tests', () => {
       </RecoilRoot>,
     );
 
-    expect(screen.getByText('DEPLOY MEMBER NFT')).toBeVisible();
+    expect(screen.getByText('AUTHENTICATED DASHBOARD')).toBeVisible();
   });
 
   test('It renders the deploy-nft route', async () => {
@@ -77,6 +82,6 @@ describe('Body component tests', () => {
       </RecoilRoot>,
     );
 
-    expect(screen.getByText('DEPLOY MEMBER NFT')).toBeVisible();
+    expect(screen.getByText('AUTHENTICATED DASHBOARD')).toBeVisible();
   });
 });
