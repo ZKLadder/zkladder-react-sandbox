@@ -65,6 +65,10 @@ describe('Navbar tests', () => {
       chainId: 1,
     });
 
+    mockApiSession.mockResolvedValue({
+      memberToken: {},
+    });
+
     userEvent.click(
       screen.getByTestId('connectButton'),
     );

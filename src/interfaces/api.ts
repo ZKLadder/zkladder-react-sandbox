@@ -12,6 +12,7 @@ interface StoreVoucherOptions{
   contractAddress: string,
   userAddress: string,
   balance:number,
+  chainId:string,
   signedVoucher: { [key: string]: any }
 }
 

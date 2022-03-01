@@ -5,6 +5,7 @@ import { Ipfs } from '@zkladder/zkladder-sdk-ts';
 import userEvent from '@testing-library/user-event';
 import Mint from '../../../components/onboarding/Mint';
 import { onboardingState } from '../../../state/onboarding';
+import config from '../../../config';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(),
@@ -55,6 +56,7 @@ const mockFetch = fetch as jest.Mocked<any>;
 const mockFunction = Function as jest.Mocked<any>;
 const mockIpfs = Ipfs as jest.Mocked<any>;
 
+jest.setTimeout(7000);
 describe('Mint Component Tests', () => {
   test('It renders', async () => {
     const onboardingStateObserver = jest.fn();
@@ -133,7 +135,7 @@ describe('Mint Component Tests', () => {
           attestationHash: 12345,
           currentStep: 4,
           mintConfirmation: {
-            contractAddress: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
+            contractAddress: config.zkl.memberNft,
             membership: 'ZKLadder Member',
             tokenId: 'mockZKLMemberToken',
             txHash: 'mocktxhash',
@@ -142,6 +144,6 @@ describe('Mint Component Tests', () => {
           mintVoucher: 'mockVoucher',
         }),
       );
-    });
+    }, { timeout: 6000 });
   });
 });

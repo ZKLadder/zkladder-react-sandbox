@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Form, Button } from 'react-bootstrap';
 import { nftState } from '../../state/nftContract';
+import { walletState } from '../../state/wallet';
 import { storeVoucher } from '../../utils/api';
 import Error from '../shared/Error';
 import Loading from '../shared/Loading';
 
 function Whitelist() {
   const { instance } = useRecoilValue(nftState);
+  const { chainId } = useRecoilValue(walletState);
 
   const [error, setError] = useState() as any;
   const [loading, setLoading] = useState() as any;
@@ -50,6 +52,7 @@ function Whitelist() {
               contractAddress: instance?.address as string,
               userAddress: voucherData.userAddress,
               balance: voucher?.balance as number,
+              chainId: chainId?.toString() as string,
               signedVoucher: voucher as any,
             });
             setConfirmed(true);

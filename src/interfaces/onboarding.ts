@@ -25,7 +25,7 @@ interface OnboardingStateInterface {
   zklMemberNft: MemberNft,
   mintVoucher:MintVoucher,
   mintConfirmation: MintConfirmation,
-  attestationHash: number
+  attestationHash: number,
   p5Sketch:{sketch:string}
 }
 

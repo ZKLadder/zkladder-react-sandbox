@@ -15,6 +15,9 @@ const providerOptions:any = {
     package: WalletConnectProvider,
     options: {
       infuraId: '2d33fc4d9a9b4140b8582c1ef3bd12e8',
+      rpc: {
+        137: 'https://matic-mainnet.chainstacklabs.com',
+      },
     },
   },
   'custom-walletlink': {
@@ -51,14 +54,21 @@ const connect = async (requestPermissions:boolean = true) => {
 
   // Requests permissions (displays 'Select Accounts' popup)
   if (requestPermissions) { // requestPermissions === false anywhere this function is called by a useEffect on load
-    await provider.request({
-      method: 'wallet_requestPermissions',
-      params: [
-        {
-          eth_accounts: {},
-        },
-      ],
-    });
+    try {
+      await provider.request({
+        method: 'wallet_requestPermissions',
+        params: [
+          {
+            eth_accounts: {},
+          },
+        ],
+      });
+    } catch (err:any) {
+      // Metamask user hit 'reject'
+      if (err.message === 'User rejected the request.') throw new Error(err.message);
+
+      // Otherwise 'requestPermissions' RPC method likely not supported
+    }
   }
 
   // Get connected accounts (as an array of account strings)
@@ -86,7 +96,8 @@ const apiSession = async (provider:any, address:string[]) => {
   const signature = await signAuthKey(provider, address?.[0]);
 
   // Creates a cookie storing the user generated signature
-  await createSession(signature);
+  const session = await createSession(signature);
+  return session;
 };
 
 const disconnect = async () => {
@@ -95,4 +106,17 @@ const disconnect = async () => {
   window.location.reload();
 };
 
-export { connect, disconnect, apiSession };
+const switchChain = async (provider:any, chainId:string) => {
+  await provider.request({
+    method: 'wallet_switchEthereumChain',
+    params: [
+      {
+        chainId: `0x${parseInt(chainId, 10).toString(16)}`,
+      },
+    ],
+  });
+};
+
+export {
+  connect, disconnect, apiSession, switchChain,
+};
