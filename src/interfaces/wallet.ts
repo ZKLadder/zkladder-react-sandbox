@@ -8,6 +8,7 @@ interface WalletStateInterface {
   isConnected:boolean,
   isMember:boolean,
   reason?:string,
+  memberToken?:{ [key: string]: any },
 }
 
 export type { WalletStateInterface };

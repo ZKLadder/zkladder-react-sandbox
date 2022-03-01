@@ -126,6 +126,10 @@
   color:#DB0056
 }
 
+.transparent-button:focus {
+  color:#DB0056;
+}
+
 a{
   color:#16434B;
 }
@@ -159,7 +163,7 @@ canvas{
 .confirmation-item{
   background-color:#F5F5F5;
   padding:15px;
-  margin:5px;
+  margin:5px 0px 5px 0px;
   border-radius:5px;
 }
 

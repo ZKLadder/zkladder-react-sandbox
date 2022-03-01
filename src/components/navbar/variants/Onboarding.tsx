@@ -86,10 +86,10 @@ function OnboardingNavbar() {
                           address, balance, provider, chainId,
                         } = await connect();
 
-                        await apiSession(provider, address);
+                        const { memberToken } = await apiSession(provider, address);
 
                         setWalletState({
-                          address, balance, provider, chainId, isConnected: true, isMember: true,
+                          address, balance, provider, chainId, isConnected: true, isMember: true, memberToken,
                         });
                       } catch (error:any) {
                         setErrorState(error.message);

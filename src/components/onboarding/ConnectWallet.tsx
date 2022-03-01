@@ -9,12 +9,13 @@ import { connect, apiSession, disconnect } from '../../utils/walletConnect';
 import { onboardingState } from '../../state/onboarding';
 import { getVoucher } from '../../utils/api';
 import config from '../../config';
-import Error from '../shared/Error';
+import ErrorComponent from '../shared/Error';
 import Loading from '../shared/Loading';
 
 const existingMemberMessage = `It appears you have connected with a wallet which already has member access. 
-You may want to switch your address from within your crypto wallet before minting - 
-or navigate to the member dashboard`;
+Please connect to the member dashboard using the button in the top right`;
+
+const incorrectChainMessage = 'Please ensure you are connected to the Polygon chain and retry the wallet connection';
 
 function ConnectWallet() {
   const [wallet, setWalletState] = useRecoilState(walletState);
@@ -26,7 +27,7 @@ function ConnectWallet() {
   useEffect(() => {
     async function checkConnection() {
       try {
-        if (wallet.isConnected && !wallet.isMember) {
+        if (wallet.isConnected && !wallet.isMember && wallet.chainId?.toString() === config.zkl.memberNftChainId) {
           setLoading('Looks like you are already connected. Please wait one second while we check your wallet...');
           const zklMemberNft = await MemberNft.setup({
             provider: wallet?.provider,
@@ -50,9 +51,16 @@ function ConnectWallet() {
             currentStep: 2,
           });
         }
+        // Connected user is already a member
         if (wallet.isConnected && wallet.isMember) {
           setLoading(false);
           setError(existingMemberMessage);
+        }
+
+        // User is connected with the wrong chain
+        if (wallet.isConnected && wallet.chainId?.toString() !== config.zkl.memberNftChainId) {
+          setLoading(false);
+          setError(incorrectChainMessage);
         }
       } catch (err:any) {
         setLoading(false);
@@ -63,6 +71,67 @@ function ConnectWallet() {
     checkConnection();
   }, []);
 
+  async function tryConnect() {
+    let providerDetails;
+    let zklMemberNft: MemberNft;
+    let mintVoucher;
+    try {
+      setLoading('Connecting wallet...');
+      providerDetails = await connect();
+      setLoading('Checking whitelist...');
+
+      if (providerDetails.chainId.toString() !== config.zkl.memberNftChainId) throw new Error(incorrectChainMessage);
+
+      // Attempt to instantiate instance of MemberNft
+      zklMemberNft = await MemberNft.setup({
+        provider: providerDetails?.provider,
+        address: config.zkl.memberNft,
+        infuraIpfsProjectId: config.ipfs.projectId,
+        infuraIpfsProjectSecret: config.ipfs.projectSecret,
+      });
+
+      // Attempt to get voucher from ZKL API
+      mintVoucher = await getVoucher({
+        userAddress: providerDetails.address[0],
+        contractAddress: config.zkl.memberNft,
+        chainId: providerDetails.chainId,
+      });
+    } catch (err:any) {
+      setLoading(false);
+      setError(err.message);
+      if (providerDetails && err.message !== incorrectChainMessage) {
+        setWalletState({ ...providerDetails, isConnected: true, isMember: false });
+      }
+      return;
+    }
+
+    try {
+      setLoading('Awaiting signature...');
+      // Attempt to create an API session
+      await apiSession(
+        providerDetails?.provider,
+        providerDetails?.address,
+      );
+      // If the session is created successfully, the user is already a member and should not be minting
+      setLoading(false);
+      setError(existingMemberMessage);
+    } catch (err:any) {
+      // If session creation fails because of no access, the user can continue as they are not already a member
+      if (err?.message === 'Your Eth account does not have access') {
+        setWalletState({ ...providerDetails, isConnected: true, isMember: false });
+        setOnboardingState({
+          ...onboarding,
+          zklMemberNft,
+          mintVoucher,
+          currentStep: 2,
+        });
+      } else { // If any other error is thrown then it is a legitimate error
+        setLoading(false);
+        setError(err.message);
+        await disconnect();
+      }
+    }
+  }
   return (
     <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
       {/* Title */}
@@ -83,63 +152,7 @@ function ConnectWallet() {
         disabled={wallet.isConnected}
         onClick={async () => {
           setError(false);
-          let providerDetails;
-          let zklMemberNft: MemberNft;
-          let mintVoucher;
-
-          try {
-            setLoading('Connecting wallet...');
-            providerDetails = await connect();
-            setLoading('Checking whitelist...');
-            // Attempt to instantiate instance of MemberNft
-            zklMemberNft = await MemberNft.setup({
-              provider: providerDetails?.provider,
-              address: config.zkl.memberNft,
-              infuraIpfsProjectId: config.ipfs.projectId,
-              infuraIpfsProjectSecret: config.ipfs.projectSecret,
-            });
-
-            // Attempt to get voucher from ZKL API
-            mintVoucher = await getVoucher({
-              userAddress: providerDetails.address[0],
-              contractAddress: config.zkl.memberNft,
-              chainId: providerDetails.chainId,
-            });
-          } catch (err:any) {
-            setLoading(false);
-            setError(err.message);
-            if (providerDetails) {
-              setWalletState({ ...providerDetails, isConnected: true, isMember: false });
-            }
-            return;
-          }
-
-          try {
-            setLoading('Awaiting signature...');
-            // Attempt to create an API session
-            await apiSession(
-              providerDetails?.provider,
-              providerDetails?.address,
-            );
-            // If the session is created successfully, the user is already a member and should not be minting
-            setLoading(false);
-            setError(existingMemberMessage);
-          } catch (err:any) {
-            // If session creation fails because of no access, the user can continue as they are not already a member
-            if (err?.message === 'Your Eth account does not have access') {
-              setWalletState({ ...providerDetails, isConnected: true, isMember: false });
-              setOnboardingState({
-                ...onboarding,
-                zklMemberNft,
-                mintVoucher,
-                currentStep: 2,
-              });
-            } else { // If any other error is thrown then it is a legitimate error
-              setLoading(false);
-              setError(err.message);
-              await disconnect();
-            }
-          }
+          tryConnect();
         }}
       >
         <QrCode size={36} style={{ marginRight: '8px' }} />
@@ -153,7 +166,7 @@ function ConnectWallet() {
       </p>
 
       {/* Error and Loading indicators */}
-      {error ? (<Error text={error} />) : null}
+      {error ? (<ErrorComponent text={error} />) : null}
       {loading ? (<Loading text={loading} />) : null}
 
     </Container>

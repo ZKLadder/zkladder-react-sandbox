@@ -44,13 +44,15 @@ function Confirmation() {
             {mintConfirmation.userAddress}
           </span>
         </Col>
-        <Col className="confirmation-item" lg={6}>
+
+        <Col className="confirmation-item">
           <span className="description">
             <b>MEMBERSHIP TIER: </b>
             {mintConfirmation.membership}
           </span>
         </Col>
-        <Col style={{ display: 'inline' }} className="confirmation-item" lg={5}>
+
+        <Col style={{ marginLeft: '10px', paddingRight: '0px' }} className="confirmation-item">
           <span className="description">
             <b>TOKEN ID: </b>
             {mintConfirmation.tokenId}
@@ -82,7 +84,7 @@ function Confirmation() {
         style={{ marginBottom: '10px' }}
         className="active-button"
         onClick={async () => {
-          // @TODO CREATE SESSION AND SET ROUTE
+          window.location.reload();
         }}
       >
         GO TO MEMBER DASHBOARD

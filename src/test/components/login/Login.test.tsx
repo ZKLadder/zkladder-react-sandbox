@@ -52,6 +52,7 @@ describe('Login component tests', () => {
     };
 
     mockConnect.mockResolvedValueOnce(mockWallet);
+    mockApiSession.mockResolvedValueOnce({ memberToken: 'mockMemberToken' });
     // mockZKLadder.mockReturnValueOnce({ mock: 'ZKL' });
 
     render(
@@ -74,6 +75,7 @@ describe('Login component tests', () => {
         ...mockWallet,
         isConnected: true,
         isMember: true,
+        memberToken: 'mockMemberToken',
       });
     });
   });

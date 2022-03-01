@@ -9,6 +9,8 @@ import {
 import { useRecoilState } from 'recoil';
 import Login from './login/Login';
 import Body from './Body';
+import PageBody from './shared/PageBody';
+import Navbar from './navbar/Navbar';
 import { walletState } from '../state/wallet';
 import { getSession } from '../utils/api';
 import { connect, disconnect } from '../utils/walletConnect';
@@ -25,36 +27,7 @@ function ZklRouter() {
   const updateAccount = async (accounts:string[]) => {
     await disconnect();
 
-    // Commenting out due to issues switching from a Member Account to a Non-Member Account from the crypto wallet
     // @TODO: See if there is a way to support account switching without destroying the session
-    /*
-    setWalletState({
-      isConnected: false,
-      isMember: false,
-      reason: 'We detected an account switch occur in your wallet. Please log in again with your new account',
-    });
-
-     if (accounts.length < 1) {
-      await disconnect();
-      setWalletState({ isConnected: false, isMember: false });
-    }
-
-    if (accounts.length > 0 && accounts[0] !== wallet?.address?.[0]) {
-      if (timeOutId) clearTimeout(timeOutId);
-      timeOutId = setTimeout(async () => {
-        try {
-          await deleteSession();
-          await apiSession(wallet.provider, accounts);
-          setWalletState({ ...wallet, address: accounts });
-        } catch (error) {
-          setWalletState({
-            isConnected: false,
-            isMember: false,
-            reason: 'Attempted to switch to an non-whitelisted account',
-          });
-        }
-      }, 1000);
-    } */
   };
 
   // Respond to user switching chainId outside of application
@@ -71,6 +44,7 @@ function ZklRouter() {
   if (wallet.isConnected) {
     wallet.provider.on('chainChanged', updateChainId);
     wallet.provider.on('accountsChanged', updateAccount);
+    wallet.provider.on('disconnect', updateAccount);
   }
 
   // Update wallet balance in response to account or chainId changing
@@ -96,27 +70,31 @@ function ZklRouter() {
   // Check if user is already logged in on initial page load
   useEffect(() => {
     const checkAuthStatus = async () => {
-      const { session } = await getSession();
-      const cachedProvider = localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER');
-      if (session && cachedProvider) {
-        const {
-          address, balance, provider, chainId,
-        } = await connect(false);
+      try {
+        const { session, memberToken } = await getSession();
+        const cachedProvider = localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER');
+        if (session && cachedProvider) {
+          const {
+            address, balance, provider, chainId,
+          } = await connect(false);
 
-        setWalletState({
-          address, balance, provider, chainId, isConnected: true, isMember: true,
-        });
-      }
+          setWalletState({
+            address, balance, provider, chainId, isConnected: true, isMember: true, memberToken,
+          });
+        }
 
-      if (cachedProvider && !session) {
-        const {
-          address, balance, provider, chainId,
-        } = await connect(false);
-        setWalletState({
-          address, balance, provider, chainId, isConnected: true, isMember: false,
-        });
+        if (cachedProvider && !session) {
+          const {
+            address, balance, provider, chainId,
+          } = await connect(false);
+          setWalletState({
+            address, balance, provider, chainId, isConnected: true, isMember: false,
+          });
+        }
+        setLoadingState(false);
+      } catch (err) {
+        await disconnect();
       }
-      setLoadingState(false);
     };
 
     checkAuthStatus();
@@ -134,8 +112,10 @@ function ZklRouter() {
             path="/*"
             element={(
               <div>
-                {/* @TODO Add Sidebar here */}
-                <Body />
+                <PageBody color={{ start: '#16434B', end: '#4EB9B1' }}>
+                  <Navbar variant="authenticated" />
+                  <Body />
+                </PageBody>
                 {/* @TODO Add Modal element when switching accounts and awaiting signature */}
               </div>
               )}

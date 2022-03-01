@@ -131,6 +131,7 @@ describe('storeVoucher tests', () => {
       contractAddress: '0xcontract',
       userAddress: '0xuser',
       balance: 10,
+      chainId: '123',
       signedVoucher: { mock: 'voucher' },
     };
     const response = await storeVoucher(voucherOptions);

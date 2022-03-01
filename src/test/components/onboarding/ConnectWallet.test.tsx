@@ -9,7 +9,8 @@ import { walletState } from '../../../state/wallet';
 import { onboardingState } from '../../../state/onboarding';
 import { getVoucher } from '../../../utils/api';
 
-const existingMemberMessage = 'It appears you have connected with a wallet which already has member access. You may want to switch your address from within your crypto wallet before minting - or navigate to the member dashboard';
+const existingMemberMessage = 'It appears you have connected with a wallet which already has member access. Please connect to the member dashboard using the button in the top right';
+const incorrectChainMessage = 'Please ensure you are connected to the Polygon chain and retry the wallet connection';
 
 jest.mock('../../../utils/walletConnect', () => ({
   connect: jest.fn(),
@@ -30,6 +31,7 @@ jest.mock('@zkladder/zkladder-sdk-ts', () => ({
 jest.mock('../../../config', () => ({
   zkl: {
     memberNft: '0x12345678',
+    memberNftChainId: '123',
   },
   ipfs: {
     projectId: 'mockid',
@@ -42,7 +44,7 @@ const initializeConnectedState = (settings:any) => {
     isConnected: true,
     isMember: false,
     provider: 'mockProvider',
-    chainId: 'mockChainId',
+    chainId: 123,
     address: ['0xuser'],
   });
 };
@@ -102,7 +104,7 @@ describe('Onboarding ConnectWallet component tests', () => {
       expect(mockGetVoucher).toHaveBeenCalledWith({
         userAddress: '0xuser',
         contractAddress: '0x12345678',
-        chainId: 'mockChainId',
+        chainId: 123,
       });
 
       expect(onboardingStateObserver).toHaveBeenCalledWith({
@@ -120,7 +122,7 @@ describe('Onboarding ConnectWallet component tests', () => {
     mockConnect.mockResolvedValueOnce({
       provider: 'mockProvider',
       address: ['0xuser'],
-      chainId: 'mockChainId',
+      chainId: '123',
     });
 
     mockMemberNft.setup.mockResolvedValueOnce(mockInstance);
@@ -148,13 +150,13 @@ describe('Onboarding ConnectWallet component tests', () => {
       expect(mockGetVoucher).toHaveBeenCalledWith({
         userAddress: '0xuser',
         contractAddress: '0x12345678',
-        chainId: 'mockChainId',
+        chainId: '123',
       });
 
       expect(walletStateObserver).toHaveBeenCalledWith({
         provider: 'mockProvider',
         address: ['0xuser'],
-        chainId: 'mockChainId',
+        chainId: '123',
         isConnected: true,
         isMember: false,
       });
@@ -174,7 +176,7 @@ describe('Onboarding ConnectWallet component tests', () => {
     mockConnect.mockResolvedValueOnce({
       provider: 'mockProvider',
       address: ['0xuser'],
-      chainId: 'mockChainId',
+      chainId: '123',
     });
 
     mockMemberNft.setup.mockResolvedValueOnce(mockInstance);
@@ -202,10 +204,39 @@ describe('Onboarding ConnectWallet component tests', () => {
       expect(mockGetVoucher).toHaveBeenCalledWith({
         userAddress: '0xuser',
         contractAddress: '0x12345678',
-        chainId: 'mockChainId',
+        chainId: '123',
       });
 
       expect(screen.getByText(existingMemberMessage)).toBeVisible();
+    });
+  });
+
+  test('Incorrect chainId error', async () => {
+    const onboardingStateObserver = jest.fn();
+    const walletStateObserver = jest.fn();
+
+    mockConnect.mockResolvedValueOnce({
+      provider: 'mockProvider',
+      address: ['0xuser'],
+      chainId: 'Not the right chain',
+    });
+
+    mockMemberNft.setup.mockResolvedValueOnce(mockInstance);
+    mockGetVoucher.mockResolvedValueOnce(mockVoucher);
+    mockApiSession.mockResolvedValueOnce({ session: false });
+
+    render(
+      <RecoilRoot>
+        <RecoilObserver node={onboardingState} onChange={onboardingStateObserver} />
+        <RecoilObserver node={walletState} onChange={walletStateObserver} />
+        <ConnectWallet />
+      </RecoilRoot>,
+    );
+
+    await userEvent.click(screen.getByTestId('connectButton'));
+
+    await waitFor(() => {
+      expect(screen.getByText(incorrectChainMessage)).toBeVisible();
     });
   });
 });
