@@ -80,7 +80,10 @@ function ConnectWallet() {
       providerDetails = await connect();
       setLoading('Checking whitelist...');
 
-      if (providerDetails.chainId.toString() !== config.zkl.memberNftChainId) throw new Error(incorrectChainMessage);
+      if (providerDetails.chainId.toString() !== config.zkl.memberNftChainId) {
+        await disconnect();
+        throw new Error(incorrectChainMessage);
+      }
 
       // Attempt to instantiate instance of MemberNft
       zklMemberNft = await MemberNft.setup({

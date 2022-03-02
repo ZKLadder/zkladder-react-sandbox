@@ -7,8 +7,8 @@ export default {
     projectSecret: process.env.REACT_APP_INFURA_IPFS_SECRET as string,
   },
   zkl: {
-    memberNft: process.env.REACT_APP_MEMBER_NFT || '0xaecad3425f9ba228bdf7c4963d733508da24e6fb',
+    memberNft: process.env.REACT_APP_MEMBER_NFT || '0xa2667DEe29136B840E19CF1198eF1e9a0A609EB0',
     memberSketchCid: process.env.REACT_APP_MEMBER_SKETCH || 'https://bafkreigu6uen66hb3hp2zgmd66odboslapbzxfjgrefgoc7saqwseu6uri.ipfs.infura-ipfs.io',
-    memberNftChainId: process.env.REACT_APP_MEMBER_CHAINID || '137',
+    memberNftChainId: process.env.REACT_APP_MEMBER_CHAINID || '4',
   },
 };

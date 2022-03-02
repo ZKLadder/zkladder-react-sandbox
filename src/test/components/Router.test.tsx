@@ -58,7 +58,7 @@ describe('ZklRouter component tests', () => {
 
     await waitFor(() => {
       expect(mockGetSession).toHaveBeenCalledTimes(1);
-      expect(storage.getItem).toHaveBeenCalledWith('WEB3_CONNECT_CACHED_PROVIDER');
+      expect(storage.getItem).toHaveBeenCalledWith('CACHED_WALLET_CONNECTION');
       expect(mockConnect).toHaveBeenCalledTimes(1);
     });
   });

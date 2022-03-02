@@ -1,56 +1,65 @@
-import Web3Modal from 'web3modal';
-import WalletConnectProvider from '@walletconnect/web3-provider';
-import { WalletLink } from 'walletlink';
+import Onboard from '@web3-onboard/core';
+import injectedModule from '@web3-onboard/injected-wallets';
+// import walletConnectModule from '@web3-onboard/walletconnect';
+import walletLinkModule from '@web3-onboard/walletlink';
+import ledgerModule from '@web3-onboard/ledger';
+import trezorModule from '@web3-onboard/trezor';
+import networks from '../constants/networks';
 import signAuthKey from './signAuthKey';
 import { createSession, deleteSession } from './api';
 
-const providerOptions:any = {
-  injected: {
-    display: {
-      name: 'Metamask',
-      description: 'Connect with the provider in your Browser',
-    },
-  },
-  walletconnect: {
-    package: WalletConnectProvider,
-    options: {
-      infuraId: '2d33fc4d9a9b4140b8582c1ef3bd12e8',
-      rpc: {
-        137: 'https://matic-mainnet.chainstacklabs.com',
+const appMetadata = {
+  name: 'ZKLadder',
+  icon: 'https://www.zkladder.com/media/logo-mobile-hover.png',
+  description: 'Web3 Venture Studio',
+  gettingStartedGuide: 'https://zkladder.com',
+};
+
+const languageOverrides = {
+  en: {
+    connect: {
+      selectingWallet: {
+        header: '',
+        sidebar: {
+          heading: '',
+          subheading: 'Welcome from your friends at ZKLadder',
+          paragraph: 'Please select one of our supported wallets to continue',
+        },
       },
-    },
-  },
-  'custom-walletlink': {
-    display: {
-      logo: 'https://media-exp1.licdn.com/dms/image/C560BAQHsPlWyC0Ksxg/company-logo_200_200/0/1620063222443?e=2159024400&v=beta&t=OgyA4B7O1XGHCfGbnbf1uIYZ6BEMo7864JRJqL6JUaY',
-      name: 'Coinbase',
-      description: 'Scan with WalletLink to connect',
-    },
-    options: {
-      appName: 'ZKLadder', // Your app name
-      networkUrl: 'https://mainnet.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
-    },
-    package: WalletLink,
-    connector: async (_:any, options:any) => {
-      const { appName, networkUrl, chainId } = options;
-      const walletLink = new WalletLink({
-        appName,
-      });
-      const provider = walletLink.makeWeb3Provider(networkUrl, chainId);
-      await provider.enable();
-      return provider;
     },
   },
 };
 
-const web3Modal = new Web3Modal({
-  providerOptions,
-  cacheProvider: true,
+const injected = injectedModule();
+// const walletConnect = walletConnectModule();
+const walletLink = walletLinkModule();
+const ledger = ledgerModule();
+const trezor = trezorModule({
+  email: 'info@zkladder.com',
+  appUrl: 'https://app.zkladder.com',
+});
+
+const onboard = Onboard({
+  appMetadata,
+  chains: Object.values(networks).map((chain) => ({
+    label: chain.label,
+    token: chain.token,
+    id: chain.id,
+    rpcUrl: chain.rpcUrl,
+  })) as any,
+  wallets: [injected, walletLink, /* walletConnect, */ ledger, trezor],
+  i18n: languageOverrides,
 });
 
 const connect = async (requestPermissions:boolean = true) => {
+  const cachedWallet = localStorage.getItem('CACHED_WALLET_CONNECTION') || undefined;
+
   // Brings up the web3 wallet select modal
-  const provider = await web3Modal.connect();
+  const [wallet] = await onboard.connectWallet({ autoSelect: cachedWallet });
+
+  if (!wallet) throw new Error('Please select wallet to continue');
+
+  const { provider } = wallet;
 
   // Requests permissions (displays 'Select Accounts' popup)
   if (requestPermissions) { // requestPermissions === false anywhere this function is called by a useEffect on load
@@ -62,7 +71,7 @@ const connect = async (requestPermissions:boolean = true) => {
             eth_accounts: {},
           },
         ],
-      });
+      } as any);
     } catch (err:any) {
       // Metamask user hit 'reject'
       if (err.message === 'User rejected the request.') throw new Error(err.message);
@@ -83,11 +92,13 @@ const connect = async (requestPermissions:boolean = true) => {
     },
   );
 
+  localStorage.setItem('CACHED_WALLET_CONNECTION', wallet.label);
+
   return {
     provider,
     address,
-    balance: parseInt(balance.toString(16), 16),
-    chainId: parseInt(chainId.toString(16), 16),
+    balance: parseInt((balance as any).toString(16), 16),
+    chainId: parseInt((chainId as any).toString(16), 16),
   };
 };
 
@@ -101,9 +112,10 @@ const apiSession = async (provider:any, address:string[]) => {
 };
 
 const disconnect = async () => {
-  await web3Modal.clearCachedProvider();
+  const [primaryWallet] = onboard.state.get().wallets;
+  if (primaryWallet) await onboard.disconnectWallet({ label: primaryWallet.label });
   await deleteSession();
-  window.location.reload();
+  window.localStorage.clear();
 };
 
 const switchChain = async (provider:any, chainId:string) => {

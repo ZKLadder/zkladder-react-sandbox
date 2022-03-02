@@ -72,7 +72,7 @@ function ZklRouter() {
     const checkAuthStatus = async () => {
       try {
         const { session, memberToken } = await getSession();
-        const cachedProvider = localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER');
+        const cachedProvider = localStorage.getItem('CACHED_WALLET_CONNECTION');
         if (session && cachedProvider) {
           const {
             address, balance, provider, chainId,
