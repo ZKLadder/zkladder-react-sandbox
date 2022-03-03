@@ -19,7 +19,7 @@ jest.mock('../../components/ipfs/Ipfs', () => ({
   default: () => <p>IPFS</p>,
 }));
 
-jest.mock('../../components/authenticated/dashboard/Dashboard', () => ({
+jest.mock('../../components/memberDashboard/Dashboard', () => ({
   __esModule: true,
   default: () => <p>AUTHENTICATED DASHBOARD</p>,
 }));

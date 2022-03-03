@@ -9,7 +9,7 @@ import '../styles/body.css';
 import Nft from './nft/Nft';
 import Ipfs from './ipfs/Ipfs';
 import DeployMemberNft from './memberNft/Deploy';
-import Dashboard from './authenticated/dashboard/Dashboard';
+import Dashboard from './memberDashboard/Dashboard';
 
 function Body() {
   return (
