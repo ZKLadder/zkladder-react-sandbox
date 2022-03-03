@@ -57,7 +57,7 @@ const connect = async (requestPermissions:boolean = true) => {
   // Brings up the web3 wallet select modal
   const [wallet] = await onboard.connectWallet({ autoSelect: cachedWallet });
 
-  if (!wallet) throw new Error('Please select wallet to continue');
+  if (!wallet) throw new Error('Please select a wallet to continue');
 
   const { provider } = wallet;
 
