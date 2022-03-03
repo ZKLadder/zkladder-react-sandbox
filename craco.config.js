@@ -9,9 +9,6 @@ module.exports = {
       new webpack.ProvidePlugin({
         Buffer: ['buffer', 'Buffer'],
       }),
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-      }),
     ],
     configure: {
       resolve: {
@@ -24,6 +21,7 @@ module.exports = {
           os: require.resolve('os-browserify'),
           buffer: require.resolve('buffer'),
           url: require.resolve('url'),
+          crypto: require.resolve('crypto-browserify'),
         },
       },
     },

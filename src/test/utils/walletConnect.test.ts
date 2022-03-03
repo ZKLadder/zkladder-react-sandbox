@@ -10,12 +10,30 @@ Object.defineProperty(window, 'location', {
   value: { reload: jest.fn() },
 });
 
-jest.mock('web3modal', () => (jest.fn(() => ({
-  connect: () => ({
-    request: mockRequest,
-  }),
-  clearCachedProvider: jest.fn(),
+const storage = {
+  getItem: jest.fn(),
+  clear: jest.fn(),
+  setItem: jest.fn(),
+};
+
+Object.defineProperty(window, 'localStorage', {
+  configurable: true,
+  writable: true,
+  value: storage,
+});
+
+jest.mock('@web3-onboard/core', () => (jest.fn(() => ({
+  connectWallet: () => ([
+    { label: 'MockWallet', provider: { request: mockRequest } },
+  ]),
+  disconnectWallet: jest.fn(),
+  state: { get: () => ({ wallets: [{ label: 'MockWallet' }] }) },
 }))));
+
+jest.mock('@web3-onboard/injected-wallets', () => (jest.fn()));
+jest.mock('@web3-onboard/walletlink', () => (jest.fn()));
+jest.mock('@web3-onboard/ledger', () => (jest.fn()));
+jest.mock('@web3-onboard/trezor', () => (jest.fn()));
 
 jest.mock('../../utils/signAuthKey', () => (jest.fn()));
 jest.mock('../../utils/api', () => ({
@@ -54,6 +72,35 @@ describe('connect function', () => {
       provider: { request: mockRequest },
 
     });
+    expect(window.localStorage.setItem).toHaveBeenCalledWith('CACHED_WALLET_CONNECTION', 'MockWallet');
+  });
+
+  test('connect function calls dependencies and returns correct response without request permissions', async () => {
+    mockRequest.mockResolvedValueOnce(['0xmockAddress'])
+      .mockResolvedValueOnce({ toString: () => ('0x123') }) // chainId
+      .mockResolvedValueOnce({ toString: () => ('0x2020') }); // balance
+
+    const result = await connect(false);
+
+    expect(mockRequest).toHaveBeenCalledTimes(3);
+    expect(mockRequest).toHaveBeenCalledWith({
+      method: 'eth_accounts',
+    });
+    expect(mockRequest).toHaveBeenCalledWith({
+      method: 'eth_chainId',
+    });
+    expect(mockRequest).toHaveBeenCalledWith({
+      method: 'eth_getBalance',
+      params: ['0xmockAddress', 'latest'],
+    });
+    expect(result).toStrictEqual({
+      address: ['0xmockAddress'],
+      balance: 8224,
+      chainId: 291,
+      provider: { request: mockRequest },
+
+    });
+    expect(window.localStorage.setItem).toHaveBeenCalledWith('CACHED_WALLET_CONNECTION', 'MockWallet');
   });
 });
 
@@ -74,7 +121,7 @@ describe('disconnect function', () => {
     const result = await disconnect();
 
     expect(mockDeleteSession).toHaveBeenCalledTimes(1);
-    expect(window.location.reload as jest.Mocked<any>).toHaveBeenCalledTimes(1);
+    expect(window.localStorage.clear).toHaveBeenCalledTimes(1);
     expect(result).toBe(undefined);
   });
 });

@@ -170,7 +170,7 @@ function Mint() {
             ? (
               <div>
                 <Col lg={3}><Loading /></Col>
-                <p className="title" style={{ fontSize: '22px', margin: '0px' }}>Your NFT is being mined.</p>
+                <p className="title" style={{ fontSize: '22px', margin: '0px' }}>Your NFT is being mined</p>
                 <p className="description">
                   You can hang around and wait for a few minutes
                   - or monitor the transaction on your own and come back later to log in. Your Tx Hash is

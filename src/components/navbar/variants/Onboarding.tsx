@@ -58,7 +58,7 @@ function OnboardingNavbar() {
               ? (/* Connected Network & Address */
                 <div style={{ display: 'inline' }}>
                   <ListGroup.Item className="connected-labels">
-                    {`${castNetworks[wallet.chainId]?.name as string} : ${shortenAddress(wallet.address?.[0])}`}
+                    {`${castNetworks[wallet.chainId]?.label as string} : ${shortenAddress(wallet.address?.[0])}`}
                     <XCircleFill
                       data-testid="disconnectButton"
                       className="icon"

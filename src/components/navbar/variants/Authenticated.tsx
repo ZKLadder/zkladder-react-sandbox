@@ -60,12 +60,12 @@ function AuthenticatedNavbar() {
                 alt="zk-logo"
                 src={zkFav}
               />
-              <span className="dashboard-nav-text">{`${weiToEth(wallet.balance)} ${castNetworks[wallet.chainId]?.currency}`}</span>
+              <span className="dashboard-nav-text">{`${weiToEth(wallet.balance)} ${castNetworks[wallet.chainId]?.token}`}</span>
             </ListGroup.Item>
 
             {/* Connected Network and Address Section */}
             <ListGroup.Item className="connected-labels">
-              {`${castNetworks[wallet.chainId]?.name as string} : ${shortenAddress(wallet.address?.[0])}`}
+              {`${castNetworks[wallet.chainId]?.label as string} : ${shortenAddress(wallet.address?.[0])}`}
               <XCircleFill
                 data-testid="disconnectButton"
                 className="icon"

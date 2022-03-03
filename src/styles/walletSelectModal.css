@@ -1,0 +1,13 @@
+:root{
+  --onboard-font-family-normal: "Avenir Next" !important;
+  --onboard-font-family-semibold: "Avenir Next" !important;
+  --onboard-font-family-light: "Avenir Next" !important;
+  --onboard-connect-sidebar-background:linear-gradient(rgb(22, 67, 75), rgb(78, 185, 177));
+  --onboard-connect-sidebar-color:white;
+  --onboard-connect-sidebar-progress-background: white;
+  --onboard-connect-sidebar-progress-color: #DB0056;
+  --onboard-connect-content-height:45vh;
+}
+
+
+

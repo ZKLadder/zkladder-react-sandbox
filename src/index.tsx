@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
 import reportWebVitals from './reportWebVitals';
 import Router from './components/Router';
+import './styles/walletSelectModal.css';
 
 ReactDOM.render(
   <React.StrictMode>

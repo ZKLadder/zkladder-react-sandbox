@@ -18,8 +18,10 @@ const getFormattedJson = () => JSON.stringify({
 
 export default async (provider:any, address:string) => {
   const contents = getFormattedJson();
+  // Metamask versions this RPC method
+  const method = provider.isMetaMask ? 'eth_signTypedData_v4' : 'eth_signTypedData';
   const signature = await provider.request({
-    method: 'eth_signTypedData_v4',
+    method,
     params: [
       address,
       contents,
