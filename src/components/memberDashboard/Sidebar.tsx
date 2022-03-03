@@ -12,6 +12,7 @@ import P5Sketch from '../shared/P5Sketch';
 import Loading from '../shared/Loading';
 import { shortenAddress } from '../../utils/address';
 import logo from '../../images/dashboard/dashboard-logo.png';
+import style from '../../styles/memberDashboard.module.css';
 
 function DashboardSidebar() {
   const { address, memberToken } = useRecoilValue(walletState);
@@ -39,11 +40,11 @@ function DashboardSidebar() {
             sketch={(p5Sketch as any).sketch}
           />
 
-          <span className="member-graphic-text-top">
+          <span className={style['member-graphic-text-top']}>
             {`NFT Holder: ${shortenAddress(address?.[0] as string)}`}
           </span>
 
-          <span className="member-graphic-text-bottom">
+          <span className={style['member-graphic-text-bottom']}>
             <img src={logo} alt="zklogo" style={{ marginBottom: '4px', marginRight: '5px' }} />
             <span style={{ verticalAlign: 'bottom' }}>{`MEMBER #${memberToken?.tokenId}`}</span>
           </span>
@@ -51,29 +52,29 @@ function DashboardSidebar() {
 
         <Row style={{ maxWidth: '400px', padding: '0px', margin: '0px' }}>
           <Col style={{ padding: '5px' }} xs={6}>
-            <div className="dashboard-metric">
-              <p className="dashboard-metric-title">MY PROJECTS</p>
-              <p className="dashboard-metric-figure">0</p>
+            <div className={style['dashboard-metric']}>
+              <p className={style['dashboard-metric-title']}>MY PROJECTS</p>
+              <p className={style['dashboard-metric-figure']}>0</p>
             </div>
           </Col>
           <Col style={{ padding: '5px' }} xs={6}>
-            <div className="dashboard-metric">
-              <p className="dashboard-metric-title">TOTAL PROJECTS</p>
-              <p className="dashboard-metric-figure">1</p>
+            <div className={style['dashboard-metric']}>
+              <p className={style['dashboard-metric-title']}>TOTAL PROJECTS</p>
+              <p className={style['dashboard-metric-figure']}>1</p>
             </div>
           </Col>
         </Row>
         <Row style={{ maxWidth: '400px', padding: '0px', margin: '0px' }}>
           <Col style={{ padding: '5px' }} xs={6}>
-            <div className="dashboard-metric">
-              <p className="dashboard-metric-title">ZKL MEMBERS</p>
-              <p data-testid="memberCount" className="dashboard-metric-figure">{memberToken?.totalSupply}</p>
+            <div className={style['dashboard-metric']}>
+              <p className={style['dashboard-metric-title']}>ZKL MEMBERS</p>
+              <p data-testid="memberCount" className={style['dashboard-metric-figure']}>{memberToken?.totalSupply}</p>
             </div>
           </Col>
           <Col style={{ padding: '5px' }} xs={6}>
-            <div style={{ marginLeft: '0px' }} className="dashboard-metric">
-              <p className="dashboard-metric-title">ASSETS IN TREASURY </p>
-              <p className="dashboard-metric-figure">$0</p>
+            <div style={{ marginLeft: '0px' }} className={style['dashboard-metric']}>
+              <p className={style['dashboard-metric-title']}>ASSETS IN TREASURY </p>
+              <p className={style['dashboard-metric-figure']}>$0</p>
             </div>
           </Col>
         </Row>
@@ -82,7 +83,7 @@ function DashboardSidebar() {
         }}
         >
           <Col style={{ padding: '5px' }} xs={12}>
-            <div className="dashboard-settings-bar">
+            <div className={style['dashboard-settings-bar']}>
               <Gear size={24} />
               <span style={{ verticalAlign: 'middle', marginLeft: '15px' }}>ZKL Member Profile Settings</span>
             </div>
@@ -93,22 +94,22 @@ function DashboardSidebar() {
         }}
         >
           <Col style={{ padding: '0px' }} xs={3}>
-            <div className="dashboard-social-icon">
+            <div className={style['dashboard-social-icon']}>
               <Discord size={36} />
             </div>
           </Col>
           <Col style={{ padding: '0px' }} xs={3}>
-            <div className="dashboard-social-icon">
+            <div className={style['dashboard-social-icon']}>
               <Twitter size={36} />
             </div>
           </Col>
           <Col style={{ padding: '0px' }} xs={3}>
-            <div className="dashboard-social-icon">
+            <div className={style['dashboard-social-icon']}>
               <Linkedin size={36} />
             </div>
           </Col>
           <Col style={{ padding: '0px' }} xs={3}>
-            <div className="dashboard-social-icon">
+            <div className={style['dashboard-social-icon']}>
               <Telegram size={36} />
             </div>
           </Col>
