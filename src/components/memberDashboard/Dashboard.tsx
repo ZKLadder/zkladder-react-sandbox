@@ -6,9 +6,9 @@ import MyProjects from './MyProjects';
 
 function Dashboard() {
   return (
-    <Row className={style['dashboard-content-wrapper']}>
+    <Row className={style['content-wrapper']}>
       {/* Left Hand Sidebar */}
-      <Col className={`${style['dashboard-sidebar']} d-none d-lg-block`} lg={3}>
+      <Col className={`${style.sidebar} d-none d-lg-block`} lg={3}>
         <DashboardSidebar />
       </Col>
 

@@ -1,4 +1,4 @@
-.dashboard-content-wrapper {
+.content-wrapper {
   background-color: #FAFAFA;
   margin-top:20px;
   margin-left:2vw;
@@ -6,7 +6,7 @@
   border-radius:10px;
 }
 
-.dashboard-sidebar {
+.sidebar {
   padding-left:25px;
   padding-top:60px;
 }
