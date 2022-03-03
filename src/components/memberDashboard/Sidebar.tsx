@@ -6,12 +6,12 @@ import { useRecoilValue } from 'recoil';
 import {
   Gear, Discord, Twitter, Linkedin, Telegram,
 } from 'react-bootstrap-icons';
-import config from '../../../config';
-import { walletState } from '../../../state/wallet';
-import P5Sketch from '../../shared/P5Sketch';
-import Loading from '../../shared/Loading';
-import { shortenAddress } from '../../../utils/address';
-import logo from '../../../images/dashboard/dashboard-logo.png';
+import config from '../../config';
+import { walletState } from '../../state/wallet';
+import P5Sketch from '../shared/P5Sketch';
+import Loading from '../shared/Loading';
+import { shortenAddress } from '../../utils/address';
+import logo from '../../images/dashboard/dashboard-logo.png';
 
 function DashboardSidebar() {
   const { address, memberToken } = useRecoilValue(walletState);
@@ -67,7 +67,7 @@ function DashboardSidebar() {
           <Col style={{ padding: '5px' }} xs={6}>
             <div className="dashboard-metric">
               <p className="dashboard-metric-title">ZKL MEMBERS</p>
-              <p className="dashboard-metric-figure">{memberToken?.totalSupply}</p>
+              <p data-testid="memberCount" className="dashboard-metric-figure">{memberToken?.totalSupply}</p>
             </div>
           </Col>
           <Col style={{ padding: '5px' }} xs={6}>
