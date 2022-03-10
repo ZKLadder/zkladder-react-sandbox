@@ -16,6 +16,7 @@ import { getSession } from '../utils/api';
 import { connect, disconnect } from '../utils/walletConnect';
 import Loading from './shared/Loading';
 import Onboarding from './onboarding/Onboarding';
+import Unauthenticated from './unauthenticated/Unauthenticated';
 
 let timeOutId:any;
 
@@ -131,7 +132,7 @@ function ZklRouter() {
       <Routes>
         <Route
           path="/"
-          element={<Login />}
+          element={<Unauthenticated />}
         />
         <Route
           path="/mint"

@@ -1,0 +1,29 @@
+.description {
+  color: #DB0056;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.card-row {
+  max-height: 80px;
+}
+
+.column {
+  display: inline-flex;
+}
+
+.card-text {
+  color: #DB0056;
+  font-size: 10px;
+}
+
+.number-text {
+  font-size: 22px;
+  color: #A40A3E;
+}
+
+.sidebar-card {
+  background-color: #FFFFFF;
+  margin: 2px;
+  max-width: 40%;
+}
