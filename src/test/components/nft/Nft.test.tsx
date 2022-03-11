@@ -20,6 +20,8 @@ const initializeQueryState = (settings:any) => {
       name: jest.fn(() => ('ZKL-Test')),
       symbol: jest.fn(() => ('ZKLT')),
       totalSupply: jest.fn(() => (7)),
+      collectionDataUri: jest.fn(),
+      getCollectionMetadata: jest.fn(() => ([])),
       address: '0x1234567890abce',
     },
   });
@@ -34,6 +36,8 @@ const initializeAllTokensState = (settings:any) => {
       name: jest.fn(() => ('ZKL-Test')),
       symbol: jest.fn(() => ('ZKLT')),
       totalSupply: jest.fn(),
+      collectionDataUri: jest.fn(),
+      getCollectionMetadata: jest.fn(() => ([])),
       getAllTokens: jest.fn(() => []),
       getAllTokensOwnedBy: jest.fn(() => []),
       address: '0x1234567890abce',

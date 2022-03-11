@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Form, Button } from 'react-bootstrap';
 import { nftState } from '../../state/nftContract';
@@ -14,12 +14,23 @@ function Whitelist() {
   const [error, setError] = useState() as any;
   const [loading, setLoading] = useState() as any;
   const [confirmed, setConfirmed] = useState() as any;
+  const [roles, setRoles] = useState() as any;
 
   const [voucherData, setVoucherData] = useState({
     quantity: 1,
     userAddress: '',
+    roleId: '',
     contractAddress: instance?.address,
   });
+
+  useEffect(() => {
+    async function getRoles() {
+      const collectionMetadata = await instance?.getCollectionMetadata();
+      setRoles(collectionMetadata?.roles);
+      setVoucherData({ ...voucherData, roleId: collectionMetadata?.roles?.[0].id as string });
+    }
+    getRoles();
+  }, []);
 
   return (
     <div>
@@ -40,18 +51,38 @@ function Whitelist() {
         placeholder="Enter a quantity"
       />
 
+      <Form.Select
+        style={{ width: '60%', marginTop: '15px', marginBottom: '15px' }}
+        aria-label="Default select example"
+        onChange={(event) => {
+          setVoucherData({ ...voucherData, roleId: event.target.value });
+        }}
+      >
+        {roles?.map((role:any) => (
+          <option
+            value={role.id}
+            style={{ width: '60%', marginTop: '15px', marginBottom: '15px' }}
+          >
+            {role.name}
+
+          </option>
+        ))}
+      </Form.Select>
+      <br />
       <Button
         onClick={async () => {
           try {
             setError(false);
             setLoading(true);
             setConfirmed(false);
-            const voucher = await instance?.signMintVoucher(voucherData.userAddress, voucherData.quantity);
+
+            const voucher = await instance?.signMintVoucher(voucherData.userAddress, voucherData.quantity, voucherData.roleId);
 
             await storeVoucher({
               contractAddress: instance?.address as string,
               userAddress: voucherData.userAddress,
               balance: voucher?.balance as number,
+              roleId: voucherData.roleId,
               chainId: chainId?.toString() as string,
               signedVoucher: voucher as any,
             });

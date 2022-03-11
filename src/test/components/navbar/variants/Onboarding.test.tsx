@@ -76,7 +76,7 @@ describe('Navbar tests', () => {
     await waitFor(() => {
       expect(mockConnect).toHaveBeenCalledTimes(1);
       expect(mockApiSession).toHaveBeenCalledTimes(1);
-      expect(screen.getByText('Ethereum : 0x1234...0987')).toBeVisible();
+      expect(screen.getByText('Ethereum Mainnet : 0x1234...0987')).toBeVisible();
     });
   });
 
@@ -99,7 +99,7 @@ describe('Navbar tests', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Ethereum : test')).toBeVisible();
+      expect(screen.getByText('Ethereum Mainnet : test')).toBeVisible();
     });
 
     userEvent.click(screen.getByTestId('disconnectButton'));

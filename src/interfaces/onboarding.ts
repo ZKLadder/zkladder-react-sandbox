@@ -7,6 +7,7 @@ interface MintVoucher {
   signedVoucher:{
     minter:string,
     balance:number,
+    salePrice:number,
     signature:string
   }
 }

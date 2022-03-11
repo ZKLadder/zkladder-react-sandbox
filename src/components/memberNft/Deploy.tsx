@@ -4,16 +4,16 @@ import {
 } from 'react-bootstrap';
 import { QuestionCircle } from 'react-bootstrap-icons';
 import { useRecoilValue } from 'recoil';
-import { MemberNft } from '@zkladder/zkladder-sdk-ts';
+// import { MemberNft } from '@zkladder/zkladder-sdk-ts';
 import '../../styles/nft.css';
 import { walletState } from '../../state/wallet';
 import FileUploadModal from '../ipfs/FileUploadModal';
 import Error from '../shared/Error';
 import Loading from '../shared/Loading';
-import CopyToClipboard from '../shared/CopyToClipboard';
+// import CopyToClipboard from '../shared/CopyToClipboard';
 
 function Deploy() {
-  const { address, provider } = useRecoilValue(walletState) as {address:string[], provider:any};
+  const { address } = useRecoilValue(walletState) as {address:string[], provider:any};
   const [deploymentConfig, setDeploymentConfig] = useState({
     name: '',
     symbol: '',
@@ -22,7 +22,7 @@ function Deploy() {
   });
   const [modalOpen, setModalOpen] = useState(false);
 
-  const [contractAddress, setAddress] = useState() as any;
+  // const [contractAddress, setAddress] = useState() as any;
   const [loading, setLoading] = useState() as any;
   const [error, setError] = useState() as any;
   return (
@@ -159,11 +159,11 @@ function Deploy() {
               setLoading('Awaiting transaction approval');
               setError(false);
 
-              const deployTx = await MemberNft.deploy({ ...deploymentConfig, provider });
+              /* const deployTx = await MemberNft.deploy({ ...deploymentConfig, provider });
               setAddress(deployTx.address);
               setLoading('Tx is being mined...');
 
-              await deployTx.transaction.wait();
+              await deployTx.transaction.wait(); */
               setLoading(false);
             } catch (err:any) {
               setLoading(false);
@@ -175,12 +175,12 @@ function Deploy() {
         </Button>
 
         {/* Success, Error, and Loading indicators */}
-        {contractAddress ? (
+        {/* contractAddress ? (
           <div style={{ marginTop: '20px' }}>
             Contract Address
             <CopyToClipboard text={contractAddress} />
           </div>
-        ) : null}
+        ) : null */}
         {loading ? <Loading text={loading} /> : null}
         {error ? <Error text={error} /> : null}
       </Form.Group>

@@ -105,6 +105,7 @@ describe('Onboarding ConnectWallet component tests', () => {
         userAddress: '0xuser',
         contractAddress: '0x12345678',
         chainId: 123,
+        roleId: 'Member',
       });
 
       expect(onboardingStateObserver).toHaveBeenCalledWith({
@@ -151,6 +152,7 @@ describe('Onboarding ConnectWallet component tests', () => {
         userAddress: '0xuser',
         contractAddress: '0x12345678',
         chainId: '123',
+        roleId: 'Member',
       });
 
       expect(walletStateObserver).toHaveBeenCalledWith({
@@ -205,6 +207,7 @@ describe('Onboarding ConnectWallet component tests', () => {
         userAddress: '0xuser',
         contractAddress: '0x12345678',
         chainId: '123',
+        roleId: 'Member',
       });
 
       expect(screen.getByText(existingMemberMessage)).toBeVisible();

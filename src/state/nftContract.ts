@@ -21,8 +21,9 @@ const nftContractMetadataState = selector({
         const name = await instance.name();
         const symbol = await instance.symbol();
         const totalSupply = await instance.totalSupply();
+        const collectionDataUri = await instance.collectionDataUri();
         return {
-          name, symbol, totalSupply, address: instance.address,
+          name, symbol, totalSupply, collectionDataUri, address: instance.address,
         };
       }
       return {};

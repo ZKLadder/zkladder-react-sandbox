@@ -56,7 +56,7 @@ const mockFetch = fetch as jest.Mocked<any>;
 const mockFunction = Function as jest.Mocked<any>;
 const mockIpfs = Ipfs as jest.Mocked<any>;
 
-jest.setTimeout(7000);
+jest.setTimeout(8000);
 describe('Mint Component Tests', () => {
   test('It renders', async () => {
     const onboardingStateObserver = jest.fn();

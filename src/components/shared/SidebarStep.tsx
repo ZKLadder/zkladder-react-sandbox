@@ -1,6 +1,6 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
-import '../../styles/shared.css';
+import style from '../../styles/shared.module.css';
 
 function SidebarStep({
   step,
@@ -12,14 +12,14 @@ function SidebarStep({
   isActivated:boolean,
 }) {
   return (
-    <ListGroup.Item data-testid="parent" className={isActivated ? 'sidebar-step-activated' : 'sidebar-step'}>
+    <ListGroup.Item data-testid="parent" className={isActivated ? style['sidebar-step-activated'] : style['sidebar-step']}>
       <p
-        className={isActivated ? 'sidebar-step-number-activated' : 'sidebar-step-number'}
+        className={isActivated ? style['sidebar-step-number-activated'] : style['sidebar-step-number']}
       >
         {step}
       </p>
       <p
-        className={isActivated ? 'sidebar-step-text-activated' : 'sidebar-step-text'}
+        className={isActivated ? style['sidebar-step-text-activated'] : style['sidebar-step-text']}
       >
         {text}
       </p>
