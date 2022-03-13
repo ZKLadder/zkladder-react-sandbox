@@ -108,7 +108,7 @@ function Mint() {
                     template: 'MemberNft',
                     art_style: 'generative',
                     generative_library: 'p5',
-                    role: 'Member',
+                    roleId: 'Member',
                     attestation_hash: attestationHash,
                     attributes: [
                       { trait_type: 'Role', value: 'Member' },
