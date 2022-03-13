@@ -133,6 +133,7 @@ describe('storeVoucher tests', () => {
       balance: 10,
       chainId: '123',
       signedVoucher: { mock: 'voucher' },
+      roleId: 'mockRole',
     };
     const response = await storeVoucher(voucherOptions);
 
@@ -159,6 +160,7 @@ describe('getVoucher tests', () => {
       contractAddress: '0xcontract',
       userAddress: '0xuser',
       chainId: 10,
+      roleId: 'mockRole',
     };
     const response = await getVoucher(voucherOptions);
 

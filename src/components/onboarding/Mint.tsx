@@ -104,11 +104,11 @@ function Mint() {
                     name: `ZKLadder Member #${supply}`,
                     description: 'ZKLadder is an exclusive community of builders working to bring the next generation of web3 projects to life. The ZKL Member token grants one access to the community and all of its benefits.',
                     image: `ipfs://${imageCid}`,
-                    tokenId: supply,
+                    token_id: supply,
                     template: 'MemberNft',
                     art_style: 'generative',
                     generative_library: 'p5',
-                    role: 'Member',
+                    roleId: 'Member',
                     attestation_hash: attestationHash,
                     attributes: [
                       { trait_type: 'Role', value: 'Member' },

@@ -40,6 +40,7 @@ function ConnectWallet() {
             userAddress: wallet?.address?.[0] as string,
             contractAddress: config.zkl.memberNft,
             chainId: wallet?.chainId as number,
+            roleId: 'Member',
           });
 
           setLoading(false);
@@ -98,6 +99,7 @@ function ConnectWallet() {
         userAddress: providerDetails.address[0],
         contractAddress: config.zkl.memberNft,
         chainId: providerDetails.chainId,
+        roleId: 'Member',
       });
     } catch (err:any) {
       setLoading(false);

@@ -1,6 +1,6 @@
 export default {
   1: {
-    label: 'Ethereum',
+    label: 'Ethereum Mainnet',
     token: 'ETH',
     id: '0x1',
     rpcUrl: 'https://mainnet.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',

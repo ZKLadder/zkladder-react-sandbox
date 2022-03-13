@@ -24,6 +24,11 @@ jest.mock('../../components/memberDashboard/Dashboard', () => ({
   default: () => <p>AUTHENTICATED DASHBOARD</p>,
 }));
 
+jest.mock('../../components/deploy/Deploy', () => ({
+  __esModule: true,
+  default: () => <p>DEPLOY PROJECT</p>,
+}));
+
 describe('Body component tests', () => {
   test('It renders the default route', async () => {
     render(
@@ -71,6 +76,18 @@ describe('Body component tests', () => {
     );
 
     expect(screen.getByText('NFT')).toBeVisible();
+  });
+
+  test('It renders the Deploy project route', async () => {
+    render(
+      <RecoilRoot>
+        <MemoryRouter initialEntries={['/deploy']}>
+          <Body />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('DEPLOY PROJECT')).toBeVisible();
   });
 
   test('All other routes fallback to defaukt', async () => {

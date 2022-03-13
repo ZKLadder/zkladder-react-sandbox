@@ -1,3 +1,18 @@
+.content-wrapper {
+  background-color: #FAFAFA;
+  margin-top:20px;
+  margin-left:2vw;
+  margin-right:4vw;
+  border-radius:10px;
+}
+
+.sidebar {
+  padding-left:25px;
+  padding-top:60px;
+  border-radius:10px;
+  box-shadow:10px 10px 10px #D0D0D0;
+}
+
 .sidebar-step{
   margin-bottom:10px;
   border-radius:10px;
@@ -48,4 +63,20 @@
   font-weight:bold;
   color:#DB0056;
   margin-left:12px;
+}
+
+.loading-modal-header{
+  font-size:18px;
+  font-weight:bold;
+  color:#16434B;
+  width:100%;
+  text-align:center;
+}
+
+.loading-modal-content{
+  font-size:16px;
+  font-weight:bold;
+  color:#16434B;
+  width:100%;
+  text-align:center;
 }

@@ -6,10 +6,11 @@ import {
   Navigate,
 } from 'react-router-dom';
 import '../styles/body.css';
+import Dashboard from './memberDashboard/Dashboard';
 import Nft from './nft/Nft';
 import Ipfs from './ipfs/Ipfs';
 import DeployMemberNft from './memberNft/Deploy';
-import Dashboard from './memberDashboard/Dashboard';
+import Deploy from './deploy/Deploy';
 
 function Body() {
   return (
@@ -45,9 +46,15 @@ function Body() {
             </Card>
               )}
         />
+
         <Route
           path="dashboard"
           element={<Dashboard />}
+        />
+
+        <Route
+          path="deploy"
+          element={<Deploy />}
         />
 
         {/* Default Route */}
