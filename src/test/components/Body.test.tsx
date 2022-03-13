@@ -24,7 +24,7 @@ jest.mock('../../components/memberDashboard/Dashboard', () => ({
   default: () => <p>AUTHENTICATED DASHBOARD</p>,
 }));
 
-jest.mock('../../components/Deploy/Deploy', () => ({
+jest.mock('../../components/deploy/Deploy', () => ({
   __esModule: true,
   default: () => <p>DEPLOY PROJECT</p>,
 }));
