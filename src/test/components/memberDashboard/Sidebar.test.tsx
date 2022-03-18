@@ -39,7 +39,7 @@ const initializeState = (settings:any) => {
       tokenId: 123,
       totalSupply: 100,
       metadata: {
-        attestation_hash: 'testhash',
+        tokenSeed: 'testhash',
       },
     },
   });

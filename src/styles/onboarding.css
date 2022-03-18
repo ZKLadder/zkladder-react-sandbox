@@ -71,8 +71,8 @@
   padding:15px;
   border-radius:10px;
   min-width:250px;
-  max-width:40vw;
-  max-height:50vh;
+  max-width:25vw;
+  aspect-ratio:350/315;
 }
 
 .image-preview{
@@ -147,7 +147,7 @@ canvas{
 
 .p5Sketch{
   width:100% !important;
-  
+  height:100% !important;
 }
 
 .confirmation-wrapper{

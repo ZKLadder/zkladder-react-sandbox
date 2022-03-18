@@ -7,20 +7,40 @@ import {
   Container, Button, Row, Col, ProgressBar,
 } from 'react-bootstrap';
 import '../../styles/onboarding.css';
-import { Ipfs } from '@zkladder/zkladder-sdk-ts';
+import { Ipfs, MemberNft } from '@zkladder/zkladder-sdk-ts';
 import P5Sketch, { saveImage } from '../shared/P5Sketch';
 import { onboardingState } from '../../state/onboarding';
 import { walletState } from '../../state/wallet';
-import Error from '../shared/Error';
+import ErrorComponent from '../shared/Error';
 import config from '../../config';
-import Loading from '../shared/Loading';
 import networks from '../../constants/networks';
+import { loadingState } from '../../state/page';
+
+/**
+ * Implements a blockchain query with support for several retries due to slowness in propagation of newly minted assets on polygon
+ * @returns array of tokens owned by userAddress param
+ */
+const fetchTokensWithRetry = async (nftInstance:MemberNft, currentAttempt:number, userAddress:string) => {
+  const maxAttempts = 10;
+
+  let tokens = await nftInstance.getAllTokensOwnedBy(userAddress);
+
+  if (tokens.length < 1 && currentAttempt <= maxAttempts) {
+    // Repeat query with gradual back off
+    await new Promise((resolve) => setTimeout(resolve, currentAttempt * 1000));
+    tokens = await fetchTokensWithRetry(nftInstance, currentAttempt + 1, userAddress);
+    return tokens;
+  } if (tokens.length < 1 && currentAttempt > maxAttempts) {
+    // Once maxAttempts reached, display useful error message
+    throw new Error('We are having difficulty retrieving your newly minted token from the Polygon network. Please wait a few seconds and refresh your page');
+  } else return tokens;
+};
 
 const castNetworks = networks as any;
 
 function Mint() {
   const [error, setError] = useState() as any;
-  const [loading, setLoading] = useState() as any;
+  const [loading, setLoading] = useRecoilState(loadingState);
   const [onboarding, setOnboardingState] = useRecoilState(onboardingState);
   const { chainId } = useRecoilValue(walletState);
   const [progress, setProgress] = useState(0);
@@ -57,7 +77,7 @@ function Mint() {
 
       {/* Description */}
       <p className="description">
-        We are using code to generate NFT artwork based off of your attestation upload.
+        We are using code to generate NFT artwork based off of your seed upload.
         This will be the “cover art” of your member token and profile.
       </p>
 
@@ -66,12 +86,12 @@ function Mint() {
         {onboarding.p5Sketch && progress === 100
           ? (
             <P5Sketch
-              config={{ attestationHash: onboarding.attestationHash }}
+              config={{ tokenSeed: onboarding.tokenSeed }}
               sketch={onboarding.p5Sketch.sketch as any}
             />
           )
           : (
-            <div style={{ marginTop: '25%', marginBottom: '25%' }}>
+            <div style={{ marginTop: '33%', marginBottom: '25%' }}>
               <p
                 className="description align-items-center"
                 style={{ textAlign: 'center', width: '100%', fontWeight: 'bold' }}
@@ -88,44 +108,55 @@ function Mint() {
           <Button
             className="active-button"
             onClick={async () => {
-              setLoading(false);
+              setLoading({ loading: false });
               setError(false);
               try {
-                const { zklMemberNft, mintVoucher, attestationHash } = onboarding;
+                const { zklMemberNft, mintVoucher, tokenSeed } = onboarding;
                 const ipfsInstance = new Ipfs(config.ipfs.projectId, config.ipfs.projectSecret);
                 const supply = await zklMemberNft.totalSupply();
-                const image = await saveImage(supply.toString()) as File;
+                const image = await saveImage(supply.toString(), 350, 325) as File;
                 const cids = await ipfsInstance.addFiles([{ file: image, fileName: supply.toString() }]);
                 const imageCid = cids[0].Hash;
+
+                setLoading({ loading: true, header: 'Member Onboarding', content: 'Awaiting wallet approval...' });
 
                 const unMinedTx = await zklMemberNft.mint(
                   mintVoucher.signedVoucher,
                   {
-                    name: `ZKLadder Member #${supply}`,
-                    description: 'ZKLadder is an exclusive community of builders working to bring the next generation of web3 projects to life. The ZKL Member token grants one access to the community and all of its benefits.',
+                    description: 'This NFT functions as your badge of membership into ZKLadder, a community of builders working to bring the next generation of web3 projects to life.',
                     image: `ipfs://${imageCid}`,
-                    token_id: supply,
                     template: 'MemberNft',
-                    art_style: 'generative',
-                    generative_library: 'p5',
+                    artStyle: 'generative',
+                    generativeLibrary: 'p5',
                     roleId: 'Member',
-                    attestation_hash: attestationHash,
+                    tokenSeed,
                     attributes: [
                       { trait_type: 'Role', value: 'Member' },
-                      { trait_type: 'Attestation Hash', value: attestationHash, display_type: 'number' },
+                      { trait_type: 'Token Seed', value: tokenSeed, display_type: 'number' },
                     ],
                   },
                 );
 
-                setLoading(unMinedTx.txHash);
+                setLoading({
+                  loading: true,
+                  header: 'Your NFT is being mined',
+                  content: (
+                    <div>
+                      You can hang around and wait - or come back in a few minutes to log in.
+                      Your Tx Hash is
+                      {' '}
+                      <a target="_blank" className="description" href={`${castNetworks[chainId as number]?.blockExplorer}${unMinedTx.txHash}`} rel="noreferrer">{unMinedTx.txHash}</a>
+
+                    </div>
+                  ),
+                });
 
                 await unMinedTx.wait();
 
-                // Wait 5 seconds to ensure Infura nodes have updated server side
-                await new Promise((resolve) => setTimeout(resolve, 5000));
-
-                const tokens = await zklMemberNft.getAllTokensOwnedBy(mintVoucher.userAddress);
+                const tokens = await fetchTokensWithRetry(zklMemberNft, 1, mintVoucher.userAddress);
                 const { tokenId } = tokens[tokens.length - 1];
+
+                setLoading({ loading: false });
 
                 setOnboardingState({
                   ...onboarding,
@@ -139,7 +170,7 @@ function Mint() {
                   },
                 });
               } catch (err:any) {
-                setLoading(false);
+                setLoading({ loading: false });
                 setError(err.message || 'There was a problem minting your NFT - please reach out to our tech team');
               }
             }}
@@ -155,7 +186,7 @@ function Mint() {
               setOnboardingState({
                 ...onboarding,
                 currentStep: 2,
-                attestationHash: 0,
+                tokenSeed: 0,
               });
             }}
           >
@@ -166,19 +197,8 @@ function Mint() {
 
         {/* Secondary Description || Loading Indicator */}
         <Col style={{ display: 'block' }}>
-          {loading
-            ? (
-              <div>
-                <Col lg={3}><Loading /></Col>
-                <p className="title" style={{ fontSize: '22px', margin: '0px' }}>Your NFT is being mined</p>
-                <p className="description">
-                  You can hang around and wait for a few minutes
-                  - or monitor the transaction on your own and come back later to log in. Your Tx Hash is
-                  {' '}
-                  <a target="_blank" className="confirmation-link" href={`${castNetworks[chainId as number]?.blockExplorer}${loading}`} rel="noreferrer">{loading}</a>
-                </p>
-              </div>
-            )
+          {loading.loading
+            ? null
             : (
               <p className="description">
                 After electing to mint, you will be prompted to approve the transaction.
@@ -190,7 +210,7 @@ function Mint() {
       </Row>
 
       {/* Error Indicator */}
-      {error ? (<Error text={error} />) : null}
+      {error ? (<ErrorComponent text={error} />) : null}
 
     </Container>
   );

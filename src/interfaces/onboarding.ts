@@ -7,7 +7,7 @@ interface MintVoucher {
   signedVoucher:{
     minter:string,
     balance:number,
-    salePrice:number,
+    salePrice:any,
     signature:string
   }
 }
@@ -26,7 +26,7 @@ interface OnboardingStateInterface {
   zklMemberNft: MemberNft,
   mintVoucher:MintVoucher,
   mintConfirmation: MintConfirmation,
-  attestationHash: number,
+  tokenSeed: number,
   p5Sketch:{sketch:string}
 }
 

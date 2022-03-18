@@ -76,38 +76,13 @@ function ConnectWallet() {
     let providerDetails;
     let zklMemberNft: MemberNft;
     let mintVoucher;
+
     try {
       setLoading('Connecting wallet...');
       providerDetails = await connect();
-      setLoading('Checking whitelist...');
-
-      if (providerDetails.chainId.toString() !== config.zkl.memberNftChainId) {
-        await disconnect();
-        throw new Error(incorrectChainMessage);
-      }
-
-      // Attempt to instantiate instance of MemberNft
-      zklMemberNft = await MemberNft.setup({
-        provider: providerDetails?.provider,
-        address: config.zkl.memberNft,
-        infuraIpfsProjectId: config.ipfs.projectId,
-        infuraIpfsProjectSecret: config.ipfs.projectSecret,
-      });
-
-      // Attempt to get voucher from ZKL API
-      mintVoucher = await getVoucher({
-        userAddress: providerDetails.address[0],
-        contractAddress: config.zkl.memberNft,
-        chainId: providerDetails.chainId,
-        roleId: 'Member',
-      });
     } catch (err:any) {
       setLoading(false);
       setError(err.message);
-      if (providerDetails && err.message !== incorrectChainMessage) {
-        setWalletState({ ...providerDetails, isConnected: true, isMember: false });
-      }
-      return;
     }
 
     try {
@@ -115,7 +90,7 @@ function ConnectWallet() {
       // Attempt to create an API session
       await apiSession(
         providerDetails?.provider,
-        providerDetails?.address,
+        providerDetails?.address as string[],
       );
       // If the session is created successfully, the user is already a member and should not be minting
       setLoading(false);
@@ -123,13 +98,43 @@ function ConnectWallet() {
     } catch (err:any) {
       // If session creation fails because of no access, the user can continue as they are not already a member
       if (err?.message === 'Your Eth account does not have access') {
-        setWalletState({ ...providerDetails, isConnected: true, isMember: false });
-        setOnboardingState({
-          ...onboarding,
-          zklMemberNft,
-          mintVoucher,
-          currentStep: 2,
-        });
+        setLoading('Checking whitelist...');
+        try {
+          if (providerDetails?.chainId.toString() !== config.zkl.memberNftChainId) {
+            await disconnect();
+            throw new Error(incorrectChainMessage);
+          }
+
+          // Attempt to instantiate instance of MemberNft
+          zklMemberNft = await MemberNft.setup({
+            provider: providerDetails?.provider,
+            address: config.zkl.memberNft,
+            infuraIpfsProjectId: config.ipfs.projectId,
+            infuraIpfsProjectSecret: config.ipfs.projectSecret,
+          });
+
+          // Attempt to get voucher from ZKL API
+          mintVoucher = await getVoucher({
+            userAddress: providerDetails.address[0],
+            contractAddress: config.zkl.memberNft,
+            chainId: providerDetails.chainId,
+            roleId: 'Member',
+          });
+
+          setWalletState({ ...providerDetails, isConnected: true, isMember: false });
+          setOnboardingState({
+            ...onboarding,
+            zklMemberNft,
+            mintVoucher,
+            currentStep: 2,
+          });
+        } catch (nestedErr:any) {
+          setLoading(false);
+          setError(nestedErr.message);
+          if (providerDetails && nestedErr.message !== incorrectChainMessage) {
+            setWalletState({ ...providerDetails, isConnected: true, isMember: false });
+          }
+        }
       } else { // If any other error is thrown then it is a legitimate error
         setLoading(false);
         setError(err.message);
@@ -137,6 +142,7 @@ function ConnectWallet() {
       }
     }
   }
+
   return (
     <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
       {/* Title */}

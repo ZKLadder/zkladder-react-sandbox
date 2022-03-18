@@ -64,7 +64,7 @@ describe('Attestation component tests', () => {
     await waitFor(() => {
       expect(onboardingStateObserver).toHaveBeenCalledWith({
         currentStep: 3,
-        attestationHash: -996711432,
+        tokenSeed: -996711432,
       });
     });
   });
