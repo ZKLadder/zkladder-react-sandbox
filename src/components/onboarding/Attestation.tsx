@@ -77,11 +77,11 @@ function Attestation() {
                 ...onboarding,
                 currentStep: 3,
                 // hash and store uploaded image dataUrl as seed value
-                attestationHash: hashString(dataUrl),
+                tokenSeed: hashString(dataUrl),
               });
             };
           } catch (err:any) {
-            setError(err.message || 'Error uploading attestation. Please contact our tech team');
+            setError(err.message || 'Error uploading token seed. Please contact our tech team');
           }
         }}
       >

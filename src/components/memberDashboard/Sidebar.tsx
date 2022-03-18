@@ -20,7 +20,7 @@ function DashboardSidebar() {
 
   useEffect(() => {
     async function getZKLSketch() {
-      if (memberToken?.metadata.attestation_hash) {
+      if (memberToken?.metadata.tokenSeed) {
         const response = await fetch(config.zkl.memberSketchCid);
         const memberSketch = await response.text();
         /* eslint-disable no-new-func */
@@ -36,7 +36,7 @@ function DashboardSidebar() {
       <Container>
         <div id="memberDash" style={{ position: 'relative' }}>
           <P5Sketch
-            config={{ attestationHash: memberToken?.metadata.attestation_hash }}
+            config={{ tokenSeed: memberToken?.metadata.tokenSeed }}
             sketch={(p5Sketch as any).sketch}
           />
 

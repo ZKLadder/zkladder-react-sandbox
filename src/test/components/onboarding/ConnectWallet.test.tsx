@@ -196,19 +196,9 @@ describe('Onboarding ConnectWallet component tests', () => {
     await userEvent.click(screen.getByTestId('connectButton'));
 
     await waitFor(() => {
-      expect(mockMemberNft.setup).toHaveBeenCalledWith({
-        provider: 'mockProvider',
-        address: '0x12345678',
-        infuraIpfsProjectId: 'mockid',
-        infuraIpfsProjectSecret: 'mockSecret',
-      });
+      expect(mockConnect).toHaveBeenCalledTimes(1);
 
-      expect(mockGetVoucher).toHaveBeenCalledWith({
-        userAddress: '0xuser',
-        contractAddress: '0x12345678',
-        chainId: '123',
-        roleId: 'Member',
-      });
+      expect(mockApiSession).toHaveBeenCalledWith('mockProvider', ['0xuser']);
 
       expect(screen.getByText(existingMemberMessage)).toBeVisible();
     });
@@ -226,7 +216,7 @@ describe('Onboarding ConnectWallet component tests', () => {
 
     mockMemberNft.setup.mockResolvedValueOnce(mockInstance);
     mockGetVoucher.mockResolvedValueOnce(mockVoucher);
-    mockApiSession.mockResolvedValueOnce({ session: false });
+    mockApiSession.mockRejectedValueOnce(new Error('Your Eth account does not have access'));
 
     render(
       <RecoilRoot>

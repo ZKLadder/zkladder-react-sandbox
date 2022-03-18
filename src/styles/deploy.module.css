@@ -25,7 +25,7 @@
 
 .template-box{
   background-color:white;
-  min-height:20vh !important;
+  min-height:23vh !important;
   box-shadow:3px 3px 3px 3px #D0D0D0;
   border-radius:10px;
   padding:15px;
@@ -40,7 +40,7 @@
 
 .template-box-inactive{
   background-color:white;
-  min-height:20vh !important;
+  min-height:23vh !important;
   box-shadow:3px 3px 3px 3px #D0D0D0;
   border-radius:10px;
   padding:15px;

@@ -22,7 +22,7 @@ const initializeState = (settings:any) => {
       name: jest.fn(() => ('ZKL-Test')),
       symbol: jest.fn(() => ('ZKLT')),
       totalSupply: jest.fn(() => (9999)),
-      collectionDataUri: jest.fn(),
+      contractUri: jest.fn(),
       tokenUri: mockTokenUri,
       ownerOf: mockOwnerOf,
       getApproved: mockGetApproved,
