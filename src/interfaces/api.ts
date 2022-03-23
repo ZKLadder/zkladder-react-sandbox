@@ -24,4 +24,22 @@ interface GetVoucherOptions{
   chainId:number,
 }
 
-export type { HttpOptions, StoreVoucherOptions, GetVoucherOptions };
+interface CreateContractOptions {
+  address: string,
+  creator: string,
+  admins: string[],
+  chainId: string,
+  templateId: string,
+  projectId?: string,
+}
+
+interface GetContractOptions {
+  address?: string,
+  userAddress?: string,
+  chainId?: string,
+  projectId?: string,
+}
+
+export type {
+  HttpOptions, StoreVoucherOptions, GetVoucherOptions, CreateContractOptions, GetContractOptions,
+};

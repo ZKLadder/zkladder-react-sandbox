@@ -13,12 +13,13 @@ import config from '../../config';
 import Error from '../shared/Error';
 import { loadingState } from '../../state/page';
 import CopyToClipboard from '../shared/CopyToClipboard';
+import { createContract } from '../../utils/api';
 
 const castNetworks = networks as any;
 
 function Review() {
   const [deploy, setDeployState] = useRecoilState(deployState);
-  const { chainId, provider } = useRecoilValue(walletState);
+  const { chainId, provider, address } = useRecoilValue(walletState);
   const [contractAddress, setAddress] = useState() as any;
   const setLoading = useSetRecoilState(loadingState);
   const [error, setError] = useState() as any;
@@ -212,7 +213,17 @@ function Review() {
                 setAddress(deployTx.address);
                 setLoading({ loading: true, header: 'Member NFT Deployment', content: 'Transaction is being mined...' });
 
+                await createContract({
+                  address: deployTx.address,
+                  creator: address?.[0] as string,
+                  admins: [],
+                  chainId: chainId?.toString() as string,
+                  templateId: '3',
+                });
+
                 await deployTx.transaction.wait();
+
+                // @TODO Push the user to the 'manage projects' page
                 setLoading({ loading: false });
               } catch (err:any) {
                 setLoading({ loading: false });
@@ -220,7 +231,7 @@ function Review() {
               }
             }}
           >
-            MINT YOUR MEMBER NFT
+            DEPLOY YOUR SMART CONTRACT
           </Button>
         </Col>
 

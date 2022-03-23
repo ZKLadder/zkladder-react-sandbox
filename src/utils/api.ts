@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { HttpOptions, StoreVoucherOptions, GetVoucherOptions } from '../interfaces/api';
+import {
+  HttpOptions, StoreVoucherOptions, GetVoucherOptions, CreateContractOptions, GetContractOptions,
+} from '../interfaces/api';
 import config from '../config';
 /**
  * Generalized request wrapper used by other ZKL API functions
@@ -67,12 +69,34 @@ const getVoucher = async (options: GetVoucherOptions) => {
   return response;
 };
 
+const createContract = async (options: CreateContractOptions) => {
+  const response = await request({
+    method: 'post',
+    url: '/v1/contracts',
+    data: options,
+  });
+
+  return response;
+};
+
+const getContract = async (options: GetContractOptions) => {
+  const response = await request({
+    method: 'get',
+    url: '/v1/contracts',
+    params: options,
+  });
+
+  return response;
+};
+
 export {
   getSession,
   createSession,
   deleteSession,
   storeVoucher,
   getVoucher,
+  createContract,
+  getContract,
 
   // exported for unit testing
   request,
