@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { nftState, viewState } from '../../state/nftContract';
-import '../../styles/error.css';
+import Error from '../shared/Error';
 
 function Mint() {
   const [nft, setNftState] = useRecoilState(nftState);
@@ -62,7 +62,7 @@ function Mint() {
 
       </Button>
       <br />
-      {errorState ? <p className="error">{errorState}</p> : undefined}
+      {errorState ? <Error text={errorState} /> : undefined}
       {loadingState ? <Spinner style={{ margin: '20px' }} animation="border" role="status" /> : undefined}
     </div>
   );

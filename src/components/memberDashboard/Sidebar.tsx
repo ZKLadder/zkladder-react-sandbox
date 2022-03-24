@@ -10,7 +10,7 @@ import config from '../../config';
 import { walletState } from '../../state/wallet';
 import P5Sketch from '../shared/P5Sketch';
 import Loading from '../shared/Loading';
-import { shortenAddress } from '../../utils/address';
+import { shortenAddress } from '../../utils/helpers';
 import logo from '../../images/dashboard/dashboard-logo.png';
 import style from '../../styles/memberDashboard.module.css';
 
@@ -36,6 +36,7 @@ function DashboardSidebar() {
       <Container>
         <div id="memberDash" style={{ position: 'relative' }}>
           <P5Sketch
+            className={style.p5Sketch}
             config={{ tokenSeed: memberToken?.metadata.tokenSeed }}
             sketch={(p5Sketch as any).sketch}
           />

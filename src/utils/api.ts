@@ -5,8 +5,7 @@ import {
 import config from '../config';
 /**
  * Generalized request wrapper used by other ZKL API functions
- * For a full list of endpoints:
- * @TODO add API doc URL here
+ * For a full list of endpoints: @TODO add API doc URL here
  * @param options input object holding function parameters
  */
 const request = async (options: HttpOptions) => {

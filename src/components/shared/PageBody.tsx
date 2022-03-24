@@ -2,12 +2,11 @@ import React from 'react';
 import {
   Card,
 } from 'react-bootstrap';
-
-import '../../styles/body.css';
+import style from '../../styles/body.module.css';
 
 function PageBody({ color, children }:{color:{start:string, end:string}, children: React.ReactNode}) {
   return (
-    <Card className="background-container" style={{ background: `linear-gradient(${color.start}, ${color.end})` }}>
+    <Card className={style['background-container']} style={{ background: `linear-gradient(${color.start}, ${color.end})` }}>
       {children}
     </Card>
   );

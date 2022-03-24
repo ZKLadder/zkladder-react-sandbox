@@ -51,7 +51,6 @@ const onboard = Onboard({
   i18n: languageOverrides,
 });
 
-/* eslint-disable-next-line */
 const metaMaskUnlocked = async () => {
   try {
     const accounts = await (window as any)?.ethereum?.request({ method: 'eth_accounts' });

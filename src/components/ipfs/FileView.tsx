@@ -5,7 +5,7 @@ import {
 import { useRecoilValue } from 'recoil';
 import { IpfsApiResponse } from '@zkladder/zkladder-sdk-ts/dist/interfaces/ipfs';
 import { ipfsState, viewState } from '../../state/ipfs';
-import '../../styles/error.css';
+import Error from '../shared/Error';
 
 function FileView() {
   const { instance } = useRecoilValue(ipfsState);
@@ -53,7 +53,7 @@ function FileView() {
 
       ))}
       {loading ? <Spinner style={{ marginTop: '20px' }} animation="border" role="status" /> : undefined}
-      {error ? <p className="error">{error}</p> : undefined}
+      {error ? <Error text={error} /> : undefined}
     </Row>
   );
 }

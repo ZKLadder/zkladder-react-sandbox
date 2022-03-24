@@ -34,6 +34,7 @@ describe('P5Sketch component tests', () => {
   test('It renders', async () => {
     P5.prototype.remove = jest.fn();
     render(<P5Sketch
+      className="test"
       sketch="mockSketch"
       config={{
         mockProperty: 'mockValue',

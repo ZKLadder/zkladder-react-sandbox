@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { Container, Button } from 'react-bootstrap';
-import '../../styles/onboarding.css';
 import { QrCode } from 'react-bootstrap-icons';
 import { MemberNft } from '@zkladder/zkladder-sdk-ts';
+import style from '../../styles/onboarding.module.css';
 import { walletState } from '../../state/wallet';
 import { connect, apiSession, disconnect } from '../../utils/walletConnect';
 import { onboardingState } from '../../state/onboarding';
@@ -146,12 +146,12 @@ function ConnectWallet() {
   return (
     <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
       {/* Title */}
-      <p className="title">
+      <p className={style.title}>
         CONNECT YOUR WALLET
       </p>
 
       {/* Description */}
-      <p className="description">
+      <p className={style.description}>
         Using the wallet with the ETH address listed below,
         connect using your Metamask, Coinbase Wallet or any Wallet Connect compatible.
       </p>
@@ -159,7 +159,7 @@ function ConnectWallet() {
       {/* Connect button */}
       <Button
         data-testid="connectButton"
-        className={wallet.isConnected ? 'connect-button-inactive' : 'connect-button'}
+        className={wallet.isConnected ? style['connect-button-inactive'] : style['connect-button']}
         disabled={wallet.isConnected}
         onClick={async () => {
           setError(false);
@@ -171,7 +171,7 @@ function ConnectWallet() {
       </Button>
 
       {/* Secondary Description */}
-      <p className="description">
+      <p className={style.description}>
         After selecting your wallet, you will be asked to sign a signature request to connect to ZK Ladder
         and the Ethereum blockchain. This will allow you to mint the ZK Ladder member token and give you access to the network.
       </p>

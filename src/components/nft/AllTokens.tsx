@@ -5,8 +5,8 @@ import {
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { nftState, viewState } from '../../state/nftContract';
 import { walletState } from '../../state/wallet';
-import '../../styles/error.css';
-import '../../styles/nft.css';
+import Error from '../shared/Error';
+import style from '../../styles/nft.module.css';
 
 function AllTokens() {
   const { instance } = useRecoilValue(nftState) as any;
@@ -41,11 +41,11 @@ function AllTokens() {
 
   const renderCard = (index:number) => (data[index]
     ? (
-      <Card className="tokenCard">
+      <Card className={style.tokenCard}>
         <Card.Title>{`TokenID: ${data[index]?.tokenId}`}</Card.Title>
         <ListGroup horizontal="lg" className="list-inline" style={{ maxWidth: '100%' }}>
-          <ListGroup.Item className="tokenListItem">{`Token URI : ${data[index]?.tokenUri}`}</ListGroup.Item>
-          <ListGroup.Item className="tokenListItem">{`Owned by : ${data[index]?.owner}`}</ListGroup.Item>
+          <ListGroup.Item className={style.tokenListItem}>{`Token URI : ${data[index]?.tokenUri}`}</ListGroup.Item>
+          <ListGroup.Item className={style.tokenListItem}>{`Owned by : ${data[index]?.owner}`}</ListGroup.Item>
         </ListGroup>
       </Card>
     ) : null);
@@ -81,7 +81,7 @@ function AllTokens() {
         {' '}
 
       </Button>
-      {errorState ? <p className="error">{errorState}</p> : undefined}
+      {errorState ? <Error text={errorState} /> : undefined}
       {loadingState ? <Spinner style={{ margin: '20px' }} animation="border" role="status" /> : undefined}
       <div>{rows}</div>
     </div>
