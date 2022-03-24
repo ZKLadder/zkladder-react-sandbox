@@ -4,11 +4,6 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Body from '../../components/Body';
 
-jest.mock('../../components/memberNft/Deploy', () => ({
-  __esModule: true,
-  default: () => <p>DEPLOY MEMBER NFT</p>,
-}));
-
 jest.mock('../../components/nft/Nft', () => ({
   __esModule: true,
   default: () => <p>NFT</p>,
@@ -40,18 +35,6 @@ describe('Body component tests', () => {
     );
 
     expect(screen.getByText('AUTHENTICATED DASHBOARD')).toBeVisible();
-  });
-
-  test('It renders the deploy-nft route', async () => {
-    render(
-      <RecoilRoot>
-        <MemoryRouter initialEntries={['/deploy-nft']}>
-          <Body />
-        </MemoryRouter>
-      </RecoilRoot>,
-    );
-
-    expect(screen.getByText('DEPLOY MEMBER NFT')).toBeVisible();
   });
 
   test('It renders the ipfs route', async () => {

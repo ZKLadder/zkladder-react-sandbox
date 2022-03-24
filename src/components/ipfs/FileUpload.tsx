@@ -6,8 +6,8 @@ import {
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useDropzone } from 'react-dropzone';
 import { ipfsState, viewState } from '../../state/ipfs';
-import '../../styles/error.css';
-import '../../styles/ipfs.css';
+import Error from '../shared/Error';
+import style from '../../styles/ipfs.module.css';
 import { FileUploadProps } from '../../interfaces/ipfs';
 
 function FileUpload(props: FileUploadProps) {
@@ -28,7 +28,7 @@ function FileUpload(props: FileUploadProps) {
   return (
     <div>
       {/* Drag and Drop Section */}
-      <div className="file-drop-zone" {...getRootProps({})}>
+      <div className={style['file-drop-zone']} {...getRootProps({})}>
         <input data-testid="fileInput" {...getInputProps()} />
         <p>Drag and drop a file or directory</p>
       </div>
@@ -101,7 +101,7 @@ function FileUpload(props: FileUploadProps) {
                   <p>This may take a minute ...</p>
                 </div>
               ) : undefined}
-              {error ? <p className="error">{error}</p> : undefined}
+              {error ? <Error text={error} /> : undefined}
             </div>
           ) : null}
       </aside>

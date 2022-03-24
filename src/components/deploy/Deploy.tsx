@@ -2,8 +2,6 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useRecoilValue } from 'recoil';
 import Sidebar from './Sidebar';
-import '../../styles/body.css';
-import '../../styles/onboarding.css';
 import sharedStyle from '../../styles/shared.module.css';
 import { deployState } from '../../state/deploy';
 import SelectTemplate from './SelectTemplate';

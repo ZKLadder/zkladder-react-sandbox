@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { Form } from 'react-bootstrap';
 import { nftContractMetadataState } from '../../state/nftContract';
 import { NftContractMetadata } from '../../interfaces/nft';
-import { shortenAddress } from '../../utils/address';
+import { shortenAddress } from '../../utils/helpers';
 
 const contractMetadata = () => {
   const nftContractMetadata = useRecoilValue(nftContractMetadataState) as NftContractMetadata;

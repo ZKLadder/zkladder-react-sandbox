@@ -6,8 +6,8 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   Container, Button, Row, Col, ProgressBar,
 } from 'react-bootstrap';
-import '../../styles/onboarding.css';
 import { Ipfs, MemberNft } from '@zkladder/zkladder-sdk-ts';
+import style from '../../styles/onboarding.module.css';
 import P5Sketch, { saveImage } from '../shared/P5Sketch';
 import { onboardingState } from '../../state/onboarding';
 import { walletState } from '../../state/wallet';
@@ -71,21 +71,22 @@ function Mint() {
   return (
     <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
       {/* Title */}
-      <p className="title">
+      <p className={style.title}>
         PREVIEW AND MINT YOUR MEMBER NFT
       </p>
 
       {/* Description */}
-      <p className="description">
+      <p className={style.description}>
         We are using code to generate NFT artwork based off of your seed upload.
         This will be the “cover art” of your member token and profile.
       </p>
 
       {/* P5 Canvas || Progress Bar */}
-      <div className="upload-wrapper">
+      <div className={style['upload-wrapper']}>
         {onboarding.p5Sketch && progress === 100
           ? (
             <P5Sketch
+              className={style.p5Sketch}
               config={{ tokenSeed: onboarding.tokenSeed }}
               sketch={onboarding.p5Sketch.sketch as any}
             />
@@ -93,7 +94,7 @@ function Mint() {
           : (
             <div style={{ marginTop: '33%', marginBottom: '25%' }}>
               <p
-                className="description align-items-center"
+                className={`${style.description} align-items-center`}
                 style={{ textAlign: 'center', width: '100%', fontWeight: 'bold' }}
               >
                 GENERATING...
@@ -106,7 +107,7 @@ function Mint() {
         <Col lg={3}>
           {/* Mint Button */}
           <Button
-            className="active-button"
+            className={style['active-button']}
             onClick={async () => {
               setLoading({ loading: false });
               setError(false);
@@ -145,7 +146,7 @@ function Mint() {
                       You can hang around and wait - or come back in a few minutes to log in.
                       Your Tx Hash is
                       {' '}
-                      <a target="_blank" className="description" href={`${castNetworks[chainId as number]?.blockExplorer}${unMinedTx.txHash}`} rel="noreferrer">{unMinedTx.txHash}</a>
+                      <a target="_blank" className={style.description} href={`${castNetworks[chainId as number]?.blockExplorer}${unMinedTx.txHash}`} rel="noreferrer">{unMinedTx.txHash}</a>
 
                     </div>
                   ),
@@ -181,7 +182,7 @@ function Mint() {
         <Col lg={9}>
           {/* Use Different Image Button */}
           <Button
-            className="transparent-button"
+            className={style['transparent-button']}
             onClick={async () => {
               setOnboardingState({
                 ...onboarding,
@@ -200,7 +201,7 @@ function Mint() {
           {loading.loading
             ? null
             : (
-              <p className="description">
+              <p className={style.description}>
                 After electing to mint, you will be prompted to approve the transaction.
                 Once minted, the NFT will be in your wallet and you will be able to view it in your profile on app.zkladder.com
               </p>

@@ -4,13 +4,13 @@ import React, {
 } from 'react';
 import { useRecoilState } from 'recoil';
 import { Container, Button, Card } from 'react-bootstrap';
-import '../../styles/onboarding.css';
 import { XCircleFill } from 'react-bootstrap-icons';
 import { useDropzone } from 'react-dropzone';
+import style from '../../styles/onboarding.module.css';
 import { onboardingState } from '../../state/onboarding';
 import Error from '../shared/Error';
 
-import { hashString } from '../../utils/address';
+import { hashString } from '../../utils/helpers';
 
 function Attestation() {
   const [error, setError] = useState() as any;
@@ -27,26 +27,26 @@ function Attestation() {
   return (
     <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
       {/* Title */}
-      <p className="title">
+      <p className={style.title}>
         UPLOAD YOUR TOKEN SEED
       </p>
       {/* Description */}
-      <p className="description">
+      <p className={style.description}>
         Your token seed is what will make your ZKL NFT 1 of a kind and will affect how your NFT generation looks.
         Ideally your token seed will be an image of something important to you, and can serve
         as a reminder as to what you want to accomplish by joining our community.
       </p>
 
-      <div className="upload-wrapper">
-        <p className="description"> UPLOAD HERE:</p>
+      <div className={style['upload-wrapper']}>
+        <p className={style.description}> UPLOAD HERE:</p>
         {acceptedFiles.length
           ? (
             <div style={{ display: 'flex', height: '320px' }}>
               {/* Image dropzone */}
-              <img data-testid="imagePreview" alt={acceptedFiles[0].name} className="image-preview" src={URL.createObjectURL(acceptedFiles[0])} />
+              <img data-testid="imagePreview" alt={acceptedFiles[0].name} className={style['image-preview']} src={URL.createObjectURL(acceptedFiles[0])} />
               <XCircleFill
                 data-testid="removeImage"
-                className="cancel-icon"
+                className={style['cancel-icon']}
                 size={36}
                 onClick={async () => {
                   setAcceptedFiles([]);
@@ -57,7 +57,7 @@ function Attestation() {
           : (
             <div data-testid="dropzone" {...getRootProps({ style: { height: '40vh' } })}>
               {/* File Preview */}
-              <Card className="file-upload" />
+              <Card className={style['file-upload']} />
               <input data-testid="fileInput" {...getInputProps()} />
             </div>
           )}
@@ -66,7 +66,7 @@ function Attestation() {
       {/* Upload button */}
       <Button
         disabled={acceptedFiles.length < 1}
-        className={`${acceptedFiles.length > 0 ? 'active-button' : 'inactive-button'}`}
+        className={`${acceptedFiles.length > 0 ? style['active-button'] : style['inactive-button']}`}
         onClick={async () => {
           try {
             const reader = new FileReader();
