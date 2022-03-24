@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { Container, ListGroup } from 'react-bootstrap';
 import { QuestionCircle } from 'react-bootstrap-icons';
 import logo from '../../images/memberMint/logo_transparent.png';
-import '../../styles/onboarding.css';
+import style from '../../styles/onboarding.module.css';
 import SidebarStep from '../shared/SidebarStep';
 import { onboardingState } from '../../state/onboarding';
 
@@ -18,12 +18,12 @@ function MemberMintSidebar() {
         height="35"
       />
       {/* Title */}
-      <p className="title">
+      <p className={style.title}>
         MINT YOUR ZKLADDER MEMBER NFT
       </p>
 
       {/* Description */}
-      <p className="description">
+      <p className={style.description}>
         Welcome to the party!
         You are here because you received an invitation to the ZKL community and your ETH address has been whitelisted.
         Let’s get started:
@@ -53,7 +53,7 @@ function MemberMintSidebar() {
         />
 
         {/* Help link */}
-        <ListGroup.Item className="footer">
+        <ListGroup.Item className={style.footer}>
           <QuestionCircle size={20} style={{ marginRight: '5px' }} />
           <p style={{ display: 'inline' }}>
             Information incorrect? Having connection issues?

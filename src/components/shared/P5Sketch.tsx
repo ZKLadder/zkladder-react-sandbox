@@ -27,7 +27,7 @@ async function saveImage(fileName:string, width:number, height:number) {
   });
 }
 
-function P5Sketch({ sketch, config }:{sketch:string, config: { [key: string]: any }}) {
+function P5Sketch({ sketch, config, className }:{className:string, sketch:string, config: { [key: string]: any }}) {
   Object.keys(config).forEach((key:any) => {
     window[key] = config[key];
   });
@@ -42,7 +42,7 @@ function P5Sketch({ sketch, config }:{sketch:string, config: { [key: string]: an
   }, [canvas.current]);
 
   return (
-    <div data-testid="canvas" id="p5Id" className="p5Sketch" ref={canvas} />
+    <div data-testid="canvas" id="p5Id" className={className} ref={canvas} />
   );
 }
 

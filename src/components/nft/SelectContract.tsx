@@ -4,7 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 import { MemberNft } from '@zkladder/zkladder-sdk-ts';
 import { nftState } from '../../state/nftContract';
 import { walletState } from '../../state/wallet';
-import '../../styles/error.css';
+import Error from '../shared/Error';
 import { WalletStateInterface } from '../../interfaces/wallet';
 import config from '../../config';
 
@@ -52,7 +52,7 @@ const selectContract = () => {
         {' '}
 
       </Button>
-      {errorState ? <p className="error">{errorState}</p> : undefined}
+      {errorState ? <Error text={errorState} /> : undefined}
     </Form.Group>
   );
 };

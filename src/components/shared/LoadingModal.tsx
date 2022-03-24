@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, Spinner } from 'react-bootstrap';
-import '../../styles/ipfs.css';
 import { useRecoilValue } from 'recoil';
 import { loadingState } from '../../state/page';
 import style from '../../styles/shared.module.css';
@@ -21,11 +20,14 @@ function LoadingModal() {
           {loading.header}
         </Modal.Title>
         <hr />
+
+        {/* Spinner */}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Spinner style={{ color: '#16434B' }} animation="border" />
         </div>
-
         <br />
+
+        {/* Modal Body */}
         <div className={style['loading-modal-content']}>{loading.content}</div>
       </Modal.Body>
 

@@ -130,19 +130,18 @@
   color:#DB0056;
 }
 
-a{
+:global(a){
   color:#16434B;
+}
+
+:global(.p5Canvas){
+  height:100% !important;
+  width:100% !important;
+  border-radius:10px;
 }
 
 .progress-bar{
   background-color:#DB0056;
-}
-
-canvas{
-  height:inherit !important;
-  width:inherit !important;
-  aspect-ratio:9/5 !important;
- 
 }
 
 .p5Sketch{

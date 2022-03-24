@@ -1,10 +1,16 @@
-:global(#memberDash .p5Canvas){
+.p5Sketch{
   position:relative;
   border-radius:10px;
-  box-shadow:5px 5px 5px #D0D0D0;
   min-width:200px;
   max-width:400px;
   aspect-ratio: 350/315 !important;
+}
+
+:global(#memberDash .p5Canvas){
+  height:100% !important;
+  width:100% !important;
+  border-radius:inherit;
+  box-shadow:5px 5px 5px #D0D0D0;
 }
 
 .member-graphic-text-top{
