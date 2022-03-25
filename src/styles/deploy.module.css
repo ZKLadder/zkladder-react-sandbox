@@ -147,6 +147,13 @@
   color:#16434B;
 }
 
+
+.image-preview{
+  max-width:100%;
+  max-height:90%;
+  object-fit:contain;
+}
+
 .script-upload{
   flex: 1;
   text-align: center;
