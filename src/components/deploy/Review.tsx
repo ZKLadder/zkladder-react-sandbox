@@ -91,7 +91,7 @@ function Review() {
               <Col className={style['template-title']}>
                 Collection Image:
                 <span style={{ height: '21vh' }} className={style['config-field']}>
-                  <img data-testid="imagePreview" alt={deploy.config.image.name} className="image-preview" src={URL.createObjectURL(deploy.config.image)} />
+                  <img data-testid="imagePreview" alt={deploy.config.image.name} className={style['image-preview']} src={URL.createObjectURL(deploy.config.image)} />
                 </span>
               </Col>
             ) : null}

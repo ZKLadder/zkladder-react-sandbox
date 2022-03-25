@@ -169,7 +169,7 @@ function ConfigureContract() {
               ? (
                 <div style={{ height: '21vh' }}>
                   {/* Image dropzone */}
-                  <img data-testid="imagePreview" alt={deploy.config.image.name} className="image-preview" src={URL.createObjectURL(deploy.config.image)} />
+                  <img data-testid="imagePreview" alt={deploy.config.image.name} className={style['image-preview']} src={URL.createObjectURL(deploy.config.image)} />
                   <XCircleFill
                     data-testid="removeImage"
                     className={style['cancel-icon-image']}
