@@ -34,3 +34,49 @@
   height: 90px;
   margin: 4px;
 }
+
+.post-menu {
+  padding-top: 40px;
+  padding-bottom: 80px;
+  overflow-x: scroll;
+}
+
+.events-menu {
+  padding-top: 80px;
+  padding-bottom: 40px;
+  overflow-x: scroll;
+}
+
+.bg-light.text-white.posts.card {
+  max-width: 306.4px;
+}
+
+.bg-light.text-white.events.card {
+  max-width: 227.4px;
+}
+
+img.card-img.post-img {
+  height: 200px;
+}
+
+img.card-img.event-img {
+  height: 150px;
+}
+
+.title-box {
+  position: absolute;
+  padding-top: 8px;
+  margin-bottom: 0;
+  width: 150px;
+  height: 40px;
+  bottom: 20px;
+  right: 5px;
+  background-color: #E02456;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.title-box span {
+  font-size: 10pt;
+  font-weight: bold;
+}
