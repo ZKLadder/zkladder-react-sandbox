@@ -103,10 +103,28 @@
   color:#DB0056;
   font-weight: bold;
   font-size: 90%;
+  display:flex;
+}
+
+.my-projects-link{
+  color:#DB0056;
+  font-weight: normal;
+  font-size: 80%;
+  align-self:center;
+  margin-left:auto;
+}
+
+.my-projects-link:hover{
+  color:#DB0056;
+  font-weight: normal;
+  font-size: 80%;
+  align-self:center;
+  margin-left:auto;
+  cursor:pointer;
 }
 
 .dashboard-create-project{
-  height:20vh;
+  aspect-ratio:1.4/1;
   border:1px dashed gray;
   border-radius:10px;
   display: flex;
@@ -119,4 +137,66 @@
   color:#DB0056;
   border:1px solid #DB0056;
   font-weight:bold;
+}
+
+.contract-image{
+  aspect-ratio:1.4/1;
+  width:100%;
+  display: flex;
+  border-radius:10px;
+}
+
+.contract-label{
+  width:80%;
+  background-color: white;
+  position:absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  z-index:1;
+  border-radius:5px;
+  padding:5px;
+}
+
+.contract-label:hover{
+  width:82%;
+  background-color: white;
+  position:absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  z-index:1;
+  border-radius:5px;
+  padding:7px;
+  cursor:pointer;
+}
+
+.contract-name{
+  font-size:16px;
+  font-weight:bold;
+  color: #16434B;
+}
+
+.contract-figure {
+  background-color:#F5F5F5;
+  margin:3px 2px 0px 2px;
+  padding:5px;
+  border-radius:2px 2px 10px 10px;
+}
+
+.figure-title{
+  font-size:12px;
+  color: #16434B;
+  display:block;
+  font-weight: bold;
+}
+
+.figure{
+  font-size:16px;
+  color: #16434B;
+  font-weight: bold;
+}
+
+.network-logo{
+  width:30px;
 }

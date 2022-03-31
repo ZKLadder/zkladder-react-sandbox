@@ -8,6 +8,7 @@ import { Ipfs, MemberNft } from '@zkladder/zkladder-sdk-ts';
 import Review from '../../../components/deploy/Review';
 import { deployState } from '../../../state/deploy';
 import { walletState } from '../../../state/wallet';
+import { createContract } from '../../../utils/api';
 
 global.URL.createObjectURL = jest.fn(() => ('mockData.png'));
 
@@ -29,6 +30,10 @@ jest.mock('../../../config', () => ({
     projectId: 'mockProjectId',
     projectSecret: 'mockProjectSecret',
   },
+}));
+
+jest.mock('../../../utils/api', () => ({
+  createContract: jest.fn(),
 }));
 
 const roles = [
@@ -57,11 +62,13 @@ const initializeState = (settings:any) => {
   settings.set(walletState, {
     chainId: 4,
     provider: 'MOCKPROVIDER',
+    address: ['mockuser'],
   });
 };
 
 const mockIpfs = Ipfs as jest.Mocked<any>;
 const mockDeploy = MemberNft.deploy as jest.Mocked<any>;
+const mockCreateContract = createContract as jest.Mocked<any>;
 
 function RecoilObserver({ node, onChange }:{node:any, onChange:any}) {
   const value = useRecoilValue(node);
@@ -116,7 +123,9 @@ describe('DefineRoles component tests', () => {
       Hash: 'scriptHash',
     }]);
 
-    await userEvent.click(screen.getByText('MINT YOUR MEMBER NFT'));
+    mockDeploy.mockResolvedValueOnce({ address: '0xmockContract' });
+
+    await userEvent.click(screen.getByText('DEPLOY YOUR SMART CONTRACT'));
 
     await waitFor(() => {
       expect(mockDeploy).toHaveBeenCalledWith({
@@ -134,6 +143,13 @@ describe('DefineRoles component tests', () => {
           projectId: 'mockProjectId',
           projectSecret: 'mockProjectSecret',
         },
+      });
+
+      expect(mockCreateContract).toHaveBeenCalledWith({
+        address: '0xmockContract',
+        creator: 'mockuser',
+        chainId: '4',
+        templateId: '3',
       });
     });
   });
@@ -157,7 +173,7 @@ describe('DefineRoles component tests', () => {
 
     mockDeploy.mockRejectedValueOnce(new Error('An error occured'));
 
-    await userEvent.click(screen.getByText('MINT YOUR MEMBER NFT'));
+    await userEvent.click(screen.getByText('DEPLOY YOUR SMART CONTRACT'));
 
     await waitFor(() => {
       expect(screen.getByText('An error occured')).toBeVisible();

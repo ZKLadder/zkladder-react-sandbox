@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-  request, getSession, createSession, deleteSession, storeVoucher, getVoucher,
+  request, getSession, createSession, deleteSession, storeVoucher, getVoucher, createContract, getContract,
 } from '../../utils/api';
 
 jest.mock('axios', () => ({ request: jest.fn() }));
@@ -176,5 +176,58 @@ describe('getVoucher tests', () => {
     });
 
     expect(response).toStrictEqual({ voucher: 'mocked' });
+  });
+});
+
+describe('createContract tests', () => {
+  test('createContract correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { contract: 'mocked' } });
+
+    const contractOptions = {
+      address: '0xcontract',
+      creator: '0xuser',
+      chainId: '10',
+      templateId: '123',
+    };
+    const response = await createContract(contractOptions);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'post',
+      url: '/v1/contracts',
+      data: contractOptions,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ contract: 'mocked' });
+  });
+});
+
+describe('getContract tests', () => {
+  test('getContract correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { contract: 'mocked' } });
+
+    const contractOptions = {
+      address: '0xcontract',
+      creator: '0xuser',
+      chainId: '10',
+    };
+    const response = await getContract(contractOptions);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'get',
+      url: '/v1/contracts',
+      params: contractOptions,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ contract: 'mocked' });
   });
 });
