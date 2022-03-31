@@ -27,7 +27,7 @@ interface GetVoucherOptions{
 interface CreateContractOptions {
   address: string,
   creator: string,
-  admins: string[],
+  admins?: string[],
   chainId: string,
   templateId: string,
   projectId?: string,

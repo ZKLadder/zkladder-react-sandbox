@@ -11,7 +11,7 @@ import TokenQuery from '../../../components/nft/TokenQuery';
 const mockOwnerOf = jest.fn();
 const mockTokenUri = jest.fn();
 const mockGetApproved = jest.fn();
-const mockSafeTransferFromAndWait = jest.fn();
+const mockSafeTransferFrom = jest.fn();
 
 const initializeState = (settings:any) => {
   settings.set(walletState, { address: ['0x123456789'] });
@@ -26,7 +26,7 @@ const initializeState = (settings:any) => {
       tokenUri: mockTokenUri,
       ownerOf: mockOwnerOf,
       getApproved: mockGetApproved,
-      safeTransferFromAndWait: mockSafeTransferFromAndWait,
+      safeTransferFrom: mockSafeTransferFrom,
     },
   });
 };
@@ -142,6 +142,7 @@ describe('TokenQuery component tests', () => {
     mockOwnerOf.mockResolvedValueOnce('0x123456789');
     mockTokenUri.mockResolvedValueOnce('https://token101.com');
     mockGetApproved.mockResolvedValueOnce('0x000000');
+    mockSafeTransferFrom.mockResolvedValueOnce({ wait: jest.fn() });
 
     render(
       <RecoilRoot initializeState={initializeState}>
@@ -174,7 +175,7 @@ describe('TokenQuery component tests', () => {
     await userEvent.click(transferButton);
 
     await waitFor(() => {
-      expect(mockSafeTransferFromAndWait).toHaveBeenCalledWith('0x123456789', '0x987654321', 101);
+      expect(mockSafeTransferFrom).toHaveBeenCalledWith('0x123456789', '0x987654321', 101);
       expect(screen.getByText('Token URI : https://token101.com')).toBeVisible();
       expect(screen.getByText('Owned by : 0x987654321')).toBeVisible();
       expect(screen.getByText('Approved operator : 0x000000')).toBeVisible();
@@ -185,7 +186,7 @@ describe('TokenQuery component tests', () => {
     mockOwnerOf.mockResolvedValueOnce('0x123456789');
     mockTokenUri.mockResolvedValueOnce('https://token101.com');
     mockGetApproved.mockResolvedValueOnce('0x000000');
-    mockSafeTransferFromAndWait.mockRejectedValue({ message: 'Error with transfer' });
+    mockSafeTransferFrom.mockRejectedValue({ message: 'Error with transfer' });
 
     render(
       <RecoilRoot initializeState={initializeState}>
@@ -218,7 +219,7 @@ describe('TokenQuery component tests', () => {
     await userEvent.click(transferButton);
 
     await waitFor(() => {
-      expect(mockSafeTransferFromAndWait).toHaveBeenCalledWith('0x123456789', '0x987654321', 101);
+      expect(mockSafeTransferFrom).toHaveBeenCalledWith('0x123456789', '0x987654321', 101);
       expect(screen.getByText('Token URI : https://token101.com')).toBeVisible();
       expect(screen.queryByText('Owned by : 0x987654321')).not.toBeInTheDocument();
       expect(screen.getByText('Owned by : 0x123456789')).toBeVisible();

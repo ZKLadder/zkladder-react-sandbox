@@ -216,7 +216,6 @@ function Review() {
                 await createContract({
                   address: deployTx.address,
                   creator: address?.[0] as string,
-                  admins: [],
                   chainId: chainId?.toString() as string,
                   templateId: '3',
                 });

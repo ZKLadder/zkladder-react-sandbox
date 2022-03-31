@@ -91,7 +91,8 @@ function TokenQuery() {
                   && tokenData.approved.toLowerCase() !== currentAddress?.[0]?.toLowerCase()) {
                     throw new Error('You are not the owner and are not approved to move this token');
                   }
-                  await nftInstance?.safeTransferFromAndWait(tokenData.tokenOwner, transferAddress, tokenId);
+                  const tx = await nftInstance?.safeTransferFrom(tokenData.tokenOwner, transferAddress, tokenId);
+                  await tx?.wait();
                   setLoadingState({ transferLoading: false });
                   setTokenData({
                     ...tokenData, tokenOwner: transferAddress,
