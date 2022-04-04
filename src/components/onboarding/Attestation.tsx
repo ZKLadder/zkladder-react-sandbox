@@ -41,8 +41,8 @@ function Attestation() {
         <p className={style.description}> UPLOAD HERE:</p>
         {acceptedFiles.length
           ? (
-            <div style={{ display: 'flex', height: '320px' }}>
-              {/* Image dropzone */}
+            <div style={{ display: 'flex' }}>
+              {/* Image preview */}
               <img data-testid="imagePreview" alt={acceptedFiles[0].name} className={style['image-preview']} src={URL.createObjectURL(acceptedFiles[0])} />
               <XCircleFill
                 data-testid="removeImage"
@@ -55,8 +55,8 @@ function Attestation() {
             </div>
           )
           : (
-            <div data-testid="dropzone" {...getRootProps({ style: { height: '40vh' } })}>
-              {/* File Preview */}
+            <div data-testid="dropzone" {...getRootProps({ style: { height: '98%' } })}>
+              {/* Image dropzone */}
               <Card className={style['file-upload']} />
               <input data-testid="fileInput" {...getInputProps()} />
             </div>
