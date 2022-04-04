@@ -34,7 +34,7 @@ function DashboardSidebar() {
   return p5Sketch
     ? (
       <Container>
-        <div id="memberDash" style={{ position: 'relative' }}>
+        <div id="memberDash" className={style['art-wrapper']}>
           <P5Sketch
             className={style.p5Sketch}
             config={{ tokenSeed: memberToken?.metadata.tokenSeed }}
