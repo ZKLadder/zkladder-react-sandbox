@@ -12,7 +12,7 @@ function UnauthenticatedSidebar() {
   return (
     <Container>
       <img
-        alt=""
+        alt="zkl-logo"
         src={logo}
         width="205"
         height="35"
@@ -66,7 +66,7 @@ function UnauthenticatedSidebar() {
           <Card.Body>
             <Card.Text>
               <Row>
-                <Col className="column number-text"><span><b>125 </b></span></Col>
+                <Col className="column number-text"><span><b>150 </b></span></Col>
                 <Col className="column card-text"><span>NFTs Minted</span></Col>
               </Row>
             </Card.Text>

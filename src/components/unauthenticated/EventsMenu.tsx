@@ -2,9 +2,9 @@ import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { Row, Col, Card } from 'react-bootstrap';
 
-const EVENTS = gql`
+export const EVENTS = gql`
   query UpcomingEvents {
-    events(last: 3) {
+    events(last: 4, orderBy: date_ASC) {
       title
       date
       description
@@ -19,22 +19,29 @@ const EVENTS = gql`
 function EventsMenu() {
   const { loading, error, data } = useQuery(EVENTS);
 
+  const formatDate = (date: any) => {
+    const dateTimeString = new Date(date).toString();
+    const dateAsArray = dateTimeString.split(' ');
+    const dateString = dateAsArray[0].concat(' ', dateAsArray[1], ' ', dateAsArray[2]);
+    return dateString;
+  };
+
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (error) return <h1>Error: {error.message}</h1>;
 
   return (
     <div className="events-menu">
+      <p className="menu-name">UPCOMING EVENTS</p>
       <Row>
-        {/* TODO: create cards to match UI mockups */}
         {data.events.map((event: any) => (
           <Col key={event.id}>
             <Card className="bg-light text-white events">
               <Card.Img className="event-img" src={event.image.url} alt={event.image.fileName} />
               <Card.ImgOverlay>
-                <div className="title-box">
-                  <span>{event.title.toUpperCase()}</span>
+                <div className="date-box">
+                  <span>{formatDate(event.date).toUpperCase()}</span>
                 </div>
-                <h3>{event.date}</h3>
+                <h3 className="event-title">{event.title.toUpperCase()}</h3>
               </Card.ImgOverlay>
             </Card>
           </Col>
@@ -42,59 +49,6 @@ function EventsMenu() {
       </Row>
     </div>
   );
-  /* const [events, setEvents] = useState<Event[]>();
-
-  interface Event {
-    title:string,
-    date:string,
-    description:string,
-    image:{
-      url:string,
-      fileName:string
-    }
-  }
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const { latestEvents } = await request(
-        'https://api-us-east-1.graphcms.com/v2/cl12mkshi8t8s01za53ae9b2y/master',
-        `{
-          events(last: 3, after: "${new Date()}") {
-            title
-            date
-            description
-            image {
-              url
-              fileName
-            }
-          }
-        }`,
-      );
-      setEvents(latestEvents);
-    }; fetchEvents();
-  });
-
-  const renderEvents = () => events.map((event) => (
-    <Col>
-      <h1>{event.title}</h1>
-      <h2>{event.date}</h2>
-      <img src={event.image.url} alt={event.image.fileName} />
-    </Col>
-  ));
-
-  return (
-    <div>
-      {!events ? (
-        <h1>
-          Loading...
-        </h1>
-      ) : (
-        <Row>
-          {renderEvents()}
-        </Row>
-      )}
-    </div>
-  ); */
 }
 
 export default EventsMenu;

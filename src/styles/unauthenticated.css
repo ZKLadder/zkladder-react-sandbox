@@ -1,12 +1,10 @@
+/* Sidebar Styling */
+
 .description {
   color: #DB0056;
   font-size: 16px;
   margin-top: 10px;
 }
-
-/* .card-row {
-  margin-bottom: 5px;
-} */
 
 .column {
   word-wrap: normal;
@@ -35,39 +33,13 @@
   margin: 4px;
 }
 
-.post-menu {
-  padding-top: 40px;
-  padding-bottom: 80px;
-  overflow-x: scroll;
-}
-
-.events-menu {
-  padding-top: 80px;
-  padding-bottom: 40px;
-  overflow-x: scroll;
-}
-
-.bg-light.text-white.posts.card {
-  max-width: 306.4px;
-}
-
-.bg-light.text-white.events.card {
-  max-width: 227.4px;
-}
-
-img.card-img.post-img {
-  height: 200px;
-}
-
-img.card-img.event-img {
-  height: 150px;
-}
+/* Main Menu Overall Styling */
 
 .title-box {
   position: absolute;
   padding-top: 8px;
   margin-bottom: 0;
-  width: 150px;
+  width: 125px;
   height: 40px;
   bottom: 20px;
   right: 5px;
@@ -79,4 +51,110 @@ img.card-img.event-img {
 .title-box span {
   font-size: 10pt;
   font-weight: bold;
+}
+
+/* Posts Menu Styling */
+
+.post-menu {
+  padding-top: 20px;
+  padding-bottom: 40px;
+  overflow-x: scroll;
+}
+
+.text-white.posts.card {
+  box-shadow: 5px 5px 5px grey;
+  max-width: 277px;
+}
+
+img.card-img.post-img {
+  width: 275px;
+  height: 275px;
+}
+
+.text-white.featured-dao.card {
+  box-shadow: 5px 5px 5px grey;
+  max-width: 354px;
+}
+
+img.card-img.featured-dao-img {
+  width: 350px;
+  height: 350px;
+}
+
+.card-img-overlay p {
+  position: absolute;
+  padding: 0 10px 0 10px;
+  border-radius: 5px;
+  bottom: 30%;
+  left: 1px;
+  font-size: 14pt;
+  font-style: italic;
+  background-color: #FFFFFF;
+  color: grey;
+}
+
+#featured-dao-sub-head{
+  font-size: 20pt;
+}
+
+.post-description-box {
+  text-align: right;
+  padding-top: 20px;
+  border-bottom: 1px grey;
+  color: #DB0056;
+}
+
+/* Events Styling */
+
+.events-menu {
+  bottom: 0;
+  padding-top: 60px;
+  padding-bottom: 40px;
+  overflow-x: scroll;
+}
+
+.bg-light.text-white.events.card {
+  max-width: 227.4px;
+}
+
+img.card-img.event-img {
+  height: 150px;
+}
+
+.date-box {
+  position: absolute;
+  padding-top: 4px;
+  margin-bottom: 0;
+  width: 100px;
+  height: 30px;
+  top: 5px;
+  left: 5px;
+  background-color: #E02456;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.date-box span {
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+.event-title {
+  background-color: white;
+  padding: 5px;
+  border-radius: 2px;
+  position: absolute;
+  bottom: 0px;
+  left: 5px;
+  font-size: 10pt;
+  color: #DB0056;
+  font-weight: bold;
+}
+
+.menu-name {
+  font-weight: bolder;
+  text-shadow: 1px 1px grey;
+  font-size: 16pt;
+  color: #DB0056;
+  left: 5px;
 }
