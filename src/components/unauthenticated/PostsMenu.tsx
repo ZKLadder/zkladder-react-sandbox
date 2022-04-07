@@ -29,14 +29,7 @@ function PostsMenu() {
   const { loading, error, data } = useQuery(POSTS);
 
   if (loading) return <p>Loading...</p>;
-  if (error) {
-    return (
-      <h1>
-        Error:
-        {error.message}
-      </h1>
-    );
-  }
+  if (error) return <h1>Error: {error.message}</h1>;  
 
   return (
     <div className="post-menu">

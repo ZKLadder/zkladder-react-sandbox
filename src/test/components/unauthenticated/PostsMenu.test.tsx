@@ -27,6 +27,7 @@ describe('Posts Menu component', () => {
             postCategories: [
               {
                 name: 'Featured DAO',
+                id: '1',
                 posts: [
                   {
                     id: '1',
@@ -37,15 +38,22 @@ describe('Posts Menu component', () => {
                       {
                         url: 'https://www.fillmurray.com/200/300',
                         fileName: 'murray1.jpg'
-                      }
+                      },
+                      {
+                        url: 'https://www.fillmurray.com/200/300',
+                        fileName: 'murray2.jpg'
+                      },
                     ],
                     slug: 'title-1',
-                    text: 'This is the text'
+                    text: {
+                      markdown: 'This is the text'
+                    }
                   }
                 ]
               },
               {
                 name: 'Latest News',
+                id: '2',
                 posts: [
                   {
                     id: '2',
@@ -55,7 +63,7 @@ describe('Posts Menu component', () => {
                     images: [
                       {
                         url: 'https://www.fillmurray.com/200/300',
-                        fileName: 'murray2.jpg'
+                        fileName: 'murray3.jpg'
                       }
                     ],
                     slug: 'title-2',
@@ -82,10 +90,11 @@ describe('Posts Menu component', () => {
       expect(screen.getByText('SUB-HEADLINE 1')).toBeVisible();
       expect(screen.getByText('Description 1')).toBeVisible();
       expect(screen.getByAltText('murray1.jpg')).toBeVisible();
+      expect(screen.getByAltText('murray2.jpg')).toBeVisible();
 
       expect(screen.getByText('LATEST NEWS')).toBeVisible();
       expect(screen.getByText('SUB-HEADLINE 2')).toBeVisible();
-      expect(screen.getByAltText('murray2.jpg')).toBeVisible();
+      expect(screen.getByAltText('murray3.jpg')).toBeVisible();
     })
   })
 
