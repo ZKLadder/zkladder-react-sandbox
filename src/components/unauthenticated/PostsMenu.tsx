@@ -60,8 +60,15 @@ function PostsMenu() {
                   </Card.ImgOverlay>
                 </Card>
                 <div className="post-description-box">
-                  <h4><b>{category.posts[0].title.toUpperCase()}</b></h4>
-                  <p>{category.posts[0].fullDescription}</p>
+                  <img
+                    className="featured-dao-secondary-img"
+                    src={category.posts[0].images[1].url}
+                    alt={category.posts[0].images[1].fileName}
+                  />
+                  <div className="post-description-text">
+                    <h4><b>{category.posts[0].title.toUpperCase()}</b></h4>
+                    <p>{category.posts[0].fullDescription}</p>
+                  </div>
                 </div>
               </Col>
             );

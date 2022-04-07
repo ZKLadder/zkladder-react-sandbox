@@ -98,10 +98,24 @@ img.card-img.featured-dao-img {
 }
 
 .post-description-box {
+  display: inline-flex;
   text-align: right;
   padding-top: 20px;
   border-bottom: 1px grey;
   color: #DB0056;
+}
+
+img.featured-dao-secondary-img {
+  top: 5px;
+  left: 5px;
+  padding-right: 5px;
+  width: 150px;
+  height: 75px;
+}
+
+.post-description-box {
+  position: relative;
+  padding-right: 10px;
 }
 
 /* Events Styling */
