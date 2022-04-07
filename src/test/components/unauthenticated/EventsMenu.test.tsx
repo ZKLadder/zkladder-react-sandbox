@@ -34,33 +34,6 @@ describe('Events Menu component', () => {
                   fileName: 'murray1.jpg'
                 }
               },
-              {
-                title: 'Title 2',
-                date: '2022-12-29T12:00:00+05:00',
-                description: 'Description 2',
-                image: {
-                  url: 'https://www.fillmurray.com/200/300',
-                  fileName: 'murray2.jpg'
-                }
-              },
-              {
-                title: 'Title 3',
-                date: '2022-12-30T12:00:00+05:00',
-                description: 'Description 3',
-                image: {
-                  url: 'https://www.fillmurray.com/200/300',
-                  fileName: 'murray3.jpg'
-                }
-              },
-              {
-                title: 'Title 4',
-                date: '2022-12-31T12:00:00+05:00',
-                description: 'Description 4',
-                image: {
-                  url: 'https://www.fillmurray.com/200/300',
-                  fileName: 'murray4.jpg'
-                }
-              }
             ]
           }
         }
@@ -76,35 +49,21 @@ describe('Events Menu component', () => {
       expect(screen.getByText('TITLE 1')).toBeVisible();
       expect(screen.getByText('WED DEC 28')).toBeVisible();
       expect(screen.getByAltText('murray1.jpg')).toBeVisible();
-
-      expect(screen.getByText('TITLE 2')).toBeVisible();
-      expect(screen.getByText('THU DEC 29')).toBeVisible();
-      expect(screen.getByAltText('murray2.jpg')).toBeVisible();
-
-      expect(screen.getByText('TITLE 3')).toBeVisible();
-      expect(screen.getByText('FRI DEC 30')).toBeVisible();
-      expect(screen.getByAltText('murray3.jpg')).toBeVisible();
-
-      expect(screen.getByText('TITLE 4')).toBeVisible();
-      expect(screen.getByText('SAT DEC 31')).toBeVisible();
-      expect(screen.getByAltText('murray4.jpg')).toBeVisible();
     })
   })
 
   test('Renders Error message when API call fails', async () => {
-    const mocks = [
+    const mockError = [
       {
         request: {
           query: EVENTS,
         },
-        result: {
-          data: null,
-        }
+        error: new Error('Response not successful: Received status code 400'),
       }
     ];
 
     render(
-      <MockedProvider mocks={mocks}>
+      <MockedProvider mocks={mockError}>
         <EventsMenu />
       </MockedProvider>
     );

@@ -29,6 +29,7 @@ describe('Posts Menu component', () => {
                 name: 'Featured DAO',
                 posts: [
                   {
+                    id: '1',
                     title: 'Title 1',
                     subHeadline: 'Sub-Headline 1',
                     fullDescription: 'Description 1',
@@ -37,7 +38,9 @@ describe('Posts Menu component', () => {
                         url: 'https://www.fillmurray.com/200/300',
                         fileName: 'murray1.jpg'
                       }
-                    ]
+                    ],
+                    slug: 'title-1',
+                    text: 'This is the text'
                   }
                 ]
               },
@@ -45,6 +48,7 @@ describe('Posts Menu component', () => {
                 name: 'Latest News',
                 posts: [
                   {
+                    id: '2',
                     title: 'Title 2',
                     subHeadline: 'Sub-Headline 2',
                     fullDescription: 'Description 2',
@@ -53,7 +57,11 @@ describe('Posts Menu component', () => {
                         url: 'https://www.fillmurray.com/200/300',
                         fileName: 'murray2.jpg'
                       }
-                    ]
+                    ],
+                    slug: 'title-2',
+                    text: {
+                      markdown: 'This is the text'
+                    }
                   }
                 ]
               }
@@ -82,19 +90,17 @@ describe('Posts Menu component', () => {
   })
 
   test('Renders Error message when API call fails', async () => {
-    const mocks = [
+    const mockError = [
       {
         request: {
           query: POSTS,
         },
-        result: {
-          data: null,
-        }
+        error: new Error('Response not successful: Received status code 400')
       }
     ];
 
     render(
-      <MockedProvider mocks={mocks}>
+      <MockedProvider mocks={mockError}>
         <PostsMenu />
       </MockedProvider>
     );
