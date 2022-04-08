@@ -32,16 +32,11 @@ function Login() {
             setErrorState(false);
 
             try {
-              // Timeout to prevent 'Awaiting connection to wallet' from flashing if metamask already connected
-              const timeoutId = setTimeout(() => {
-                setLoading({ connectingWallet: true });
-              }, 500);
+              setLoading({ connectingWallet: true });
 
               const {
                 address, balance, provider, chainId,
               } = await connect();
-
-              clearTimeout(timeoutId);
 
               setLoading({ requestingSignature: true });
 

@@ -7,7 +7,6 @@ import { XCircleFill } from 'react-bootstrap-icons';
 import { walletState } from '../../../state/wallet';
 import logo from '../../../images/navbar/mint_logo.png';
 import banner from '../../../images/navbar/mint_banner.png';
-import connectImage from '../../../images/navbar/mint_connect.png';
 import { connect, apiSession, disconnect } from '../../../utils/walletConnect';
 import Error from '../../shared/Error';
 import style from '../../../styles/navbar.module.css';
@@ -96,21 +95,11 @@ function OnboardingNavbar() {
                       }
                     }}
                   >
-                    <img
-                      className={style['connect-image']}
-                      alt=""
-                      src={connectImage}
-                      width="260"
-                      height="80"
-                    />
-                    <p className={style['connect-text']}>
-                      MEMBERS CONNECT YOUR WALLET
-                    </p>
+                    MEMBERS CONNECT YOUR WALLET
                   </button>
                 </div>
               )}
           </Nav>
-
           {/* Error Indicator */}
           <div style={{ paddingLeft: '10px' }}>
             {(errorState || wallet.reason) ? <Error text={errorState || wallet.reason || 'It appears your account does not have access'} /> : null}

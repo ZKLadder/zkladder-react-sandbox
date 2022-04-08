@@ -5,7 +5,9 @@ import { QrCode } from 'react-bootstrap-icons';
 import { MemberNft } from '@zkladder/zkladder-sdk-ts';
 import style from '../../styles/onboarding.module.css';
 import { walletState } from '../../state/wallet';
-import { connect, apiSession, disconnect } from '../../utils/walletConnect';
+import {
+  connect, apiSession, disconnect, switchChain,
+} from '../../utils/walletConnect';
 import { onboardingState } from '../../state/onboarding';
 import { getVoucher } from '../../utils/api';
 import config from '../../config';
@@ -27,20 +29,27 @@ function ConnectWallet() {
   useEffect(() => {
     async function checkConnection() {
       try {
-        if (wallet.isConnected && !wallet.isMember && wallet.chainId?.toString() === config.zkl.memberNftChainId) {
+        if (wallet.isConnected && !wallet.isMember) {
           setLoading('Looks like you are already connected. Please wait one second while we check your wallet...');
+
+          // Check for voucher - throws if one does not exist
+          const mintVoucher = await getVoucher({
+            userAddress: wallet?.address?.[0] as string,
+            contractAddress: config.zkl.memberNft,
+            chainId: parseInt(config.zkl.memberNftChainId, 10),
+            roleId: 'Member',
+          });
+
+          // User is connected with the wrong chain
+          if (wallet.isConnected && wallet.chainId?.toString() !== config.zkl.memberNftChainId) {
+            throw new Error(incorrectChainMessage);
+          }
+
           const zklMemberNft = await MemberNft.setup({
             provider: wallet?.provider,
             address: config.zkl.memberNft,
             infuraIpfsProjectId: config.ipfs.projectId,
             infuraIpfsProjectSecret: config.ipfs.projectSecret,
-          });
-
-          const mintVoucher = await getVoucher({
-            userAddress: wallet?.address?.[0] as string,
-            contractAddress: config.zkl.memberNft,
-            chainId: wallet?.chainId as number,
-            roleId: 'Member',
           });
 
           setLoading(false);
@@ -56,12 +65,6 @@ function ConnectWallet() {
         if (wallet.isConnected && wallet.isMember) {
           setLoading(false);
           setError(existingMemberMessage);
-        }
-
-        // User is connected with the wrong chain
-        if (wallet.isConnected && wallet.chainId?.toString() !== config.zkl.memberNftChainId) {
-          setLoading(false);
-          setError(incorrectChainMessage);
         }
       } catch (err:any) {
         setLoading(false);
@@ -80,12 +83,7 @@ function ConnectWallet() {
     try {
       setLoading('Connecting wallet...');
       providerDetails = await connect();
-    } catch (err:any) {
-      setLoading(false);
-      setError(err.message);
-    }
 
-    try {
       setLoading('Awaiting signature...');
       // Attempt to create an API session
       await apiSession(
@@ -100,10 +98,15 @@ function ConnectWallet() {
       if (err?.message === 'Your Eth account does not have access') {
         setLoading('Checking whitelist...');
         try {
-          if (providerDetails?.chainId.toString() !== config.zkl.memberNftChainId) {
-            await disconnect();
-            throw new Error(incorrectChainMessage);
-          }
+          setWalletState({ ...providerDetails, isConnected: true, isMember: false });
+
+          // Attempt to get voucher from ZKL API
+          mintVoucher = await getVoucher({
+            userAddress: providerDetails?.address[0] as string,
+            contractAddress: config.zkl.memberNft,
+            chainId: parseInt(config.zkl.memberNftChainId, 10),
+            roleId: 'Member',
+          });
 
           // Attempt to instantiate instance of MemberNft
           zklMemberNft = await MemberNft.setup({
@@ -113,15 +116,10 @@ function ConnectWallet() {
             infuraIpfsProjectSecret: config.ipfs.projectSecret,
           });
 
-          // Attempt to get voucher from ZKL API
-          mintVoucher = await getVoucher({
-            userAddress: providerDetails.address[0],
-            contractAddress: config.zkl.memberNft,
-            chainId: providerDetails.chainId,
-            roleId: 'Member',
-          });
+          if (providerDetails?.chainId.toString() !== config.zkl.memberNftChainId) {
+            throw new Error(incorrectChainMessage);
+          }
 
-          setWalletState({ ...providerDetails, isConnected: true, isMember: false });
           setOnboardingState({
             ...onboarding,
             zklMemberNft,
@@ -176,8 +174,56 @@ function ConnectWallet() {
         and the Ethereum blockchain. This will allow you to mint the ZK Ladder member token and give you access to the network.
       </p>
 
-      {/* Error and Loading indicators */}
+      {/* Error Indicator */}
       {error ? (<ErrorComponent text={error} />) : null}
+
+      {/* Switch chain button */}
+      {error === incorrectChainMessage
+        ? (
+          <Button
+            className={style['active-button']}
+            style={{ fontWeight: 'normal' }}
+            onClick={async () => {
+              try {
+                setLoading('Switching chain');
+                setError(false);
+                const success = await switchChain('137');
+                if (success) {
+                  const providerDetails = await connect(false);
+
+                  const zklMemberNft = await MemberNft.setup({
+                    provider: providerDetails?.provider,
+                    address: config.zkl.memberNft,
+                    infuraIpfsProjectId: config.ipfs.projectId,
+                    infuraIpfsProjectSecret: config.ipfs.projectSecret,
+                  });
+
+                  const mintVoucher = await getVoucher({
+                    userAddress: wallet?.address?.[0] as string,
+                    contractAddress: config.zkl.memberNft,
+                    chainId: parseInt(config.zkl.memberNftChainId, 10),
+                    roleId: 'Member',
+                  });
+
+                  setOnboardingState({
+                    ...onboarding,
+                    zklMemberNft,
+                    mintVoucher,
+                    currentStep: 2,
+                  });
+                }
+              } catch (err:any) {
+                setLoading(false);
+                setError('Unable to switch chain. Please do so manually from your wallet interface');
+              }
+            }}
+          >
+            Switch to Polygon
+          </Button>
+        )
+        : null}
+
+      {/* Loading Indicator */}
       {loading ? (<Loading text={loading} />) : null}
 
     </Container>

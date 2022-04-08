@@ -4,6 +4,7 @@ import {
 } from 'react-bootstrap';
 import { useRecoilState } from 'recoil';
 import { XCircleFill } from 'react-bootstrap-icons';
+import { Link } from 'react-router-dom';
 import { walletState } from '../../../state/wallet';
 import logo from '../../../images/navbar/mint_logo.png';
 import banner from '../../../images/navbar/dashboard_banner.png';
@@ -33,18 +34,20 @@ function AuthenticatedNavbar() {
           />
 
           {/* Member Dashboard Banner */}
-          <div style={{ display: 'inline', position: 'relative' }}>
-            <img
-              className={style.logo}
-              alt=""
-              src={banner}
-              width="240"
-              height="50"
-            />
-            <p className={style['banner-text']}>
-              ZKL MEMBER DASHBOARD
-            </p>
-          </div>
+          <Link to="/dashboard">
+            <div style={{ display: 'inline', position: 'relative' }}>
+              <img
+                className={style.logo}
+                alt=""
+                src={banner}
+                width="240"
+                height="50"
+              />
+              <p className={style['banner-text']}>
+                ZKL MEMBER DASHBOARD
+              </p>
+            </div>
+          </Link>
         </Navbar.Brand>
 
         <Navbar.Toggle className="ml-auto" aria-controls="basic-navbar-nav" />

@@ -14,14 +14,14 @@ import { walletState } from '../../state/wallet';
 
 function Onboarding() {
   const [onboarding, setOnboardingState] = useRecoilState(onboardingState);
-  const { isConnected, isMember } = useRecoilValue(walletState);
+  const { isConnected, isMember, chainId } = useRecoilValue(walletState);
 
   // If user disconnects at any point - push back to first step
   useEffect(() => {
-    if (isConnected === false) {
+    if (isConnected === false || chainId !== 137) {
       setOnboardingState({ currentStep: 1 } as any);
     }
-  }, [isConnected, isMember]);
+  }, [isConnected, isMember, chainId]);
 
   return (
     <PageBody color={{ start: '#16434B', end: '#4EB9B1' }}>
