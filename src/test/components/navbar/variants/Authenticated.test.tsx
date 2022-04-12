@@ -2,6 +2,7 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import Authenticated from '../../../../components/navbar/variants/Authenticated';
 import { disconnect } from '../../../../utils/walletConnect';
 import { walletState } from '../../../../state/wallet';
@@ -31,7 +32,9 @@ describe('Navbar tests', () => {
   test('It renders', async () => {
     render(
       <RecoilRoot initializeState={initializeState}>
-        <Authenticated />
+        <MemoryRouter>
+          <Authenticated />
+        </MemoryRouter>
       </RecoilRoot>,
     );
 
@@ -44,7 +47,9 @@ describe('Navbar tests', () => {
   test('Disconnect wallet workflow', async () => {
     render(
       <RecoilRoot initializeState={initializeState}>
-        <Authenticated />
+        <MemoryRouter>
+          <Authenticated />
+        </MemoryRouter>
       </RecoilRoot>,
     );
 

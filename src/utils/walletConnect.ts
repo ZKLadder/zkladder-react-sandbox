@@ -130,15 +130,12 @@ const disconnect = async () => {
   window.localStorage.clear();
 };
 
-const switchChain = async (provider:any, chainId:string) => {
-  await provider.request({
-    method: 'wallet_switchEthereumChain',
-    params: [
-      {
-        chainId: `0x${parseInt(chainId, 10).toString(16)}`,
-      },
-    ],
+const switchChain = async (chainId:string): Promise<boolean> => {
+  const success = await onboard.setChain({
+    chainId: `0x${parseInt(chainId, 10).toString(16)}`,
+    wallet: localStorage.getItem('CACHED_WALLET_CONNECTION') as string,
   });
+  return success;
 };
 
 export {
