@@ -54,6 +54,12 @@ function PostsMenu() {
               slidesToShow: 2,
             },
           },
+          {
+            breakpoint: 891,
+            settings: {
+              slidesToShow: 1.5,
+            },
+          },
         ]}
       >
         {data.postCategories.map((category: any, i: any) => {
