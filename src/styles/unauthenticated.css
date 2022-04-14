@@ -61,24 +61,34 @@
   padding-bottom: 40px;
 }
 
+.glider-slide {
+  margin-right: 40px !important;
+}
+
 .text-white.posts.card {
   box-shadow: 5px 5px 5px grey;
-  width: 403px;
+  max-width: 403px;
+  min-width: 338px;
 }
 
 img.card-img.post-img {
-  width: 403px;
-  height: 403px;
+  max-width: 403px;
+  max-width: 403px;
+  min-width: 338px;
+  min-height: 338px;
 }
 
 .text-white.featured-dao.card {
   box-shadow: 5px 5px 5px grey;
-  width: 492px;
+  max-width: 492px;
+  min-width: 338px;
 }
 
 img.card-img.featured-dao-img {
-  width: 492px;
-  height: 492px;
+  max-width: 492px;
+  max-height: 492px;
+  min-width: 338px;
+  min-height: 338px;
 }
 
 .card-img-overlay p {
@@ -100,7 +110,7 @@ img.card-img.featured-dao-img {
 .post-description-box {
   display: inline-flex;
   position: relative;
-  width: 492px;
+  max-width: 492px;
   justify-content: center;
   align-items: center;
   padding-right: 10px;
@@ -124,16 +134,16 @@ img.featured-dao-secondary-img {
 /* Events Styling */
 
 .events-menu {
-  position: static;
+  /* position: relative; */
   max-width: 1150px;
-  bottom: 0;
+  /* bottom: 0; */
   padding-top: 60px;
   padding-bottom: 40px;
   overflow-x: scroll;
 }
 
 .bg-light.text-white.events.card {
-  width: 227.4px;
+  max-width: 227.4px;
 }
 
 img.card-img.event-img {

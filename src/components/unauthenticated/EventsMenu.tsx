@@ -1,6 +1,8 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
-import { Row, Col, Card } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
+import Glider from 'react-glider';
+import 'glider-js/glider.min.css';
 
 export const EVENTS = gql`
   query UpcomingEvents {
@@ -39,9 +41,28 @@ function EventsMenu() {
   return (
     <div className="events-menu">
       <p className="menu-name">UPCOMING EVENTS</p>
-      <Row>
+      <Glider
+        draggable
+        hasDots
+        slidesToShow={2}
+        slidesToScroll={3}
+        responsive={[
+          {
+            breakpoint: 1450,
+            settings: {
+              slidesToShow: 4,
+            },
+          },
+          {
+            breakpoint: 700,
+            settings: {
+              slidesToShow: 3,
+            },
+          },
+        ]}
+      >
         {data.events.map((event: any) => (
-          <Col key={event.id}>
+          <div key={event.id}>
             <Card className="bg-light text-white events">
               <Card.Img className="event-img" src={event.image.url} alt={event.image.fileName} />
               <Card.ImgOverlay>
@@ -51,9 +72,9 @@ function EventsMenu() {
                 <h3 className="event-title">{event.title.toUpperCase()}</h3>
               </Card.ImgOverlay>
             </Card>
-          </Col>
+          </div>
         ))}
-      </Row>
+      </Glider>
     </div>
   );
 }
