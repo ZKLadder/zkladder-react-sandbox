@@ -114,7 +114,8 @@ describe('Posts Menu component', () => {
       </MockedProvider>
     );
     await waitFor(() => {
-      expect(screen.getByText('Error: Response not successful: Received status code 400')).toBeVisible();
+      expect(screen.getByText('Error:')).toBeVisible();
+      expect(screen.getByText('Response not successful: Received status code 400')).toBeVisible();
     })
   })
 });

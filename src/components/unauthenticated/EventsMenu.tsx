@@ -27,7 +27,14 @@ function EventsMenu() {
   };
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <h1>Error: {error.message}</h1>;
+  if (error) {
+    return (
+      <div>
+        <h1>Error:</h1>
+        <h2>{error.message}</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="events-menu">

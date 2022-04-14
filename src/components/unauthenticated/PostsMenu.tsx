@@ -1,6 +1,8 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
-import { Row, Col, Card } from 'react-bootstrap';
+import Glider from 'react-glider';
+import 'glider-js/glider.min.css';
+import Card from 'react-bootstrap/Card';
 
 export const POSTS = gql`
   {
@@ -29,15 +31,35 @@ function PostsMenu() {
   const { loading, error, data } = useQuery(POSTS);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <h1>Error: {error.message}</h1>;  
+  if (error) {
+    return (
+      <div>
+        <h1>Error:</h1>
+        <h2>{error.message}</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="post-menu">
-      <Row>
+      <Glider
+        draggable
+        hasDots
+        slidesToShow={1}
+        slidesToScroll={3}
+        responsive={[
+          {
+            breakpoint: 1674,
+            settings: {
+              slidesToShow: 2,
+            },
+          },
+        ]}
+      >
         {data.postCategories.map((category: any, i: any) => {
           if (category.name === 'Featured DAO') {
             return (
-              <Col key={category.id}>
+              <div key={category.id}>
                 <p className="menu-name">{category.name.toUpperCase()}</p>
                 <Card className="bg-dark text-white featured-dao" id="featured-dao">
                   <Card.Img
@@ -63,12 +85,12 @@ function PostsMenu() {
                     <p>{category.posts[0].fullDescription}</p>
                   </div>
                 </div>
-              </Col>
+              </div>
             );
           }
 
           return (
-            <Col key={category.id}>
+            <div key={category.id}>
               <p className="menu-name">{category.name.toUpperCase()}</p>
               <Card className="bg-dark text-white posts" id={i + 1}>
                 <Card.Img
@@ -83,10 +105,10 @@ function PostsMenu() {
                   </div>
                 </Card.ImgOverlay>
               </Card>
-            </Col>
+            </div>
           );
         })}
-      </Row>
+      </Glider>
     </div>
   );
 }
