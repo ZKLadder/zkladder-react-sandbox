@@ -17,7 +17,7 @@ function Unauthenticated() {
           <Col className="sidebar d-none d-lg-block" lg={3}>
             <UnauthenticatedSidebar />
           </Col>
-          <Col>
+          <Col lg={9}>
             <PostsMenu />
             <EventsMenu />
           </Col>

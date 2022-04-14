@@ -49,7 +49,7 @@ function PostsMenu() {
         slidesToScroll={3}
         responsive={[
           {
-            breakpoint: 1674,
+            breakpoint: 1450,
             settings: {
               slidesToShow: 2,
             },
