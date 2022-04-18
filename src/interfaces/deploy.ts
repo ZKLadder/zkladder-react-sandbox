@@ -21,4 +21,4 @@ interface NewDeploymentStateInterface {
   roles: MemberNftRole[]
 }
 
-export type { NewDeploymentStateInterface };
+export type { NewDeploymentStateInterface, MemberNftRole };

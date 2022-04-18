@@ -1,25 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Container, Row, Col, Button,
 } from 'react-bootstrap';
 import { Plus } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { contractState } from '../../state/contract';
 import { walletState } from '../../state/wallet';
 import style from '../../styles/memberDashboard.module.css';
 import { getContract } from '../../utils/api';
-import ProjectBox from './ProjectBox';
+import ProjectBox from '../manageProjects/ProjectBox';
 
 function MyProjects() {
-  const [contracts, setContracts] = useState([]) as any[];
+  const [contracts, setContracts] = useRecoilState(contractState);
   const { address } = useRecoilValue(walletState);
 
+  // Fetch all of the users projects and filter based on search params
   useEffect(() => {
     async function getContracts() {
-      const contractRecords = await getContract({ userAddress: address?.[0] as string });
-      setContracts(contractRecords.slice(0, 2));
+      const contractRecords = await getContract({ userAddress: address?.[0] });
+      setContracts(contractRecords);
     }
-    getContracts();
+    if (!contracts.length) {
+      getContracts();
+    }
   }, []);
 
   return (
@@ -28,19 +32,15 @@ function MyProjects() {
         {/* Header Text */}
         <p className={style['my-projects-title']}>
           <span>MY PROJECTS</span>
-          <span className={style['my-projects-link']}>SHOW ALL</span>
+          <Link className={style['my-projects-link']} to="/projects">
+            <span>SHOW ALL</span>
+          </Link>
         </p>
         <hr className="d-lg-none" />
         <Row>
-          {/* Deploy Contracts Boxes (2 columns max) */}
-          {contracts.map((contract:{chainId:string, address:string, whitelisted:number}) => (
-            <Col className="my-auto" lg={4}>
-              <ProjectBox
-                whitelisted={contract.whitelisted}
-                chainId={contract.chainId}
-                address={contract.address}
-              />
-            </Col>
+          {/* Deployed Contracts Boxes (2 columns max) */}
+          {contracts.slice(0, 2).map((contract) => (
+            <ProjectBox contract={contract} />
           ))}
 
           {/* Create Project Box */}

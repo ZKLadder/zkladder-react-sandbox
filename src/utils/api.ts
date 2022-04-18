@@ -1,8 +1,9 @@
 import axios from 'axios';
 import {
-  HttpOptions, StoreVoucherOptions, GetVoucherOptions, CreateContractOptions, GetContractOptions,
+  HttpOptions, StoreVoucherOptions, GetVoucherOptions, CreateContractOptions, GetContractOptions, GetTransactionsOptions,
 } from '../interfaces/api';
 import config from '../config';
+
 /**
  * Generalized request wrapper used by other ZKL API functions
  * For a full list of endpoints: @TODO add API doc URL here
@@ -88,6 +89,16 @@ const getContract = async (options: GetContractOptions) => {
   return response;
 };
 
+const getTransactions = async (options: GetTransactionsOptions) => {
+  const response = await request({
+    method: 'get',
+    url: '/v1/data/transactions',
+    params: options,
+  });
+
+  return response;
+};
+
 export {
   getSession,
   createSession,
@@ -96,6 +107,7 @@ export {
   getVoucher,
   createContract,
   getContract,
+  getTransactions,
 
   // exported for unit testing
   request,

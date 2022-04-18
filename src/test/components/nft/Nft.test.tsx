@@ -45,7 +45,7 @@ const initializeAllTokensState = (settings:any) => {
   });
 };
 
-describe('Nft parent component', () => {
+describe.skip('Nft parent component', () => {
   test('Contract not selected', async () => {
     render(
       <RecoilRoot initializeState={initializeNotSelectedState}>

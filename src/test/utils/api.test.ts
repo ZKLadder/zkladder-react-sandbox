@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-  request, getSession, createSession, deleteSession, storeVoucher, getVoucher, createContract, getContract,
+  request, getSession, createSession, deleteSession, storeVoucher, getVoucher, createContract, getContract, getTransactions,
 } from '../../utils/api';
 
 jest.mock('axios', () => ({ request: jest.fn() }));
@@ -229,5 +229,30 @@ describe('getContract tests', () => {
     });
 
     expect(response).toStrictEqual({ contract: 'mocked' });
+  });
+});
+
+describe('getTransactions tests', () => {
+  test('getTransactions correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { transactions: 'mocked' } });
+
+    const options = {
+      address: '0xcontract',
+      chainId: '10',
+    };
+    const response = await getTransactions(options);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'get',
+      url: '/v1/data/transactions',
+      params: options,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ transactions: 'mocked' });
   });
 });

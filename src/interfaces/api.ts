@@ -40,6 +40,16 @@ interface GetContractOptions {
   projectId?: string,
 }
 
+interface GetTransactionsOptions {
+  address: string,
+  chainId: string
+}
+
 export type {
-  HttpOptions, StoreVoucherOptions, GetVoucherOptions, CreateContractOptions, GetContractOptions,
+  HttpOptions,
+  StoreVoucherOptions,
+  GetVoucherOptions,
+  CreateContractOptions,
+  GetContractOptions,
+  GetTransactionsOptions,
 };
