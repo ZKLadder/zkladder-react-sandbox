@@ -24,6 +24,11 @@ jest.mock('../../components/deploy/Deploy', () => ({
   default: () => <p>DEPLOY PROJECT</p>,
 }));
 
+jest.mock('../../components/manageProjects/ManageProjects', () => ({
+  __esModule: true,
+  default: () => <p>MANAGE PROJECTS</p>,
+}));
+
 describe('Body component tests', () => {
   test('It renders the default route', async () => {
     render(
@@ -71,6 +76,18 @@ describe('Body component tests', () => {
     );
 
     expect(screen.getByText('DEPLOY PROJECT')).toBeVisible();
+  });
+
+  test('It renders the Manage Projects route', async () => {
+    render(
+      <RecoilRoot>
+        <MemoryRouter initialEntries={['/projects']}>
+          <Body />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('MANAGE PROJECTS')).toBeVisible();
   });
 
   test('All other routes fallback to defaukt', async () => {

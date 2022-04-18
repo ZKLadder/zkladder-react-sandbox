@@ -6,7 +6,7 @@ import MyProjects from '../../../components/memberDashboard/MyProjects';
 import { walletState } from '../../../state/wallet';
 import { getContract } from '../../../utils/api';
 
-jest.mock('../../../components/memberDashboard/ProjectBox', () => ({
+jest.mock('../../../components/manageProjects/ProjectBox', () => ({
   __esModule: true,
   default: () => <p>PROJECT BOX</p>,
 }));
@@ -14,6 +14,8 @@ jest.mock('../../../components/memberDashboard/ProjectBox', () => ({
 jest.mock('../../../utils/api', () => ({
   getContract: jest.fn(),
 }));
+
+jest.mock('@zkladder/zkladder-sdk-ts', () => (jest.fn()));
 
 const initializeState = (settings:any) => {
   settings.set(walletState, {

@@ -7,10 +7,8 @@
   font-family: "Avenir Next" !important;
 }
 .background-container {
-  overflow-y: scroll;
   width: 100%;
-  position: fixed;
-  height: 100%;
+  position: absolute;
   background-size: 100% 66% !important;
   background-repeat: no-repeat !important;
   top: 0;

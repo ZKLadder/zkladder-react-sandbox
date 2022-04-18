@@ -9,6 +9,7 @@ export default {
     rpcUrl: 'https://mainnet.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
     blockExplorer: 'https://etherscan.io/tx/',
     logo: ethereumLogo,
+    hide: false,
   },
   3: {
     label: 'Ropsten',
@@ -17,6 +18,7 @@ export default {
     rpcUrl: 'https://ropsten.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
     blockExplorer: 'https://ropsten.etherscan.io/tx/',
     logo: ethereumLogo,
+    hide: false,
   },
   4: {
     label: 'Rinkeby',
@@ -25,6 +27,7 @@ export default {
     rpcUrl: 'https://rinkeby.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
     blockExplorer: 'https://rinkeby.etherscan.io/tx/',
     logo: ethereumLogo,
+    hide: false,
   },
   5: {
     label: 'Goerli',
@@ -33,6 +36,7 @@ export default {
     rpcUrl: 'https://goerli.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
     blockExplorer: 'https://goerli.etherscan.io/tx/',
     logo: ethereumLogo,
+    hide: false,
   },
   137: {
     label: 'Polygon',
@@ -41,6 +45,7 @@ export default {
     rpcUrl: 'https://polygon-mainnet.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
     blockExplorer: 'https://polygonscan.com/tx/',
     logo: polygonLogo,
+    hide: false,
   },
   1337: {
     label: 'Ganache',
@@ -48,6 +53,7 @@ export default {
     id: '0x1691',
     rpcUrl: 'http://localhost:7545',
     logo: ethereumLogo,
+    hide: true,
   },
   31337: {
     label: 'Hardhat',
@@ -55,5 +61,6 @@ export default {
     id: '0x7A69',
     rpcUrl: 'http://localhost:8545',
     logo: ethereumLogo,
+    hide: true,
   },
 };

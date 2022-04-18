@@ -14,24 +14,23 @@ const nftState = atom({
 
 const nftContractMetadataState = selector({
   key: 'nftContractMetaDataState',
-  get: async ({ get }):Promise<NftContractMetadata> => {
-    try {
-      const { instance } = get(nftState);
-      if (instance) {
+  get: async ():Promise<NftContractMetadata> => ({} as any)
+  /* try {
+      // const { instance } = get(nftState);
+       if (instance) {
         const name = await instance.name();
         const symbol = await instance.symbol();
         const totalSupply = await instance.totalSupply();
-        const contractUri = await instance.contractUri();
         return {
-          name, symbol, totalSupply, contractUri, address: instance.address,
+          name, symbol, totalSupply, address: instance.address,
         };
       }
-      return {};
+      return {} as any;
     } catch (error) {
       // @TODO potentially return a .error key
       return {};
-    }
-  },
+    } */
+  ,
 });
 
 export { nftState, nftContractMetadataState, viewState };

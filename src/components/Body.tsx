@@ -10,6 +10,7 @@ import Dashboard from './memberDashboard/Dashboard';
 import Nft from './nft/Nft';
 import Ipfs from './ipfs/Ipfs';
 import Deploy from './deploy/Deploy';
+import ManageProjects from './manageProjects/ManageProjects';
 
 function Body() {
   return (
@@ -45,6 +46,13 @@ function Body() {
           path="deploy"
           element={<Deploy />}
         />
+
+        <Route path="projects" element={<ManageProjects />}>
+          <Route
+            path=":contractid"
+            element={<ManageProjects />}
+          />
+        </Route>
 
         {/* Default Route */}
         <Route path="*" element={<Navigate to="dashboard" replace />} />
