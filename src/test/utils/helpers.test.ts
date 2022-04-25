@@ -1,5 +1,5 @@
 /* eslint-disable no-loss-of-precision */
-import { shortenAddress, weiToEth, hashString } from '../../utils/address';
+import { shortenAddress, weiToEth, hashString } from '../../utils/helpers';
 
 describe('shortenAddress', () => {
   test('shortenAddress functions as expected', () => {

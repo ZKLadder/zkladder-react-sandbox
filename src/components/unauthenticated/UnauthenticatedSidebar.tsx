@@ -6,7 +6,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import logo from '../../images/memberMint/logo_transparent.png';
-import '../../styles/unauthenticated.css';
+import style from '../../styles/unauthenticated.module.css';
 
 function UnauthenticatedSidebar() {
   return (
@@ -18,7 +18,7 @@ function UnauthenticatedSidebar() {
         height="35"
       />
       {/* Description */}
-      <p className="description">
+      <p className={style.description}>
         Welcome to the ZKLadder DAO and the overall ZKLadder Community.
         We are a community of developers, creatives, entrepreneurs and industry
         experts that support curated DAOs and NFT projects with an emphasis on support.
@@ -26,48 +26,48 @@ function UnauthenticatedSidebar() {
 
       {/* Info cards */}
       {/* TODO: replace dummy numbers with actual figures culled from api. */}
-      <Row className="card-row">
-        <Card className="sidebar-card">
+      <Row className={style["card-row"]}>
+        <Card className={style["sidebar-card"]}>
           <Card.Body>
             <Card.Text>
               <Row>
-                <Col className="column number-text"><span><b>125 </b></span></Col>
-                <Col className="column card-text"><span>Producers</span></Col>
+                <Col className={`${style.column} ${style["number-text"]}`}><span><b>125 </b></span></Col>
+                <Col className={`${style.column} ${style["card-text"]}`}><span>Producers</span></Col>
               </Row>
             </Card.Text>
           </Card.Body>
         </Card>
 
-        <Card className="sidebar-card">
+        <Card className={style["sidebar-card"]}>
           <Card.Body>
             <Card.Text>
               <Row>
-                <Col className="column number-text"><span><b>74 </b></span></Col>
-                <Col className="column card-text"><span>Members</span></Col>
+                <Col className={`${style.column} ${style["number-text"]}`}><span><b>74 </b></span></Col>
+                <Col className={`${style.column} ${style["card-text"]}`}><span>Members</span></Col>
               </Row>
             </Card.Text>
           </Card.Body>
         </Card>
       </Row>
 
-      <Row className="card-row">
-        <Card className="sidebar-card">
+      <Row className={style["card-row"]}>
+        <Card className={style["sidebar-card"]}>
           <Card.Body>
             <Card.Text>
               <Row>
-                <Col className="column number-text"><span><b>82 </b></span></Col>
-                <Col className="column card-text"><span>Partner DAOs Launched</span></Col>
+                <Col className={`${style.column} ${style["number-text"]}`}><span><b>82 </b></span></Col>
+                <Col className={`${style.column} ${style["card-text"]}`}><span>Partner DAOs Launched</span></Col>
               </Row>
             </Card.Text>
           </Card.Body>
         </Card>
 
-        <Card className="sidebar-card">
+        <Card className={style["sidebar-card"]}>
           <Card.Body>
             <Card.Text>
               <Row>
-                <Col className="column number-text"><span><b>150 </b></span></Col>
-                <Col className="column card-text"><span>NFTs Minted</span></Col>
+                <Col className={`${style.column} ${style["number-text"]}`}><span><b>150 </b></span></Col>
+                <Col className={`${style.column} ${style["card-text"]}`}><span>NFTs Minted</span></Col>
               </Row>
             </Card.Text>
           </Card.Body>

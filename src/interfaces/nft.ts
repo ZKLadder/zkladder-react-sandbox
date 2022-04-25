@@ -11,6 +11,7 @@ interface NftContractMetadata {
   name?: string,
   symbol?: string,
   totalSupply?: number,
+  contractUri?:string,
   address?: string
 }
 

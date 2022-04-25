@@ -3,7 +3,7 @@ import {
   Card, Button, Container, Image,
 } from 'react-bootstrap';
 import { useRecoilState } from 'recoil';
-import '../../styles/login.css';
+import style from '../../styles/login.module.css';
 import { connect, apiSession } from '../../utils/walletConnect';
 import { walletState } from '../../state/wallet';
 import logo from '../../images/zk_logo.png';
@@ -19,29 +19,24 @@ function Login() {
   }) as any;
   return (
     <Container className="d-flex vh-100">
-      <Card className="mx-auto m-auto align-self-center login-card">
+      <Card className={`mx-auto m-auto align-self-center ${style['login-card']}`}>
 
         {/* ZKL logo */}
-        <Image data-testid="logo" fluid className="login-logo" src={logo} />
+        <Image data-testid="logo" fluid className={style['login-logo']} src={logo} />
 
         {/* Connect wallet button */}
         <Button
-          className="login-cardText mx-auto"
+          className={`${style['login-cardText']} mx-auto`}
           data-testid="connectButton"
           onClick={async () => {
             setErrorState(false);
 
             try {
-              // Timeout to prevent 'Awaiting connection to wallet' from flashing if metamask already connected
-              const timeoutId = setTimeout(() => {
-                setLoading({ connectingWallet: true });
-              }, 500);
+              setLoading({ connectingWallet: true });
 
               const {
                 address, balance, provider, chainId,
               } = await connect();
-
-              clearTimeout(timeoutId);
 
               setLoading({ requestingSignature: true });
 

@@ -1,4 +1,6 @@
-import { connect, disconnect, apiSession } from '../../utils/walletConnect';
+import {
+  connect, disconnect, apiSession, switchChain,
+} from '../../utils/walletConnect';
 import signAuthKey from '../../utils/signAuthKey';
 import { createSession, deleteSession } from '../../utils/api';
 
@@ -28,6 +30,7 @@ jest.mock('@web3-onboard/core', () => (jest.fn(() => ({
   ]),
   disconnectWallet: jest.fn(),
   state: { get: () => ({ wallets: [{ label: 'MockWallet' }] }) },
+  setChain: async () => (true),
 }))));
 
 jest.mock('@web3-onboard/injected-wallets', () => (jest.fn()));
@@ -47,14 +50,13 @@ const mockDeleteSession = deleteSession as jest.Mocked<any>;
 
 describe('connect function', () => {
   test('connect function calls dependencies and returns correct response', async () => {
-    mockRequest.mockResolvedValueOnce({})
-      .mockResolvedValueOnce(['0xmockAddress'])
+    mockRequest.mockResolvedValueOnce(['0xmockAddress'])
       .mockResolvedValueOnce({ toString: () => ('0x123') }) // chainId
       .mockResolvedValueOnce({ toString: () => ('0x2020') }); // balance
 
     const result = await connect();
 
-    expect(mockRequest).toHaveBeenCalledTimes(4);
+    expect(mockRequest).toHaveBeenCalledTimes(3);
     expect(mockRequest).toHaveBeenCalledWith({
       method: 'eth_accounts',
     });
@@ -123,5 +125,16 @@ describe('disconnect function', () => {
     expect(mockDeleteSession).toHaveBeenCalledTimes(1);
     expect(window.localStorage.clear).toHaveBeenCalledTimes(1);
     expect(result).toBe(undefined);
+  });
+});
+
+describe('switchChain function', () => {
+  test('switchChain function calls dependencies and returns correct response', async () => {
+    (window.localStorage.getItem as jest.Mocked<any>).mockReturnValueOnce('MockConnected');
+
+    const result = await switchChain('5');
+
+    expect(window.localStorage.getItem as jest.Mocked<any>).toHaveBeenCalledWith('CACHED_WALLET_CONNECTION');
+    expect(result).toBe(true);
   });
 });

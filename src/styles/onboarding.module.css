@@ -71,14 +71,15 @@
   padding:15px;
   border-radius:10px;
   min-width:250px;
-  max-width:40vw;
-  max-height:50vh;
+  max-width:25vw;
+  aspect-ratio:350/315;
 }
 
 .image-preview{
   max-width:100%;
   max-height:90%;
   object-fit:contain;
+  max-height:30vh;
 }
 
 .cancel-icon{
@@ -130,24 +131,23 @@
   color:#DB0056;
 }
 
-a{
+:global(a){
   color:#16434B;
+}
+
+:global(.p5Canvas){
+  height:100% !important;
+  width:100% !important;
+  border-radius:10px;
 }
 
 .progress-bar{
   background-color:#DB0056;
 }
 
-canvas{
-  height:inherit !important;
-  width:inherit !important;
-  aspect-ratio:9/5 !important;
- 
-}
-
 .p5Sketch{
   width:100% !important;
-  
+  height:100% !important;
 }
 
 .confirmation-wrapper{

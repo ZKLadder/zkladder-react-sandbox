@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
 import reportWebVitals from './reportWebVitals';
 import Router from './components/Router';
+import LoadingModal from './components/shared/LoadingModal';
 import './styles/walletSelectModal.css';
 
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
+      <LoadingModal />
       <Router />
     </RecoilRoot>
   </React.StrictMode>,

@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import PageBody from '../shared/PageBody';
-import '../../styles/body.css';
 import Navbar from '../navbar/Navbar';
-import '../../styles/onboarding.css';
+import style from '../../styles/onboarding.module.css';
 import { onboardingState } from '../../state/onboarding';
 import MemberMintSidebar from './Sidebar';
 import ConnectWallet from './ConnectWallet';
@@ -15,20 +14,20 @@ import { walletState } from '../../state/wallet';
 
 function Onboarding() {
   const [onboarding, setOnboardingState] = useRecoilState(onboardingState);
-  const { isConnected, isMember } = useRecoilValue(walletState);
+  const { isConnected, isMember, chainId } = useRecoilValue(walletState);
 
   // If user disconnects at any point - push back to first step
   useEffect(() => {
-    if (isConnected === false) {
+    if (isConnected === false || chainId !== 137) {
       setOnboardingState({ currentStep: 1 } as any);
     }
-  }, [isConnected, isMember]);
+  }, [isConnected, isMember, chainId]);
 
   return (
     <PageBody color={{ start: '#16434B', end: '#4EB9B1' }}>
       <Navbar variant="onboarding" />
-      <Row className="content-wrapper">
-        <Col className="sidebar d-none d-lg-block" lg={3}>
+      <Row className={style['content-wrapper']}>
+        <Col className={`${style.sidebar} d-none d-lg-block`} lg={3}>
           <MemberMintSidebar />
         </Col>
         <Col>

@@ -51,18 +51,30 @@ const onboard = Onboard({
   i18n: languageOverrides,
 });
 
+const metaMaskUnlocked = async () => {
+  try {
+    const accounts = await (window as any)?.ethereum?.request({ method: 'eth_accounts' });
+    return accounts.length > 0;
+  } catch (err:any) {
+    return false;
+  }
+};
+
 const connect = async (requestPermissions:boolean = true) => {
   const cachedWallet = localStorage.getItem('CACHED_WALLET_CONNECTION') || undefined;
 
+  // Do not call request_permissions if user has never unlocked metamask
+  const previousMetamaskConnection = await metaMaskUnlocked();
+
   // Brings up the web3 wallet select modal
-  const [wallet] = await onboard.connectWallet({ autoSelect: cachedWallet });
+  const [wallet] = await onboard.connectWallet(cachedWallet ? { autoSelect: { label: cachedWallet, disableModals: true } } : {});
 
   if (!wallet) throw new Error('Please select a wallet to continue');
 
   const { provider } = wallet;
 
   // Requests permissions (displays 'Select Accounts' popup)
-  if (requestPermissions) { // requestPermissions === false anywhere this function is called by a useEffect on load
+  if (requestPermissions && previousMetamaskConnection) { // requestPermissions === false anywhere this function is called by a useEffect on load
     try {
       await provider.request({
         method: 'wallet_requestPermissions',
@@ -118,15 +130,12 @@ const disconnect = async () => {
   window.localStorage.clear();
 };
 
-const switchChain = async (provider:any, chainId:string) => {
-  await provider.request({
-    method: 'wallet_switchEthereumChain',
-    params: [
-      {
-        chainId: `0x${parseInt(chainId, 10).toString(16)}`,
-      },
-    ],
+const switchChain = async (chainId:string): Promise<boolean> => {
+  const success = await onboard.setChain({
+    chainId: `0x${parseInt(chainId, 10).toString(16)}`,
+    wallet: localStorage.getItem('CACHED_WALLET_CONNECTION') as string,
   });
+  return success;
 };
 
 export {

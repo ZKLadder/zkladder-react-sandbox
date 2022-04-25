@@ -7,11 +7,10 @@ import { XCircleFill } from 'react-bootstrap-icons';
 import { walletState } from '../../../state/wallet';
 import logo from '../../../images/navbar/mint_logo.png';
 import banner from '../../../images/navbar/mint_banner.png';
-import connectImage from '../../../images/navbar/mint_connect.png';
 import { connect, apiSession, disconnect } from '../../../utils/walletConnect';
 import Error from '../../shared/Error';
-import '../../../styles/navbar.css';
-import { shortenAddress } from '../../../utils/address';
+import style from '../../../styles/navbar.module.css';
+import { shortenAddress } from '../../../utils/helpers';
 import networks from '../../../constants/networks';
 
 const castNetworks = networks as any;
@@ -21,13 +20,13 @@ function OnboardingNavbar() {
   const [errorState, setErrorState] = useState() as any;
 
   return (
-    <Navbar className="member-mint" expand="lg">
+    <Navbar className={style['nav-container']} expand="lg">
       <Container>
         <Navbar.Brand>
 
           {/* ZKL Logo */}
           <img
-            className="logo"
+            className={style.logo}
             alt=""
             src={logo}
             width="50"
@@ -37,13 +36,13 @@ function OnboardingNavbar() {
           {/* Member Mint Banner */}
           <div style={{ display: 'inline', position: 'relative' }}>
             <img
-              className="logo"
+              className={style.logo}
               alt=""
               src={banner}
               width="240"
               height="50"
             />
-            <p className="banner-text">
+            <p className={style['banner-text']}>
               ZKL MEMBER TOKEN MINT
             </p>
           </div>
@@ -57,11 +56,11 @@ function OnboardingNavbar() {
             {wallet.isConnected
               ? (/* Connected Network & Address */
                 <div style={{ display: 'inline' }}>
-                  <ListGroup.Item className="connected-labels">
+                  <ListGroup.Item className={style['connected-labels']}>
                     {`${castNetworks[wallet.chainId]?.label as string} : ${shortenAddress(wallet.address?.[0])}`}
                     <XCircleFill
                       data-testid="disconnectButton"
-                      className="icon"
+                      className={style.icon}
                       size={16}
                       onClick={async () => {
                         await disconnect();
@@ -75,7 +74,7 @@ function OnboardingNavbar() {
               : (/* Connect Button */
                 <div style={{ display: 'inline', position: 'relative' }}>
                   <button
-                    className="connect"
+                    className={style.connect}
                     type="button"
                     data-testid="connectButton"
                     onClick={async () => {
@@ -96,21 +95,11 @@ function OnboardingNavbar() {
                       }
                     }}
                   >
-                    <img
-                      className="connect-image"
-                      alt=""
-                      src={connectImage}
-                      width="260"
-                      height="80"
-                    />
-                    <p className="connect-text">
-                      MEMBERS CONNECT YOUR WALLET
-                    </p>
+                    MEMBERS CONNECT YOUR WALLET
                   </button>
                 </div>
               )}
           </Nav>
-
           {/* Error Indicator */}
           <div style={{ paddingLeft: '10px' }}>
             {(errorState || wallet.reason) ? <Error text={errorState || wallet.reason || 'It appears your account does not have access'} /> : null}

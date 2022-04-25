@@ -42,7 +42,7 @@ const initializeOnboardingState = (settings:any) => {
       ])),
     },
     mintVoucher: 'mockVoucher',
-    attestationHash: 12345,
+    tokenSeed: 12345,
   });
 };
 
@@ -56,7 +56,7 @@ const mockFetch = fetch as jest.Mocked<any>;
 const mockFunction = Function as jest.Mocked<any>;
 const mockIpfs = Ipfs as jest.Mocked<any>;
 
-jest.setTimeout(7000);
+jest.setTimeout(8000);
 describe('Mint Component Tests', () => {
   test('It renders', async () => {
     const onboardingStateObserver = jest.fn();
@@ -101,7 +101,7 @@ describe('Mint Component Tests', () => {
           sketch: 'mockSketch',
         },
         currentStep: 2,
-        attestationHash: 0,
+        tokenSeed: 0,
       });
     });
   });
@@ -132,7 +132,7 @@ describe('Mint Component Tests', () => {
     await waitFor(() => {
       expect(onboardingStateObserver).toHaveBeenCalledWith(
         expect.objectContaining({
-          attestationHash: 12345,
+          tokenSeed: 12345,
           currentStep: 4,
           mintConfirmation: {
             contractAddress: config.zkl.memberNft,

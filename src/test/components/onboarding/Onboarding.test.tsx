@@ -39,6 +39,7 @@ const initializeState = (settings:any) => {
 
   settings.set(walletState, {
     isConnected: true,
+    chainId: 137,
   });
 };
 

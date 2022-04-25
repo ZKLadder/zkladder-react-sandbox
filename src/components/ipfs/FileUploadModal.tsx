@@ -9,7 +9,7 @@ import { Ipfs } from '@zkladder/zkladder-sdk-ts';
 import Error from '../shared/Error';
 import Loading from '../shared/Loading';
 import CopyToClipboard from '../shared/CopyToClipboard';
-import '../../styles/ipfs.css';
+import style from '../../styles/ipfs.module.css';
 import config from '../../config';
 
 function FileUploadModal({ show, onHide }:{show:boolean, onHide:()=>void}) {
@@ -43,7 +43,7 @@ function FileUploadModal({ show, onHide }:{show:boolean, onHide:()=>void}) {
       <Modal.Body>
 
         {/* Drag and Drop Section */}
-        <div className="file-drop-zone" {...getRootProps({ })}>
+        <div className={style['file-drop-zone']} {...getRootProps({ })}>
           <input data-testid="fileInput" {...getInputProps()} />
           <p>Drag and drop a file to get started</p>
         </div>

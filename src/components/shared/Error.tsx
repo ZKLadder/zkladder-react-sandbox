@@ -2,13 +2,13 @@ import React from 'react';
 import {
   Alert, Container, Row,
 } from 'react-bootstrap';
-import '../../styles/error.css';
+import style from '../../styles/error.module.css';
 
 function Error({ text }:{text:string}) {
   return (
     <Container>
       <Row>
-        <Alert variant="danger" className="error">
+        <Alert variant="danger" className={style.error}>
           {text}
         </Alert>
       </Row>

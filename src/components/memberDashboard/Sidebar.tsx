@@ -10,7 +10,7 @@ import config from '../../config';
 import { walletState } from '../../state/wallet';
 import P5Sketch from '../shared/P5Sketch';
 import Loading from '../shared/Loading';
-import { shortenAddress } from '../../utils/address';
+import { shortenAddress } from '../../utils/helpers';
 import logo from '../../images/dashboard/dashboard-logo.png';
 import style from '../../styles/memberDashboard.module.css';
 
@@ -20,7 +20,7 @@ function DashboardSidebar() {
 
   useEffect(() => {
     async function getZKLSketch() {
-      if (memberToken?.metadata.attestation_hash) {
+      if (memberToken?.metadata.tokenSeed) {
         const response = await fetch(config.zkl.memberSketchCid);
         const memberSketch = await response.text();
         /* eslint-disable no-new-func */
@@ -34,9 +34,10 @@ function DashboardSidebar() {
   return p5Sketch
     ? (
       <Container>
-        <div id="memberDash" style={{ position: 'relative' }}>
+        <div id="memberDash" className={style['art-wrapper']}>
           <P5Sketch
-            config={{ attestationHash: memberToken?.metadata.attestation_hash }}
+            className={style.p5Sketch}
+            config={{ tokenSeed: memberToken?.metadata.tokenSeed }}
             sketch={(p5Sketch as any).sketch}
           />
 

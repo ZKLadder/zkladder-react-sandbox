@@ -7,21 +7,21 @@ import Error from '../../shared/Error';
 import { walletState } from '../../../state/wallet';
 import logo from '../../../images/navbar/mint_logo.png';
 import banner from '../../../images/navbar/dashboard_banner.png';
-import connectImage from '../../../images/navbar/mint_connect.png';
+// import connectImage from '../../../images/navbar/mint_connect.png';
 import { connect, apiSession } from '../../../utils/walletConnect';
-import '../../../styles/navbar.css';
+import style from '../../../styles/navbar.module.css';
 
 function UnauthenticatedNavbar() {
   const [wallet, setWalletState] = useRecoilState(walletState) as any;
   const [errorState, setErrorState] = useState(false) as any;
 
   return (
-    <Navbar className="member-mint" expand="lg">
+    <Navbar className={style["member-mint"]} expand="lg">
       <Container>
         <Navbar.Brand>
           {/* ZKL Logo */}
           <img
-            className="logo"
+            className={style.logo}
             alt=""
             src={logo}
             width="50"
@@ -30,14 +30,14 @@ function UnauthenticatedNavbar() {
           {/* Member Mint Banner */}
           <div style={{ display: 'inline', position: 'relative' }}>
             <img
-              className="logo"
+              className={style.logo}
               alt=""
               src={banner}
               width="240"
               height="50"
             />
             {/*   */}
-            <p className="banner-text">
+            <p className={style["banner-text"]}>
               ZKL COMMUNITY DASHBOARD
             </p>
           </div>
@@ -49,16 +49,19 @@ function UnauthenticatedNavbar() {
             {/* Connect Button */}
             <div style={{ display: 'inline', position: 'relative' }}>
               <button
-                className="connect"
+                className={style.connect}
                 type="button"
                 data-testid="connectButton"
                 onClick={async () => {
                   try {
                     setErrorState(false);
+
                     const {
                       address, balance, provider, chainId,
                     } = await connect();
+
                     const { memberToken } = await apiSession(provider, address);
+
                     setWalletState({
                       address, balance, provider, chainId, isConnected: true, isMember: true, memberToken,
                     });
@@ -67,16 +70,7 @@ function UnauthenticatedNavbar() {
                   }
                 }}
               >
-                <img
-                  className="connect-image"
-                  alt=""
-                  src={connectImage}
-                  width="260"
-                  height="80"
-                />
-                <p className="connect-text">
-                  MEMBERS CONNECT YOUR WALLET
-                </p>
+                MEMBERS CONNECT YOUR WALLET
               </button>
             </div>
           </Nav>

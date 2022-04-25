@@ -4,11 +4,6 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Body from '../../components/Body';
 
-jest.mock('../../components/memberNft/Deploy', () => ({
-  __esModule: true,
-  default: () => <p>DEPLOY MEMBER NFT</p>,
-}));
-
 jest.mock('../../components/nft/Nft', () => ({
   __esModule: true,
   default: () => <p>NFT</p>,
@@ -24,6 +19,16 @@ jest.mock('../../components/memberDashboard/Dashboard', () => ({
   default: () => <p>AUTHENTICATED DASHBOARD</p>,
 }));
 
+jest.mock('../../components/deploy/Deploy', () => ({
+  __esModule: true,
+  default: () => <p>DEPLOY PROJECT</p>,
+}));
+
+jest.mock('../../components/manageProjects/ManageProjects', () => ({
+  __esModule: true,
+  default: () => <p>MANAGE PROJECTS</p>,
+}));
+
 describe('Body component tests', () => {
   test('It renders the default route', async () => {
     render(
@@ -35,18 +40,6 @@ describe('Body component tests', () => {
     );
 
     expect(screen.getByText('AUTHENTICATED DASHBOARD')).toBeVisible();
-  });
-
-  test('It renders the deploy-nft route', async () => {
-    render(
-      <RecoilRoot>
-        <MemoryRouter initialEntries={['/deploy-nft']}>
-          <Body />
-        </MemoryRouter>
-      </RecoilRoot>,
-    );
-
-    expect(screen.getByText('DEPLOY MEMBER NFT')).toBeVisible();
   });
 
   test('It renders the ipfs route', async () => {
@@ -71,6 +64,30 @@ describe('Body component tests', () => {
     );
 
     expect(screen.getByText('NFT')).toBeVisible();
+  });
+
+  test('It renders the Deploy project route', async () => {
+    render(
+      <RecoilRoot>
+        <MemoryRouter initialEntries={['/deploy']}>
+          <Body />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('DEPLOY PROJECT')).toBeVisible();
+  });
+
+  test('It renders the Manage Projects route', async () => {
+    render(
+      <RecoilRoot>
+        <MemoryRouter initialEntries={['/projects']}>
+          <Body />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('MANAGE PROJECTS')).toBeVisible();
   });
 
   test('All other routes fallback to defaukt', async () => {

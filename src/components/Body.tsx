@@ -5,31 +5,22 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import '../styles/body.css';
+import style from '../styles/body.module.css';
+import Dashboard from './memberDashboard/Dashboard';
 import Nft from './nft/Nft';
 import Ipfs from './ipfs/Ipfs';
-import DeployMemberNft from './memberNft/Deploy';
-import Dashboard from './memberDashboard/Dashboard';
+import Deploy from './deploy/Deploy';
+import ManageProjects from './manageProjects/ManageProjects';
 
 function Body() {
   return (
     <React.Suspense fallback={<Spinner animation="border" role="status" />}>
       <Routes>
         <Route
-          path="deploy-nft"
-          element={(
-            <Card className="mx-auto body-card">
-              <Card.Body className="mx-auto body-cardText">
-                <DeployMemberNft />
-              </Card.Body>
-            </Card>
-                )}
-        />
-        <Route
           path="ipfs"
           element={(
-            <Card className="mx-auto body-card">
-              <Card.Body className="mx-auto body-cardText">
+            <Card className={`mx-auto ${style['body-card']}`}>
+              <Card.Body className={`mx-auto ${style['body-cardText']}`}>
                 <Ipfs />
               </Card.Body>
             </Card>
@@ -38,17 +29,30 @@ function Body() {
         <Route
           path="nft"
           element={(
-            <Card className="mx-auto body-card">
-              <Card.Body className="mx-auto body-cardText">
+            <Card className={`mx-auto ${style['body-card']}`}>
+              <Card.Body className={`mx-auto ${style['body-cardText']}`}>
                 <Nft />
               </Card.Body>
             </Card>
               )}
         />
+
         <Route
           path="dashboard"
           element={<Dashboard />}
         />
+
+        <Route
+          path="deploy"
+          element={<Deploy />}
+        />
+
+        <Route path="projects" element={<ManageProjects />}>
+          <Route
+            path=":contractid"
+            element={<ManageProjects />}
+          />
+        </Route>
 
         {/* Default Route */}
         <Route path="*" element={<Navigate to="dashboard" replace />} />

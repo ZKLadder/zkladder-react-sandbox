@@ -12,6 +12,7 @@ interface StoreVoucherOptions{
   contractAddress: string,
   userAddress: string,
   balance:number,
+  roleId:string,
   chainId:string,
   signedVoucher: { [key: string]: any }
 }
@@ -19,7 +20,36 @@ interface StoreVoucherOptions{
 interface GetVoucherOptions{
   contractAddress: string,
   userAddress: string,
-  chainId:number
+  roleId:string,
+  chainId:number,
 }
 
-export type { HttpOptions, StoreVoucherOptions, GetVoucherOptions };
+interface CreateContractOptions {
+  address: string,
+  creator: string,
+  admins?: string[],
+  chainId: string,
+  templateId: string,
+  projectId?: string,
+}
+
+interface GetContractOptions {
+  address?: string,
+  userAddress?: string,
+  chainId?: string,
+  projectId?: string,
+}
+
+interface GetTransactionsOptions {
+  address: string,
+  chainId: string
+}
+
+export type {
+  HttpOptions,
+  StoreVoucherOptions,
+  GetVoucherOptions,
+  CreateContractOptions,
+  GetContractOptions,
+  GetTransactionsOptions,
+};
