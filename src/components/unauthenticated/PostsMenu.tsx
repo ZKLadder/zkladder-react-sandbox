@@ -3,8 +3,9 @@ import { useQuery, gql } from '@apollo/client';
 import Glider from 'react-glider';
 import 'glider-js/glider.min.css';
 import Card from 'react-bootstrap/Card';
+import Loading from '../shared/Loading';
+import Error from '../shared/Error';
 import style from '../../styles/unauthenticated.module.css';
-
 
 export const POSTS = gql`
   {
@@ -32,18 +33,11 @@ export const POSTS = gql`
 function PostsMenu() {
   const { loading, error, data } = useQuery(POSTS);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) {
-    return (
-      <div>
-        <h1>Error:</h1>
-        <h2>{error.message}</h2>
-      </div>
-    );
-  }
+  if (loading) return <Loading />;
+  if (error) return <Error text={error.message} />;
 
   return (
-    <div className={style["post-menu"]}>
+    <div className={style['post-menu']}>
       <Glider
         draggable
         hasDots
@@ -65,30 +59,30 @@ function PostsMenu() {
         ]}
       >
         {data.postCategories.map((category: any, i: any) => {
-          if (category.name === 'Featured DAO') {
+          if (i === 0) {
             return (
               <div key={category.id}>
-                <p className={style["menu-name"]}>{category.name.toUpperCase()}</p>
-                <Card className="bg-dark text-white featured-dao" id={style["featured-dao"]}>
+                <p className={style['menu-name']}>{category.name.toUpperCase()}</p>
+                <Card className={`bg-dark text-white ${style['featured-post']}`}>
                   <Card.Img
-                    className={style["featured-dao-img"]}
+                    className={style['featured-dao-img']}
                     src={category.posts[0].images[0].url}
                     alt={category.posts[0].images[0].fileName}
                   />
                   <Card.ImgOverlay>
-                    <p id="featured-dao-sub-head">{category.posts[0].subHeadline.toUpperCase()}</p>
-                    <div className={style["title-box"]}>
+                    <p id={style['featured-post-sub-head']}>{category.posts[0].subHeadline.toUpperCase()}</p>
+                    <div className={style['title-box']}>
                       <span>LEARN MORE</span>
                     </div>
                   </Card.ImgOverlay>
                 </Card>
-                <div className={style["post-description-box"]}>
+                <div className={style['post-description-box']}>
                   <img
-                    className={style["featured-dao-secondary-img"]}
+                    className={style['featured-post-secondary-img']}
                     src={category.posts[0].images[1].url}
                     alt={category.posts[0].images[1].fileName}
                   />
-                  <div className={style["post-description-text"]}>
+                  <div className={style['post-description-text']}>
                     <h4><b>{category.posts[0].title.toUpperCase()}</b></h4>
                     <p>{category.posts[0].fullDescription}</p>
                   </div>
@@ -99,16 +93,16 @@ function PostsMenu() {
 
           return (
             <div key={category.id}>
-              <p className={style["menu-name"]}>{category.name.toUpperCase()}</p>
+              <p className={style['menu-name']}>{category.name.toUpperCase()}</p>
               <Card className={`bg-dark text-white ${style.posts}`} id={i + 1}>
                 <Card.Img
-                  className={style["post-img"]}
+                  className={style['post-img']}
                   src={category.posts[0].images[0].url}
                   alt={category.posts[0].images[0].fileName}
                 />
                 <Card.ImgOverlay>
                   <p>{category.posts[0].subHeadline.toUpperCase()}</p>
-                  <div className={style["title-box"]}>
+                  <div className={style['title-box']}>
                     <span>LEARN MORE</span>
                   </div>
                 </Card.ImgOverlay>

@@ -78,13 +78,13 @@ img.card-img.post-img {
   min-height: 338px;
 }
 
-.text-white.featured-dao.card {
+.text-white.featured-post.card {
   box-shadow: 5px 5px 5px grey;
   max-width: 492px;
   min-width: 338px;
 }
 
-img.card-img.featured-dao-img {
+img.card-img.featured-psot-img {
   max-width: 492px;
   max-height: 492px;
   min-width: 338px;
@@ -103,7 +103,7 @@ img.card-img.featured-dao-img {
   color: grey;
 }
 
-#featured-dao-sub-head{
+#featured-post-sub-head{
   font-size: 20pt;
 }
 
@@ -123,7 +123,7 @@ img.card-img.featured-dao-img {
   padding-left: 32px;
 }
 
-img.featured-dao-secondary-img {
+img.featured-post-secondary-img {
   top: 5px;
   left: 5px;
   padding-right: 5px;

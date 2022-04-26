@@ -7,7 +7,6 @@ import Error from '../../shared/Error';
 import { walletState } from '../../../state/wallet';
 import logo from '../../../images/navbar/mint_logo.png';
 import banner from '../../../images/navbar/dashboard_banner.png';
-// import connectImage from '../../../images/navbar/mint_connect.png';
 import { connect, apiSession } from '../../../utils/walletConnect';
 import style from '../../../styles/navbar.module.css';
 
@@ -16,7 +15,7 @@ function UnauthenticatedNavbar() {
   const [errorState, setErrorState] = useState(false) as any;
 
   return (
-    <Navbar className={style["member-mint"]} expand="lg">
+    <Navbar className={style['member-mint']} expand="lg">
       <Container>
         <Navbar.Brand>
           {/* ZKL Logo */}
@@ -37,7 +36,7 @@ function UnauthenticatedNavbar() {
               height="50"
             />
             {/*   */}
-            <p className={style["banner-text"]}>
+            <p className={style['banner-text']}>
               ZKL COMMUNITY DASHBOARD
             </p>
           </div>

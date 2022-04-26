@@ -1,7 +1,12 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/client/testing';
+import {
+  render,
+  screen,
+  waitFor,
+  cleanup,
+} from '@testing-library/react';
 import PostsMenu, { POSTS } from '../../../components/unauthenticated/PostsMenu';
-import { render, screen, waitFor, cleanup } from '@testing-library/react';
 
 describe('Posts Menu component', () => {
   afterEach(cleanup);
@@ -10,11 +15,11 @@ describe('Posts Menu component', () => {
     render(
       <MockedProvider>
         <PostsMenu />
-      </MockedProvider>
+      </MockedProvider>,
     );
 
-    expect(screen.getByText("Loading...")).toBeVisible();
-  })
+    expect(screen.getByRole('status')).toBeVisible();
+  });
 
   test('Makes Successful API Call', async () => {
     const mocks = [
@@ -37,19 +42,19 @@ describe('Posts Menu component', () => {
                     images: [
                       {
                         url: 'https://www.fillmurray.com/200/300',
-                        fileName: 'murray1.jpg'
+                        fileName: 'murray1.jpg',
                       },
                       {
                         url: 'https://www.fillmurray.com/200/300',
-                        fileName: 'murray2.jpg'
+                        fileName: 'murray2.jpg',
                       },
                     ],
                     slug: 'title-1',
                     text: {
-                      markdown: 'This is the text'
-                    }
-                  }
-                ]
+                      markdown: 'This is the text',
+                    },
+                  },
+                ],
               },
               {
                 name: 'Latest News',
@@ -63,26 +68,26 @@ describe('Posts Menu component', () => {
                     images: [
                       {
                         url: 'https://www.fillmurray.com/200/300',
-                        fileName: 'murray3.jpg'
-                      }
+                        fileName: 'murray3.jpg',
+                      },
                     ],
                     slug: 'title-2',
                     text: {
-                      markdown: 'This is the text'
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      }
+                      markdown: 'This is the text',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
     ];
 
     render(
       <MockedProvider mocks={mocks}>
         <PostsMenu />
-      </MockedProvider>
+      </MockedProvider>,
     );
     await waitFor(() => {
       expect(screen.getByText('FEATURED DAO')).toBeVisible();
@@ -95,8 +100,8 @@ describe('Posts Menu component', () => {
       expect(screen.getByText('LATEST NEWS')).toBeVisible();
       expect(screen.getByText('SUB-HEADLINE 2')).toBeVisible();
       expect(screen.getByAltText('murray3.jpg')).toBeVisible();
-    })
-  })
+    });
+  });
 
   test('Renders Error message when API call fails', async () => {
     const mockError = [
@@ -104,18 +109,18 @@ describe('Posts Menu component', () => {
         request: {
           query: POSTS,
         },
-        error: new Error('Response not successful: Received status code 400')
-      }
+        error: new Error('Response not successful: Received status code 400'),
+      },
     ];
 
     render(
       <MockedProvider mocks={mockError}>
         <PostsMenu />
-      </MockedProvider>
+      </MockedProvider>,
     );
     await waitFor(() => {
-      expect(screen.getByText('Error:')).toBeVisible();
+      expect(screen.getByRole('alert')).toBeVisible();
       expect(screen.getByText('Response not successful: Received status code 400')).toBeVisible();
-    })
-  })
+    });
+  });
 });

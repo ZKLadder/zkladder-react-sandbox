@@ -26,7 +26,7 @@ jest.mock('../../components/Body', () => ({
   default: () => <p>BODY</p>,
 }));
 
-jest.mock('../../components/login/Login', () => ({
+jest.mock('../../components/unauthenticated/Unauthenticated', () => ({
   __esModule: true,
   default: () => <p>LOGIN</p>,
 }));

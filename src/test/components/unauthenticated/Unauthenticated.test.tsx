@@ -24,7 +24,7 @@ jest.mock('../../../components/unauthenticated/PostsMenu', () => ({
 describe('Unauthenticated component', () => {
   test('Correctly renders child components', async () => {
     render(
-      <Unauthenticated />
+      <Unauthenticated />,
     );
 
     await waitFor(() => {

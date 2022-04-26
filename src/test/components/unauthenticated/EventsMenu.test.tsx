@@ -1,7 +1,12 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/client/testing';
+import {
+  render,
+  screen,
+  waitFor,
+  cleanup,
+} from '@testing-library/react';
 import EventsMenu, { EVENTS } from '../../../components/unauthenticated/EventsMenu';
-import { render, screen, waitFor, cleanup } from '@testing-library/react';
 
 describe('Events Menu component', () => {
   afterEach(cleanup);
@@ -10,11 +15,11 @@ describe('Events Menu component', () => {
     render(
       <MockedProvider>
         <EventsMenu />
-      </MockedProvider>
+      </MockedProvider>,
     );
 
-    expect(screen.getByText("Loading...")).toBeVisible();
-  })
+    expect(screen.getByRole('status')).toBeVisible();
+  });
 
   test('Makes Successful API Call', async () => {
     const mocks = [
@@ -31,26 +36,26 @@ describe('Events Menu component', () => {
                 description: 'Description 1',
                 image: {
                   url: 'https://www.fillmurray.com/200/300',
-                  fileName: 'murray1.jpg'
-                }
+                  fileName: 'murray1.jpg',
+                },
               },
-            ]
-          }
-        }
-      }
+            ],
+          },
+        },
+      },
     ];
 
     render(
       <MockedProvider mocks={mocks}>
         <EventsMenu />
-      </MockedProvider>
+      </MockedProvider>,
     );
     await waitFor(() => {
       expect(screen.getByText('TITLE 1')).toBeVisible();
       expect(screen.getByText('WED DEC 28')).toBeVisible();
       expect(screen.getByAltText('murray1.jpg')).toBeVisible();
-    })
-  })
+    });
+  });
 
   test('Renders Error message when API call fails', async () => {
     const mockError = [
@@ -59,17 +64,17 @@ describe('Events Menu component', () => {
           query: EVENTS,
         },
         error: new Error('Response not successful: Received status code 400'),
-      }
+      },
     ];
 
     render(
       <MockedProvider mocks={mockError}>
         <EventsMenu />
-      </MockedProvider>
+      </MockedProvider>,
     );
     await waitFor(() => {
-      expect(screen.getByText('Error:')).toBeVisible();
+      expect(screen.getByRole('alert')).toBeVisible();
       expect(screen.getByText('Response not successful: Received status code 400')).toBeVisible();
-    })
-  })
+    });
+  });
 });

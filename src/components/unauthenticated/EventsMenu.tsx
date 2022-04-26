@@ -2,6 +2,8 @@ import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import Card from 'react-bootstrap/Card';
 import Glider from 'react-glider';
+import Loading from '../shared/Loading';
+import Error from '../shared/Error';
 import 'glider-js/glider.min.css';
 import style from '../../styles/unauthenticated.module.css';
 
@@ -29,19 +31,12 @@ function EventsMenu() {
     return dateString;
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) {
-    return (
-      <div>
-        <h1>Error:</h1>
-        <h2>{error.message}</h2>
-      </div>
-    );
-  }
+  if (loading) return <Loading />;
+  if (error) return <Error text={error.message} />;
 
   return (
-    <div className={style["events-menu"]}>
-      <p className={style["menu-name"]}>UPCOMING EVENTS</p>
+    <div className={style['events-menu']}>
+      <p className={style['menu-name']}>UPCOMING EVENTS</p>
       <Glider
         draggable
         hasDots
@@ -65,12 +60,12 @@ function EventsMenu() {
         {data.events.map((event: any) => (
           <div key={event.id}>
             <Card className={`bg-light text-white ${style.events}`}>
-              <Card.Img className={style["event-img"]} src={event.image.url} alt={event.image.fileName} />
+              <Card.Img className={style['event-img']} src={event.image.url} alt={event.image.fileName} />
               <Card.ImgOverlay>
-                <div className={style["date-box"]}>
+                <div className={style['date-box']}>
                   <span>{formatDate(event.date).toUpperCase()}</span>
                 </div>
-                <h3 className={style["event-title"]}>{event.title.toUpperCase()}</h3>
+                <h3 className={style['event-title']}>{event.title.toUpperCase()}</h3>
               </Card.ImgOverlay>
             </Card>
           </div>

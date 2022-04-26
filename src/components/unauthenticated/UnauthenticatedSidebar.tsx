@@ -26,48 +26,48 @@ function UnauthenticatedSidebar() {
 
       {/* Info cards */}
       {/* TODO: replace dummy numbers with actual figures culled from api. */}
-      <Row className={style["card-row"]}>
-        <Card className={style["sidebar-card"]}>
+      <Row className={style['card-row']}>
+        <Card className={style['sidebar-card']}>
           <Card.Body>
             <Card.Text>
               <Row>
-                <Col className={`${style.column} ${style["number-text"]}`}><span><b>125 </b></span></Col>
-                <Col className={`${style.column} ${style["card-text"]}`}><span>Producers</span></Col>
+                <Col className={`${style.column} ${style['number-text']}`}><span><b>0 </b></span></Col>
+                <Col className={`${style.column} ${style['card-text']}`}><span>Creators</span></Col>
               </Row>
             </Card.Text>
           </Card.Body>
         </Card>
 
-        <Card className={style["sidebar-card"]}>
+        <Card className={style['sidebar-car']}>
           <Card.Body>
             <Card.Text>
               <Row>
-                <Col className={`${style.column} ${style["number-text"]}`}><span><b>74 </b></span></Col>
-                <Col className={`${style.column} ${style["card-text"]}`}><span>Members</span></Col>
+                <Col className={`${style.column} ${style['number-text']}`}><span><b>25 </b></span></Col>
+                <Col className={`${style.column} ${style['card-text']}`}><span>Members</span></Col>
               </Row>
             </Card.Text>
           </Card.Body>
         </Card>
       </Row>
 
-      <Row className={style["card-row"]}>
-        <Card className={style["sidebar-card"]}>
+      <Row className={style['card-row']}>
+        <Card className={style['sidebar-card']}>
           <Card.Body>
             <Card.Text>
               <Row>
-                <Col className={`${style.column} ${style["number-text"]}`}><span><b>82 </b></span></Col>
-                <Col className={`${style.column} ${style["card-text"]}`}><span>Partner DAOs Launched</span></Col>
+                <Col className={`${style.column} ${style['number-text']}`}><span><b>2 </b></span></Col>
+                <Col className={`${style.column} ${style['card-text']}`}><span>Ventures Launched</span></Col>
               </Row>
             </Card.Text>
           </Card.Body>
         </Card>
 
-        <Card className={style["sidebar-card"]}>
+        <Card className={style['sidebar-card']}>
           <Card.Body>
             <Card.Text>
               <Row>
-                <Col className={`${style.column} ${style["number-text"]}`}><span><b>150 </b></span></Col>
-                <Col className={`${style.column} ${style["card-text"]}`}><span>NFTs Minted</span></Col>
+                <Col className={`${style.column} ${style['number-text']}`}><span><b>5 </b></span></Col>
+                <Col className={`${style.column} ${style['card-text']}`}><span>Contracts Deployed</span></Col>
               </Row>
             </Card.Text>
           </Card.Body>
