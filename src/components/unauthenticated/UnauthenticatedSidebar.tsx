@@ -38,7 +38,7 @@ function UnauthenticatedSidebar() {
           </Card.Body>
         </Card>
 
-        <Card className={style['sidebar-car']}>
+        <Card className={style['sidebar-card']}>
           <Card.Body>
             <Card.Text>
               <Row>

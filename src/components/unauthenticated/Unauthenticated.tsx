@@ -1,7 +1,8 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { ApolloProvider } from '@apollo/client';
-import { client } from './ApolloClient/client';
+// import { ApolloProvider } from '@apollo/client';
+import { QueryClient, QueryClientProvider } from 'react-query';
+// import { client } from './ApolloClient/client';
 import PageBody from '../shared/PageBody';
 import UnauthenticatedSidebar from './UnauthenticatedSidebar';
 import PostsMenu from './PostsMenu';
@@ -9,9 +10,11 @@ import EventsMenu from './EventsMenu';
 import Navbar from '../navbar/Navbar';
 import style from '../../styles/shared.module.css';
 
+const client = new QueryClient();
+
 function Unauthenticated() {
   return (
-    <ApolloProvider client={client}>
+    <QueryClientProvider client={client}>
       <PageBody color={{ start: '#A40A3E', end: '#DB0056' }}>
         <Navbar variant="unauthenticated" />
         <Row className={style['content-wrapper']}>
@@ -24,7 +27,7 @@ function Unauthenticated() {
           </Col>
         </Row>
       </PageBody>
-    </ApolloProvider>
+    </QueryClientProvider>
   );
 }
 

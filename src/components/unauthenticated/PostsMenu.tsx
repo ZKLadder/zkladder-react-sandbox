@@ -1,5 +1,6 @@
 import React from 'react';
-import { useQuery, gql } from '@apollo/client';
+import axios from 'axios';
+import { useQuery } from 'react-query';
 import Glider from 'react-glider';
 import 'glider-js/glider.min.css';
 import Card from 'react-bootstrap/Card';
@@ -7,7 +8,8 @@ import Loading from '../shared/Loading';
 import Error from '../shared/Error';
 import style from '../../styles/unauthenticated.module.css';
 
-export const POSTS = gql`
+const endpoint = 'https://api-us-east-1.graphcms.com/v2/cl12mkshi8t8s01za53ae9b2y/master';
+export const POSTS = `
   {
     postCategories {
       name
@@ -31,10 +33,20 @@ export const POSTS = gql`
 `;
 
 function PostsMenu() {
-  const { loading, error, data } = useQuery(POSTS);
+  const {
+    data,
+    isLoading,
+    isError,
+  } = useQuery('posts', () => axios({
+    url: endpoint,
+    method: 'POST',
+    data: {
+      query: POSTS,
+    },
+  }).then((response) => response.data.data));
 
-  if (loading) return <Loading />;
-  if (error) return <Error text={error.message} />;
+  if (isLoading) return <Loading />;
+  if (isError) return <Error text="We are sorry, an error has occurred." />;
 
   return (
     <div className={style['post-menu']}>
@@ -65,7 +77,7 @@ function PostsMenu() {
                 <p className={style['menu-name']}>{category.name.toUpperCase()}</p>
                 <Card className={`bg-dark text-white ${style['featured-post']}`}>
                   <Card.Img
-                    className={style['featured-dao-img']}
+                    className={style['featured-post-img']}
                     src={category.posts[0].images[0].url}
                     alt={category.posts[0].images[0].fileName}
                   />

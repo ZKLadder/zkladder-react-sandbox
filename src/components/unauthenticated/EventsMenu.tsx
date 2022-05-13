@@ -1,5 +1,6 @@
 import React from 'react';
-import { useQuery, gql } from '@apollo/client';
+import axios from 'axios';
+import { useQuery } from 'react-query';
 import Card from 'react-bootstrap/Card';
 import Glider from 'react-glider';
 import Loading from '../shared/Loading';
@@ -7,22 +8,34 @@ import Error from '../shared/Error';
 import 'glider-js/glider.min.css';
 import style from '../../styles/unauthenticated.module.css';
 
-export const EVENTS = gql`
-  query UpcomingEvents {
-    events(last: 4, orderBy: date_ASC) {
-      title
-      date
-      description
-      image {
-        url
-        fileName
-      }
+const endpoint = 'https://api-us-east-1.graphcms.com/v2/cl12mkshi8t8s01za53ae9b2y/master';
+
+export const EVENTS = `
+query UpcomingEvents {
+  events(last: 4, orderBy: date_ASC) {
+    title
+    date
+    description
+    image {
+      url
+      fileName
     }
+  }
   }
 `;
 
 function EventsMenu() {
-  const { loading, error, data } = useQuery(EVENTS);
+  const {
+    data,
+    isLoading,
+    isError,
+  } = useQuery('events', () => axios({
+    url: endpoint,
+    method: 'POST',
+    data: {
+      query: EVENTS,
+    },
+  }).then((response) => response.data.data));
 
   const formatDate = (date: any) => {
     const dateTimeString = new Date(date).toString();
@@ -31,8 +44,8 @@ function EventsMenu() {
     return dateString;
   };
 
-  if (loading) return <Loading />;
-  if (error) return <Error text={error.message} />;
+  if (isLoading) return <Loading />;
+  if (isError) return <Error text="We are sorry, an error has occurred." />;
 
   return (
     <div className={style['events-menu']}>
