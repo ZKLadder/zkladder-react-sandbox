@@ -3,7 +3,7 @@ import {
   Container, Row, Col, Button, ListGroup, Badge,
 } from 'react-bootstrap';
 import {
-  useRecoilState, useRecoilValue, useSetRecoilState,
+  useRecoilState, useRecoilValue, useSetRecoilState, useResetRecoilState,
 } from 'recoil';
 import { MemberNft, Ipfs } from '@zkladder/zkladder-sdk-ts';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +21,7 @@ const castNetworks = networks as any;
 
 function Review() {
   const [deploy, setDeployState] = useRecoilState(deployState);
+  const resetDeployState = useResetRecoilState(deployState);
   const { chainId, provider, address } = useRecoilValue(walletState);
   const setLoading = useSetRecoilState(loadingState);
   const [error, setError] = useState() as any;
@@ -226,6 +227,7 @@ function Review() {
 
                 setTimeout(() => {
                   setRefresh(refresh + 1);
+                  resetDeployState();
                   navigate('/projects');
                   setLoading({ loading: false });
                 }, 3000);
