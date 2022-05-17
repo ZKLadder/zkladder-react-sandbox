@@ -1,8 +1,10 @@
 import React from 'react';
 import { RecoilRoot } from 'recoil';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Body from '../../components/Body';
+import { getContract } from '../../utils/api';
+import { walletState } from '../../state/wallet';
 
 jest.mock('../../components/nft/Nft', () => ({
   __esModule: true,
@@ -29,10 +31,28 @@ jest.mock('../../components/manageProjects/ManageProjects', () => ({
   default: () => <p>MANAGE PROJECTS</p>,
 }));
 
+jest.mock('@zkladder/zkladder-sdk-ts', () => ({}));
+
+jest.mock('../../utils/api', () => ({
+  getContract: jest.fn(),
+}));
+
+const initializeState = (settings:any) => {
+  settings.set(walletState, {
+    isConnected: true,
+    address: ['0xmockuser'],
+  });
+};
+
 describe('Body component tests', () => {
-  test('It renders the default route', async () => {
+  beforeEach(() => {
+    // Silence CSS margin warning
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
+  test('It renders the default route and queries the users contracts', async () => {
     render(
-      <RecoilRoot>
+      <RecoilRoot initializeState={initializeState}>
         <MemoryRouter>
           <Body />
         </MemoryRouter>
@@ -40,6 +60,12 @@ describe('Body component tests', () => {
     );
 
     expect(screen.getByText('AUTHENTICATED DASHBOARD')).toBeVisible();
+
+    await waitFor(() => {
+      expect(getContract).toHaveBeenCalledWith({
+        userAddress: '0xmockuser',
+      });
+    });
   });
 
   test('It renders the ipfs route', async () => {
@@ -90,7 +116,19 @@ describe('Body component tests', () => {
     expect(screen.getByText('MANAGE PROJECTS')).toBeVisible();
   });
 
-  test('All other routes fallback to defaukt', async () => {
+  test('Project path with address suffix renders manage projects', async () => {
+    render(
+      <RecoilRoot>
+        <MemoryRouter initialEntries={['/projects/0x1234567']}>
+          <Body />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('MANAGE PROJECTS')).toBeVisible();
+  });
+
+  test('All other routes fallback to default', async () => {
     render(
       <RecoilRoot>
         <MemoryRouter initialEntries={['/not-a-real-route']}>

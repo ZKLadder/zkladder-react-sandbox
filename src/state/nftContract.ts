@@ -1,5 +1,8 @@
-import { atom, selector } from 'recoil';
-import { NftStateInterface, NftContractMetadata, Views } from '../interfaces/nft';
+import { atom, atomFamily, selector } from 'recoil';
+import {
+  NftStateInterface, NftContractMetadata, Views, NftContractUpdates,
+} from '../interfaces/nft';
+import { contractsWithMetadataState, selectedContractState } from './contract';
 
 const viewState = atom({
   key: 'nftViewState',
@@ -33,4 +36,46 @@ const nftContractMetadataState = selector({
   ,
 });
 
-export { nftState, nftContractMetadataState, viewState };
+const nftTokenState = atomFamily({
+  key: 'nftTokenState',
+  default: {} as { [key: string]: any },
+});
+
+const nftTokensEnumerable = selector({
+  key: 'nftTokensEnumerable',
+  get: async ({ get }) => {
+    const contracts = get(contractsWithMetadataState);
+    const selectedContract = get(selectedContractState);
+    const nfts = [];
+    for (let x = 0; x < contracts?.[selectedContract as string]?.totalSupply; x += 1) {
+      nfts.push(get(nftTokenState(x)));
+    }
+    return nfts;
+  },
+});
+
+const selectedNftState = atom({
+  key: 'selectedNft',
+  default: 0,
+});
+
+const nftSearchText = atom({
+  key: 'nftSearchText',
+  default: '',
+});
+
+const nftContractUpdates = atom({
+  key: 'nftContractUpdates',
+  default: {} as NftContractUpdates,
+});
+
+export {
+  nftState,
+  nftContractMetadataState,
+  viewState,
+  nftTokenState,
+  nftTokensEnumerable,
+  selectedNftState,
+  nftSearchText,
+  nftContractUpdates,
+};

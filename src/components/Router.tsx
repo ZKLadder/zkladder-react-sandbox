@@ -93,7 +93,7 @@ function ZklRouter() {
         }
         setLoadingState(false);
       } catch (err) {
-        await disconnect();
+        // do nothing
       }
     };
 

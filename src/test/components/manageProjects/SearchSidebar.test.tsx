@@ -1,13 +1,10 @@
-// It renders
-// Search filter correctly updates page state
-// Network filters correctly update page state
-
 import React, { useEffect } from 'react';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import SearchSidebar from '../../../components/manageProjects/SearchSidebar';
-import { contractAddressState, networkFiltersState } from '../../../state/page';
+import { contractAddressSearch, networkFiltersState } from '../../../state/page';
 import networks from '../../../constants/networks';
 
 function RecoilObserver({ node, onChange }:{node:any, onChange:any}) {
@@ -20,7 +17,9 @@ describe('SearchSidebar component tests', () => {
   test('It renders', async () => {
     render(
       <RecoilRoot>
-        <SearchSidebar />
+        <MemoryRouter>
+          <SearchSidebar />
+        </MemoryRouter>
       </RecoilRoot>,
     );
 
@@ -39,9 +38,11 @@ describe('SearchSidebar component tests', () => {
     const viewStateObserver = jest.fn();
     render(
       <RecoilRoot>
-        <RecoilObserver node={contractAddressState} onChange={viewStateObserver} />
+        <RecoilObserver node={contractAddressSearch} onChange={viewStateObserver} />
         <React.Suspense fallback={<p>Loading...</p>}>
-          <SearchSidebar />
+          <MemoryRouter>
+            <SearchSidebar />
+          </MemoryRouter>
         </React.Suspense>
       </RecoilRoot>,
     );
@@ -58,7 +59,9 @@ describe('SearchSidebar component tests', () => {
       <RecoilRoot>
         <RecoilObserver node={networkFiltersState} onChange={viewStateObserver} />
         <React.Suspense fallback={<p>Loading...</p>}>
-          <SearchSidebar />
+          <MemoryRouter>
+            <SearchSidebar />
+          </MemoryRouter>
         </React.Suspense>
       </RecoilRoot>,
     );
