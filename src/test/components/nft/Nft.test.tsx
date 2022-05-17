@@ -45,6 +45,8 @@ const initializeAllTokensState = (settings:any) => {
   });
 };
 
+jest.mock('@zkladder/zkladder-sdk-ts', () => ({}));
+
 describe.skip('Nft parent component', () => {
   test('Contract not selected', async () => {
     render(

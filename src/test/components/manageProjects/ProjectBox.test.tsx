@@ -1,22 +1,24 @@
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
-import { Ipfs, MemberNft } from '@zkladder/zkladder-sdk-ts';
+import { Ipfs } from '@zkladder/zkladder-sdk-ts';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 import ProjectBox from '../../../components/manageProjects/ProjectBox';
-import { contractState } from '../../../state/contract';
+import { contractsState } from '../../../state/contract';
+import { mockMemberNftInstance } from '../../mocks';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(() => ({ getGatewayUrl: jest.fn() })),
   MemberNft: {
-    setup: jest.fn(),
+    setup: () => (mockMemberNftInstance),
   },
 }));
 
 const mockIpfs = Ipfs as jest.Mocked<any>;
-const mockSetUp = MemberNft.setup as jest.Mocked<any>;
 
 const initializeState = (settings:any) => {
-  settings.set(contractState, [{
+  settings.set(contractsState, [{
     address: '0xaddressToTest',
     whitelisted: 500,
     chainId: 31337,
@@ -25,9 +27,6 @@ const initializeState = (settings:any) => {
 };
 
 describe('ProjectBox tests', () => {
-  // It renders
-  // It renders a placeholder
-
   beforeEach(() => {
     // Silence CSS margin warning
     jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -36,19 +35,20 @@ describe('ProjectBox tests', () => {
   test('It renders', async () => {
     mockIpfs.mockImplementation(() => ({ getGatewayUrl: () => ('https://mockCID') }));
 
-    mockSetUp.mockResolvedValueOnce({
-      getCollectionMetadata: () => ({
-        image: 'ipfs://mockCID',
-        name: 'MOCK ZKL CONTRACT',
-      }),
-      totalSupply: () => (100),
+    mockMemberNftInstance.getCollectionMetadata.mockResolvedValueOnce({
+      image: 'ipfs://mockCID',
+      name: 'MOCK ZKL CONTRACT',
     });
+
+    mockMemberNftInstance.totalSupply.mockResolvedValueOnce(100);
 
     render(
       <RecoilRoot initializeState={initializeState}>
-        <ProjectBox
-          contract={{ address: '0xaddressToTest', chainId: 31337, templateId: 3 } as any}
-        />
+        <MemoryRouter>
+          <ProjectBox
+            contract={{ address: '0xaddressToTest', chainId: 31337, templateId: 3 } as any}
+          />
+        </MemoryRouter>
       </RecoilRoot>,
     );
 
@@ -64,19 +64,60 @@ describe('ProjectBox tests', () => {
   test('It renders a placeholder if the promise throws', async () => {
     mockIpfs.mockImplementation(() => ({ getGatewayUrl: () => ('https://mockCID') }));
 
-    mockSetUp.mockRejectedValueOnce({});
+    mockMemberNftInstance.getCollectionMetadata.mockRejectedValueOnce({ mock: 'error' });
 
     render(
       <RecoilRoot initializeState={initializeState}>
-        <ProjectBox
-          contract={{ address: '0xaddressToTest', chainId: 31337, templateId: 3 } as any}
-        />
+        <MemoryRouter>
+          <ProjectBox
+            contract={{ address: '0xaddressToTest', chainId: 31337, templateId: 3 } as any}
+          />
+        </MemoryRouter>
       </RecoilRoot>,
     );
 
     await waitFor(() => {
       expect(screen.queryByTestId('projectData')).not.toBeInTheDocument();
       expect(screen.queryByTestId('placeholder')).toBeVisible();
+    });
+  });
+
+  test('Clicking the project updates the route', async () => {
+    mockIpfs.mockImplementation(() => ({ getGatewayUrl: () => ('https://mockCID') }));
+
+    mockMemberNftInstance.getCollectionMetadata.mockResolvedValueOnce({
+      image: 'ipfs://mockCID',
+      name: 'MOCK ZKL CONTRACT',
+    });
+
+    mockMemberNftInstance.totalSupply.mockResolvedValueOnce(100);
+
+    render(
+      <RecoilRoot initializeState={initializeState}>
+        <MemoryRouter>
+          <Routes>
+            <Route path="/projects/0xaddressToTest" element={<p>PROJECT COMPONENT</p>} />
+            <Route
+              path="*"
+              element={(
+                <ProjectBox
+                  contract={{ address: '0xaddressToTest', chainId: 31337, templateId: 3 } as any}
+                />
+            )}
+            />
+          </Routes>
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('MOCK ZKL CONTRACT')).toBeVisible();
+    });
+
+    await userEvent.click(screen.getByText('MOCK ZKL CONTRACT'));
+
+    await waitFor(() => {
+      expect(screen.getByText('PROJECT COMPONENT')).toBeVisible();
     });
   });
 });

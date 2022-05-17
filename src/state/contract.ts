@@ -1,11 +1,18 @@
 import { atom, selector } from 'recoil';
 import { MemberNft } from '@zkladder/zkladder-sdk-ts';
 import { Contract, ContractWithMetadata } from '../interfaces/contract';
-import { generateNftMetrics } from '../utils/blockchainData';
-import { contractAddressState, networkFiltersState } from './page';
+import { getAllVouchers } from '../utils/api';
+import { generateNftMetrics, nftContractRevenueAndTransfers, getOwnerBalances } from '../utils/blockchainData';
+import { contractAddressSearch, networkFiltersState } from './page';
 import config from '../config';
+import { walletState } from './wallet';
 
-const contractState = atom({
+const selectedContractState = atom({
+  key: 'selectedContract',
+  default: null as null | string,
+});
+
+const contractsState = atom({
   key: 'contracts',
   default: [] as Contract[],
 });
@@ -13,9 +20,9 @@ const contractState = atom({
 const filteredContractsState = selector({
   key: 'filteredContracts',
   get: ({ get }) => {
-    const searchAddress = get(contractAddressState);
+    const searchAddress = get(contractAddressSearch);
     const networkFilters = get(networkFiltersState);
-    let contracts = get(contractState);
+    let contracts = get(contractsState);
 
     if (searchAddress.length === 42) {
       contracts = contracts.filter((contract) => contract.address === searchAddress.toLowerCase());
@@ -27,10 +34,11 @@ const filteredContractsState = selector({
   },
 });
 
-const contractWithMetadataState = selector({
+const contractsWithMetadataState = selector({
   key: 'contractsWithMetadata',
+  dangerouslyAllowMutability: true,
   get: async ({ get }) => {
-    const contracts = get(contractState);
+    const contracts = get(contractsState);
 
     // Fetch metadata for each contract in the contractState array
     const promises = contracts.map(async (record) => {
@@ -42,7 +50,25 @@ const contractWithMetadataState = selector({
       });
       const contractMetadata = await memberNft.getCollectionMetadata();
       const totalSupply = await memberNft.totalSupply();
-      return { ...record, ...contractMetadata, totalSupply };
+      const isTransferable = await memberNft.isTransferrable();
+      const royaltyBasis = await memberNft.royaltyBasis();
+      const royaltyPercent = royaltyBasis * 0.01;
+      const beneficiary = await memberNft.beneficiaryAddress();
+      const adminAccounts = await memberNft.getRoleMembers('DEFAULT_ADMIN_ROLE');
+      const minterAccounts = await memberNft.getRoleMembers('MINTER_ROLE');
+
+      return {
+        ...record,
+        ...contractMetadata,
+        memberNft,
+        totalSupply,
+        isTransferable,
+        royaltyBasis,
+        royaltyPercent,
+        beneficiary,
+        adminAccounts,
+        minterAccounts,
+      };
     });
 
     // Wait for all promises to resolve
@@ -60,15 +86,74 @@ const contractWithMetadataState = selector({
   },
 });
 
-const contractMetricsState = selector({
-  key: 'contractMetrics',
+const allMetricsState = selector({
+  key: 'allMetrics',
   get: async ({ get }) => {
-    const contracts = get(contractWithMetadataState);
+    const contracts = get(contractsWithMetadataState);
     const metrics = await generateNftMetrics(Object.values(contracts));
     return metrics;
   },
 });
 
+const contractMetricsState = selector({
+  key: 'contractMetrics',
+  get: async ({ get }) => {
+    const contracts = get(contractsWithMetadataState);
+    const selectedAddress = get(selectedContractState);
+    const selectedContract = Object.values(contracts).find(
+      (contract) => (contract.address.toLowerCase() === selectedAddress?.toLowerCase()),
+    );
+
+    if (selectedContract) {
+      const uniqueHolders = Object.keys(await getOwnerBalances(selectedContract)).length;
+      const metrics = await nftContractRevenueAndTransfers(selectedContract);
+      return { ...metrics, uniqueHolders, totalSupply: selectedContract.totalSupply };
+    }
+    return {};
+  },
+});
+
+const WhitelistState = selector({
+  key: 'whitelist',
+  get: async ({ get }) => {
+    const selectedAddress = get(selectedContractState);
+    const vouchers = await getAllVouchers({ contractAddress: selectedAddress as string });
+    return vouchers;
+  },
+});
+
+const writableContractState = selector({
+  key: 'writableContract',
+  dangerouslyAllowMutability: true,
+  get: async ({ get }) => {
+    const { chainId, provider } = get(walletState);
+    const contracts = get(contractsWithMetadataState);
+    const selectedAddress = get(selectedContractState);
+    const selectedContract = Object.values(contracts).find(
+      (contract) => (contract.address.toLowerCase() === selectedAddress?.toLowerCase()),
+    );
+
+    if (selectedContract?.chainId === chainId?.toString()) {
+      const writableInstance = await MemberNft.setup({
+        provider,
+        address: selectedContract?.address as string,
+        infuraIpfsProjectId: config.ipfs.projectId,
+        infuraIpfsProjectSecret: config.ipfs.projectSecret,
+      });
+
+      return writableInstance;
+    }
+    return undefined;
+  },
+});
+
 export {
-  contractState, contractWithMetadataState, filteredContractsState, contractMetricsState,
+  selectedContractState,
+  contractsState,
+  contractsWithMetadataState,
+  filteredContractsState,
+  allMetricsState,
+  contractMetricsState,
+  WhitelistState,
+  writableContractState,
 };

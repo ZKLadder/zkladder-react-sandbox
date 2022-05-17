@@ -1,17 +1,17 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import {
   Container, Row, Col, ListGroup, Form, InputGroup, Card,
 } from 'react-bootstrap';
 import { useRecoilState } from 'recoil';
-import {
-  PlusCircleFill, Search, QuestionCircle,
-} from 'react-bootstrap-icons';
+import { PlusCircleFill, Search, QuestionCircle } from 'react-bootstrap-icons';
+import { Link } from 'react-router-dom';
 import style from '../../styles/manageProjects.module.css';
 import networks from '../../constants/networks';
-import { contractAddressState, networkFiltersState } from '../../state/page';
+import { contractAddressSearch, networkFiltersState } from '../../state/page';
 
 function SearchSidebar() {
-  const [searchAddress, setSearchAddress] = useRecoilState(contractAddressState);
+  const [searchAddress, setSearchAddress] = useRecoilState(contractAddressSearch);
   const [networkFilters, setNetworkFilters] = useRecoilState(networkFiltersState);
 
   return (
@@ -27,10 +27,12 @@ function SearchSidebar() {
       </p>
 
       {/* New Project Button */}
-      <ListGroup.Item className={style['new-deployment-button']}>
-        <PlusCircleFill size={20} className={style.icon} />
-        NEW PROJECT
-      </ListGroup.Item>
+      <Link style={{ textDecoration: 'none' }} to="/deploy">
+        <ListGroup.Item className={style['new-deployment-button']}>
+          <PlusCircleFill size={20} className={style.icon} />
+          NEW PROJECT
+        </ListGroup.Item>
+      </Link>
       <hr style={{ width: '90%', margin: '16px 0px 16px 0px' }} />
 
       {/* Search Bar */}
@@ -54,13 +56,13 @@ function SearchSidebar() {
       <Card className={style['search-card']}>
         <p>
           <span style={{ fontWeight: 'bold', fontSize: '12px' }}>NETWORKS</span>
-          {/* eslint-disable-next-line */}
           <span
+            role="button"
+            tabIndex={0}
             className={style['select-all']}
             onClick={() => { setNetworkFilters(Object.keys(networks).map((chainId) => (chainId.toString()))); }}
           >
             Select All
-
           </span>
         </p>
         {Object.keys(networks).map((chainId) => {
@@ -92,6 +94,7 @@ function SearchSidebar() {
       {/* Footer */}
       <div className={style['footer-wrapper']}>
         <hr style={{ margin: '0px 0px 8px 0px' }} />
+
         {/* Support link */}
         <ListGroup.Item className={style.footer}>
           <Row>
@@ -106,11 +109,9 @@ function SearchSidebar() {
               </p>
             </Col>
           </Row>
-
         </ListGroup.Item>
         <hr style={{ margin: '8px 0px 0px 0px' }} />
       </div>
-
     </Container>
   );
 }

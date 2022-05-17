@@ -31,6 +31,8 @@ const initializeState = (settings:any) => {
   });
 };
 
+jest.mock('@zkladder/zkladder-sdk-ts', () => ({}));
+
 describe.skip('TokenQuery component tests', () => {
   beforeEach(() => {
     // Silence jest act() errors

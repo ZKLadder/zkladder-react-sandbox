@@ -1,30 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Container, Row, Col, Button,
 } from 'react-bootstrap';
 import { Plus } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { contractState } from '../../state/contract';
-import { walletState } from '../../state/wallet';
+import { useRecoilValue } from 'recoil';
+import { contractsState } from '../../state/contract';
 import style from '../../styles/memberDashboard.module.css';
-import { getContract } from '../../utils/api';
 import ProjectBox from '../manageProjects/ProjectBox';
 
 function MyProjects() {
-  const [contracts, setContracts] = useRecoilState(contractState);
-  const { address } = useRecoilValue(walletState);
-
-  // Fetch all of the users projects and filter based on search params
-  useEffect(() => {
-    async function getContracts() {
-      const contractRecords = await getContract({ userAddress: address?.[0] });
-      setContracts(contractRecords);
-    }
-    if (!contracts.length) {
-      getContracts();
-    }
-  }, []);
+  const contracts = useRecoilValue(contractsState);
 
   return (
     <Container>

@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import {
   Container, Row, Col, Button, ListGroup, Badge,
 } from 'react-bootstrap';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  useRecoilState, useRecoilValue, useSetRecoilState, useResetRecoilState,
+} from 'recoil';
 import { MemberNft, Ipfs } from '@zkladder/zkladder-sdk-ts';
+import { useNavigate } from 'react-router-dom';
 import { deployState } from '../../state/deploy';
 import style from '../../styles/deploy.module.css';
 import Tooltip from '../shared/Tooltip';
@@ -11,18 +14,19 @@ import { walletState } from '../../state/wallet';
 import networks from '../../constants/networks';
 import config from '../../config';
 import Error from '../shared/Error';
-import { loadingState } from '../../state/page';
-import CopyToClipboard from '../shared/CopyToClipboard';
+import { loadingState, contractRefreshCounter } from '../../state/page';
 import { createContract } from '../../utils/api';
 
 const castNetworks = networks as any;
 
 function Review() {
   const [deploy, setDeployState] = useRecoilState(deployState);
+  const resetDeployState = useResetRecoilState(deployState);
   const { chainId, provider, address } = useRecoilValue(walletState);
-  const [contractAddress, setAddress] = useState() as any;
   const setLoading = useSetRecoilState(loadingState);
   const [error, setError] = useState() as any;
+  const navigate = useNavigate();
+  const [refresh, setRefresh] = useRecoilState(contractRefreshCounter);
 
   return (
     <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
@@ -210,7 +214,6 @@ function Review() {
                   },
                 });
 
-                setAddress(deployTx.address);
                 setLoading({ loading: true, header: 'Member NFT Deployment', content: 'Transaction is being mined...' });
 
                 await createContract({
@@ -222,8 +225,12 @@ function Review() {
 
                 await deployTx.transaction.wait();
 
-                // @TODO Push the user to the 'manage projects' page
-                setLoading({ loading: false });
+                setTimeout(() => {
+                  setRefresh(refresh + 1);
+                  resetDeployState();
+                  navigate('/projects');
+                  setLoading({ loading: false });
+                }, 3000);
               } catch (err:any) {
                 setLoading({ loading: false });
                 setError(err.message || 'There was a problem with deployment');
@@ -249,13 +256,6 @@ function Review() {
           </Button>
         </Col>
       </Row>
-      {/* Success and Error indicators */}
-      {contractAddress ? (
-        <div style={{ marginTop: '20px' }}>
-          Contract Address
-          <CopyToClipboard text={contractAddress} />
-        </div>
-      ) : null }
       {error ? <Error text={error} /> : null}
     </Container>
   );

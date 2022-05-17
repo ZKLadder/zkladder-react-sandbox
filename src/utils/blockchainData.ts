@@ -1,6 +1,8 @@
+import { NftTokenData } from '@zkladder/zkladder-sdk-ts/dist/interfaces/nft';
 import { ContractWithMetadata } from '../interfaces/contract';
 import { getTransactions } from './api';
 import { ethZeroAddress } from '../constants/address';
+import networks from '../constants/networks';
 
 /**
  * Sums the totalSupply value across a set of Nft contract objects
@@ -63,14 +65,16 @@ const nftContractRevenueAndTransfers = async (contract: ContractWithMetadata) =>
   let contractRevenue = 0;
   let transfers = 0;
 
-  // Fetch array of transactions for this contract
-  const { data } = await getTransactions({ address: contract.address, chainId: contract.chainId });
+  if (!(networks as any)[contract.chainId].hide) {
+    // Fetch array of transactions for this contract
+    const { data } = await getTransactions({ address: contract.address, chainId: contract.chainId });
 
-  // Loop through every transaction and aggregate transfers and revenue
-  data.items.forEach((transaction:any) => {
-    contractRevenue += nftContractRevenue(transaction);
-    transfers += nftContractSecondaryTransfers(transaction);
-  });
+    // Loop through every transaction and aggregate transfers and revenue
+    data.items.forEach((transaction:any) => {
+      contractRevenue += nftContractRevenue(transaction);
+      transfers += nftContractSecondaryTransfers(transaction);
+    });
+  }
 
   return { contractRevenue, transfers };
 };
@@ -117,14 +121,37 @@ const generateNftMetrics = async (contracts: ContractWithMetadata[]) => {
   };
 };
 
+/**
+ * Accepts an array of NFT's, and returns an owner indexed map of balances.
+ * @param contract Valid contract object
+ * @param nftTokens OPTIONAL - Array of NFT's to transform. If excluded the function will query for the NFT array.
+ * @returns
+ */
+const getOwnerBalances = async (contract: ContractWithMetadata, nftTokens?:NftTokenData[]) => {
+  const uniqueAddresses: { [key: string]: number } = {};
+
+  let tokens;
+  if (!nftTokens) {
+    tokens = await contract.memberNft.getAllTokens();
+  } else {
+    tokens = nftTokens;
+  }
+
+  tokens.forEach((token) => {
+    const owner = token?.owner?.toLowerCase() as string;
+    if (uniqueAddresses[owner]) uniqueAddresses[owner] += 1;
+    else uniqueAddresses[owner as string] = 1;
+  });
+
+  return uniqueAddresses;
+};
+
 export {
   generateNftMetrics,
-
-  // exported for unit testing
   nftContractRevenue,
   nftContractSecondaryTransfers,
   nftContractRevenueAndTransfers,
   totalRevenueAndTransfers,
   nftContractTotalMinted,
-
+  getOwnerBalances,
 };

@@ -1,6 +1,15 @@
 import axios from 'axios';
 import {
-  request, getSession, createSession, deleteSession, storeVoucher, getVoucher, createContract, getContract, getTransactions,
+  request,
+  getSession,
+  createSession,
+  deleteSession,
+  storeVoucher,
+  getVoucher,
+  getAllVouchers,
+  createContract,
+  getContract,
+  getTransactions,
 } from '../../utils/api';
 
 jest.mock('axios', () => ({ request: jest.fn() }));
@@ -167,6 +176,33 @@ describe('getVoucher tests', () => {
     expect(axios.request).toHaveBeenCalledWith({
       method: 'get',
       url: '/v1/vouchers',
+      params: voucherOptions,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ voucher: 'mocked' });
+  });
+});
+
+describe('getAllVouchers tests', () => {
+  test('getAllVouchers correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { voucher: 'mocked' } });
+
+    const voucherOptions = {
+      contractAddress: '0xcontract',
+      userAddress: '0xuser',
+      chainId: 10,
+      roleId: 'mockRole',
+    };
+    const response = await getAllVouchers(voucherOptions);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'get',
+      url: '/v1/vouchers/all',
       params: voucherOptions,
       headers: {
         Accept: '*/*',

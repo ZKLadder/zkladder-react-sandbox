@@ -1,18 +1,15 @@
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 import MyProjects from '../../../components/memberDashboard/MyProjects';
 import { walletState } from '../../../state/wallet';
-import { getContract } from '../../../utils/api';
+import { contractsState } from '../../../state/contract';
 
 jest.mock('../../../components/manageProjects/ProjectBox', () => ({
   __esModule: true,
   default: () => <p>PROJECT BOX</p>,
-}));
-
-jest.mock('../../../utils/api', () => ({
-  getContract: jest.fn(),
 }));
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => (jest.fn()));
@@ -21,9 +18,18 @@ const initializeState = (settings:any) => {
   settings.set(walletState, {
     address: ['mockuser'],
   });
+  settings.set(contractsState, [
+    { address: '0xmockContract' },
+    { address: '0xmockContract2' },
+  ]);
 };
 
-const mockGetContract = getContract as jest.Mocked<any>;
+const initializeNoContracts = (settings:any) => {
+  settings.set(walletState, {
+    address: ['mockuser'],
+  });
+  settings.set(contractsState, []);
+};
 
 describe('MyProjects component tests', () => {
   beforeEach(() => {
@@ -31,7 +37,6 @@ describe('MyProjects component tests', () => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
   });
   test('It renders', async () => {
-    mockGetContract.mockResolvedValueOnce(['one', 'two']);
     render(
       <RecoilRoot initializeState={initializeState}>
         <MemoryRouter>
@@ -47,9 +52,8 @@ describe('MyProjects component tests', () => {
   });
 
   test('It renders with no contracts', async () => {
-    mockGetContract.mockResolvedValueOnce([]);
     render(
-      <RecoilRoot initializeState={initializeState}>
+      <RecoilRoot initializeState={initializeNoContracts}>
         <MemoryRouter>
           <MyProjects />
         </MemoryRouter>
@@ -63,18 +67,21 @@ describe('MyProjects component tests', () => {
   });
 
   test('Clicking New Project correctly updates route', async () => {
-    mockGetContract.mockResolvedValueOnce([]);
     render(
       <RecoilRoot initializeState={initializeState}>
         <MemoryRouter>
-          <MyProjects />
+          <Routes>
+            <Route path="/deploy" element={<p>DEPLOY</p>} />
+            <Route path="*" element={<MyProjects />} />
+          </Routes>
         </MemoryRouter>
       </RecoilRoot>,
     );
 
+    await userEvent.click(screen.getByText('NEW PROJECT'));
+
     await waitFor(() => {
-      expect(screen.queryAllByText('PROJECT BOX').length).toBe(0);
-      expect(screen.getByText('NEW PROJECT')).toBeVisible();
+      expect(screen.getByText('DEPLOY')).toBeVisible();
     });
   });
 });

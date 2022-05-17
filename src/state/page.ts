@@ -7,8 +7,8 @@ const loadingState = atom({
   default: { loading: false } as LoadingStateInterface,
 });
 
-const contractAddressState = atom({
-  key: 'contractAddressState',
+const contractAddressSearch = atom({
+  key: 'contractAddressSearch',
   default: '',
 });
 
@@ -17,4 +17,11 @@ const networkFiltersState = atom({
   default: Object.keys(networks).map((chainId) => (chainId.toString())),
 });
 
-export { loadingState, contractAddressState, networkFiltersState };
+const contractRefreshCounter = atom({
+  key: 'refreshCounter',
+  default: 0,
+});
+
+export {
+  loadingState, contractAddressSearch, networkFiltersState, contractRefreshCounter,
+};
