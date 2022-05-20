@@ -14,7 +14,7 @@ function Deploy() {
 
   return (
     <Row className={sharedStyle['content-wrapper']}>
-      <Col className={`${sharedStyle.sidebar} d-none d-lg-block`} lg={3}>
+      <Col style={{ boxShadow: '1px 3px 3px .01px #cfcdcd', minHeight: '775px' }} className={`${sharedStyle.sidebar} d-none d-lg-block`} lg={3}>
         <Sidebar />
       </Col>
       <Col>

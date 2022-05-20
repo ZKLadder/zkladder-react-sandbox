@@ -74,26 +74,19 @@ function DashboardSidebar() {
           </Col>
           <Col style={{ padding: '5px' }} xs={6}>
             <div style={{ marginLeft: '0px' }} className={style['dashboard-metric']}>
-              <p className={style['dashboard-metric-title']}>ASSETS IN TREASURY </p>
+              <p className={style['dashboard-metric-title']}>ASSETS</p>
               <p className={style['dashboard-metric-figure']}>$0</p>
             </div>
           </Col>
         </Row>
-        <Row style={{
-          maxWidth: '400px', padding: '0px', margin: '0px', marginTop: '40px',
-        }}
-        >
+        <Row className={style['footer-wrapper']}>
           <Col style={{ padding: '5px' }} xs={12}>
             <div className={style['dashboard-settings-bar']}>
               <Gear size={24} />
-              <span style={{ verticalAlign: 'middle', marginLeft: '15px' }}>ZKL Member Profile Settings</span>
+              <span style={{ verticalAlign: 'middle', marginLeft: '8px' }}>ZKL Member Profile Settings</span>
             </div>
           </Col>
-        </Row>
-        <Row style={{
-          maxWidth: '400px', padding: '0px', margin: '0px', marginTop: '5px', textAlign: 'center',
-        }}
-        >
+
           <Col style={{ padding: '0px' }} xs={3}>
             <div className={style['dashboard-social-icon']}>
               <Discord size={36} />

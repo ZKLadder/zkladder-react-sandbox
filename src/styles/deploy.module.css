@@ -1,5 +1,4 @@
 .title {
-  margin-top: 15px;
   font-size: 26px;
   font-weight: bold;
   color: #DB0056;
@@ -17,35 +16,45 @@
   border-width: 0px;
 }
 
+.footer-wrapper {
+  position: absolute;
+  width: 81%;
+  bottom: 10px;
+  bottom: 10px;
+  margin: 0px;
+  padding: 0px;
+}
+
 .template-wrapper {
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: #F5F5F5;
 }
 
 .template-box {
   background-color: white;
-  min-height: 23vh !important;
-  box-shadow: 3px 3px 3px 3px #D0D0D0;
+  box-shadow: 1px 1px 8px .5px #cfcdcd;
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 5px;
   margin-top: 5px;
+  min-height: 210px;
 }
 
 .template-box:hover {
   cursor: pointer;
-  box-shadow: 6px 6px 6px 6px #D0D0D0;
+  border: 1px #16434B solid !important;
+  padding: 14px;
 }
 
 .template-box-inactive {
   background-color: white;
-  min-height: 23vh !important;
-  box-shadow: 3px 3px 3px 3px #D0D0D0;
+  box-shadow: 1px 1px 8px .5px #cfcdcd;
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 5px;
   margin-top: 5px;
+  min-height: 210px;
 }
 
 .template-title {
@@ -78,19 +87,20 @@
   font-size: 14px;
   width: 5rem;
   position: absolute;
-  bottom: 1rem;
-  left: 2rem;
+  bottom: 15px;
+  left: 25px;
 }
 
 .template-badge-inactive {
   display: block !important;
   padding: 5px;
+  background-color: #16434bde !important;
   color: #F6FAF2;
   font-size: 14px;
   width: 7rem;
   position: absolute;
-  bottom: 1rem;
-  left: 2rem;
+  bottom: 15px;
+  left: 25px;
 }
 
 .return-button {

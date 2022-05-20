@@ -19,10 +19,10 @@ describe('Onboarding Sidebar component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('SELECT YOUR TEMPLATE')).toBeVisible();
-      expect(screen.getByText('SELECT YOUR TEMPLATE')).toHaveAttribute('class', 'sidebar-step-text-activated');
-      expect(screen.getByText('CONFIGURE YOUR SMART CONTRACT')).toBeVisible();
-      expect(screen.getByText('DEFINE YOUR COMMUNITY ROLES')).toBeVisible();
+      expect(screen.getByText('SELECT TEMPLATE')).toBeVisible();
+      expect(screen.getByText('SELECT TEMPLATE')).toHaveAttribute('class', 'sidebar-step-text-activated');
+      expect(screen.getByText('CONFIGURE SMART CONTRACT')).toBeVisible();
+      expect(screen.getByText('DEFINE COMMUNITY ROLES')).toBeVisible();
       expect(screen.getByText('REVIEW AND LAUNCH')).toBeVisible();
     });
   });
@@ -35,10 +35,10 @@ describe('Onboarding Sidebar component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('SELECT YOUR TEMPLATE')).toBeVisible();
-      expect(screen.getByText('CONFIGURE YOUR SMART CONTRACT')).toBeVisible();
-      expect(screen.getByText('CONFIGURE YOUR SMART CONTRACT')).toHaveAttribute('class', 'sidebar-step-text-activated');
-      expect(screen.getByText('DEFINE YOUR COMMUNITY ROLES')).toBeVisible();
+      expect(screen.getByText('SELECT TEMPLATE')).toBeVisible();
+      expect(screen.getByText('CONFIGURE SMART CONTRACT')).toBeVisible();
+      expect(screen.getByText('CONFIGURE SMART CONTRACT')).toHaveAttribute('class', 'sidebar-step-text-activated');
+      expect(screen.getByText('DEFINE COMMUNITY ROLES')).toBeVisible();
       expect(screen.getByText('REVIEW AND LAUNCH')).toBeVisible();
     });
   });
