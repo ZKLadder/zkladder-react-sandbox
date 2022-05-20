@@ -9,6 +9,7 @@ import { MemberNft, Ipfs } from '@zkladder/zkladder-sdk-ts';
 import { useNavigate } from 'react-router-dom';
 import { deployState } from '../../state/deploy';
 import style from '../../styles/deploy.module.css';
+import sharedStyle from '../../styles/shared.module.css';
 import Tooltip from '../shared/Tooltip';
 import { walletState } from '../../state/wallet';
 import networks from '../../constants/networks';
@@ -29,7 +30,7 @@ function Review() {
   const [refresh, setRefresh] = useRecoilState(contractRefreshCounter);
 
   return (
-    <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+    <Container className={sharedStyle['body-wrapper']}>
       <p className={style.title}>
         REVIEW AND CONFIRM YOUR DEPLOYMENT
       </p>

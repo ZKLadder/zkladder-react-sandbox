@@ -1,8 +1,8 @@
 .sidebar {
   padding-left: 25px;
-  padding-top: 75px;
+  padding-top: 50px;
   border-radius: 10px;
-  min-height: 780px;
+  min-height: 725px;
 }
 
 .title {
@@ -166,8 +166,8 @@
 
 .body-wrapper {
   margin: 0px;
-  padding: 75px 60px 0px 45px;
-  min-height: 780px;
+  padding: 50px 60px 0px 45px;
+  min-height: 725px;
 }
 
 .metrics-wrapper {

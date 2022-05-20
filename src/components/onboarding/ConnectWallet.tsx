@@ -4,6 +4,7 @@ import { Container, Button } from 'react-bootstrap';
 import { QrCode } from 'react-bootstrap-icons';
 import { MemberNft } from '@zkladder/zkladder-sdk-ts';
 import style from '../../styles/onboarding.module.css';
+import sharedStyle from '../../styles/shared.module.css';
 import { walletState } from '../../state/wallet';
 import {
   connect, apiSession, disconnect, switchChain,
@@ -142,7 +143,7 @@ function ConnectWallet() {
   }
 
   return (
-    <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+    <Container className={sharedStyle['body-wrapper']}>
       {/* Title */}
       <p className={style.title}>
         CONNECT YOUR WALLET

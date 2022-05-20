@@ -7,13 +7,14 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { contractsState } from '../../state/contract';
 import style from '../../styles/memberDashboard.module.css';
+import sharedStyle from '../../styles/shared.module.css';
 import ProjectBox from '../manageProjects/ProjectBox';
 
 function MyProjects() {
   const contracts = useRecoilValue(contractsState);
 
   return (
-    <Container>
+    <Container className={sharedStyle['body-wrapper']}>
       <div className={style['my-projects-wrapper']}>
         {/* Header Text */}
         <p className={style['my-projects-title']}>

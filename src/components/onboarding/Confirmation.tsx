@@ -4,6 +4,7 @@ import {
   Container, Button, Row, Col,
 } from 'react-bootstrap';
 import style from '../../styles/onboarding.module.css';
+import sharedStyle from '../../styles/shared.module.css';
 import P5Sketch from '../shared/P5Sketch';
 import { onboardingState } from '../../state/onboarding';
 import networks from '../../constants/networks';
@@ -16,7 +17,7 @@ function Confirmation() {
   const castNetworks = networks as any;
 
   return (
-    <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+    <Container className={sharedStyle['body-wrapper']}>
       {/* Title */}
       <p className={style.title}>
         CONFIRMATION: WELCOME TO ZK LADDER!

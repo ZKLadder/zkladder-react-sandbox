@@ -6,9 +6,10 @@ import {
   Easel, People, Safe, CashStack, Sliders, TicketPerforated,
 } from 'react-bootstrap-icons';
 import { useRecoilState } from 'recoil';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { deployState } from '../../state/deploy';
 import style from '../../styles/deploy.module.css';
+import sharedStyle from '../../styles/shared.module.css';
 
 // Seperate component which renders individual template box
 function TemplateBox(props:{title:string, description:string, icon:any, badgeText:string, active:boolean}) {
@@ -53,8 +54,9 @@ function TemplateBox(props:{title:string, description:string, icon:any, badgeTex
 
 // Main component which renders page
 function SelectTemplate() {
+  const navigate = useNavigate();
   return (
-    <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+    <Container className={sharedStyle['body-wrapper']}>
       <p className={style.title}>
         SELECT A TEMPLATE
       </p>
@@ -111,7 +113,7 @@ function SelectTemplate() {
         <Col lg={4}>
           <TemplateBox
             title="CURRENCY"
-            description="Create a fully fungible digital token your community can use with loyalty programs, member benefit programs, or for redemption of goods or services"
+            description="Create a fungible digital token your community can use for loyalty programs, member benefits, or internal exchange"
             icon={<CashStack size={36} className={style['template-icon']} />}
             badgeText="ERC-721"
             active={false}
@@ -120,11 +122,12 @@ function SelectTemplate() {
       </Row>
 
       {/* Return button */}
-      <Link to="dashboard">
-        <Button className={style['return-button']}>
-          RETURN TO DASHBOARD
-        </Button>
-      </Link>
+      <Button
+        className={style['return-button']}
+        onClick={() => { navigate(-1); }}
+      >
+        GO BACK
+      </Button>
     </Container>
   );
 }

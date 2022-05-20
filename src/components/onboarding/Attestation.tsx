@@ -7,6 +7,7 @@ import { Container, Button, Card } from 'react-bootstrap';
 import { XCircleFill } from 'react-bootstrap-icons';
 import { useDropzone } from 'react-dropzone';
 import style from '../../styles/onboarding.module.css';
+import sharedStyle from '../../styles/shared.module.css';
 import { onboardingState } from '../../state/onboarding';
 import Error from '../shared/Error';
 
@@ -25,7 +26,7 @@ function Attestation() {
   });
 
   return (
-    <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+    <Container className={sharedStyle['body-wrapper']}>
       {/* Title */}
       <p className={style.title}>
         UPLOAD YOUR TOKEN SEED

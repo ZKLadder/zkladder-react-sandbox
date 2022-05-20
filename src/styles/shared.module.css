@@ -7,11 +7,17 @@
   min-height: calc(100vh - 85px);
 }
 
+.body-wrapper {
+  margin: 0px;
+  padding: 50px 60px 0px 45px;
+  min-height: 725px;
+}
+
 .sidebar {
   padding-left: 25px;
-  padding-top: 60px;
+  padding-top: 50px;
   border-radius: 10px;
-  box-shadow: 10px 10px 10px #D0D0D0;
+  min-height: 725px;
 }
 
 .sidebar-step {

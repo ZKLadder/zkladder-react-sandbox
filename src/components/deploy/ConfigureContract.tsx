@@ -9,6 +9,7 @@ import { XCircleFill } from 'react-bootstrap-icons';
 import { deployState } from '../../state/deploy';
 import { walletState } from '../../state/wallet';
 import style from '../../styles/deploy.module.css';
+import sharedStyle from '../../styles/shared.module.css';
 import Tooltip from '../shared/Tooltip';
 
 function ConfigureContract() {
@@ -64,7 +65,7 @@ function ConfigureContract() {
   });
 
   return (
-    <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+    <Container className={sharedStyle['body-wrapper']}>
       <p className={style.title}>
         SET UP YOUR CONTRACT
       </p>

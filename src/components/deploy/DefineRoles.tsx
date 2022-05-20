@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { XCircleFill, Plus } from 'react-bootstrap-icons';
 import { deployState } from '../../state/deploy';
 import style from '../../styles/deploy.module.css';
+import sharedStyle from '../../styles/shared.module.css';
 import Tooltip from '../shared/Tooltip';
 import { walletState } from '../../state/wallet';
 import networks from '../../constants/networks';
@@ -34,7 +35,7 @@ function DefineRoles() {
   };
 
   return (
-    <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+    <Container className={sharedStyle['body-wrapper']}>
       <p className={style.title}>
         DEFINE COMMUNITY ROLES
       </p>
