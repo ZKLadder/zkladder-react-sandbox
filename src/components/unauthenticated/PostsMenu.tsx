@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import Glider from 'react-glider';
@@ -8,7 +8,6 @@ import Loading from '../shared/Loading';
 import Error from '../shared/Error';
 import style from '../../styles/unauthenticated.module.css';
 
-const endpoint = 'https://api-us-east-1.graphcms.com/v2/cl12mkshi8t8s01za53ae9b2y/master';
 export const POSTS = `
   {
     postCategories {
@@ -32,21 +31,21 @@ export const POSTS = `
   }
 `;
 
-function PostsMenu() {
+function PostsMenu({ endpoint }: any) {
+  const [error, setError] = useState(null);
   const {
     data,
     isLoading,
-    isError,
   } = useQuery('posts', () => axios({
     url: endpoint,
     method: 'POST',
     data: {
       query: POSTS,
     },
-  }).then((response) => response.data.data));
+  }).then((response) => response.data.data).catch((err) => setError(err.message)));
 
   if (isLoading) return <Loading />;
-  if (isError) return <Error text="We are sorry, an error has occurred." />;
+  if (error !== null) return <Error text={error as string} />;
 
   return (
     <div className={style['post-menu']}>

@@ -1,55 +1,58 @@
 import React from 'react';
-import { MockedProvider } from '@apollo/client/testing';
+import axios from 'axios';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import {
   render,
   screen,
   waitFor,
   cleanup,
 } from '@testing-library/react';
-import EventsMenu, { EVENTS } from '../../../components/unauthenticated/EventsMenu';
+import EventsMenu from '../../../components/unauthenticated/EventsMenu';
+
+jest.mock('axios');
+const mockAxios = axios as jest.Mocked<any>;
 
 describe('Events Menu component', () => {
   afterEach(cleanup);
+  beforeEach(() => jest.clearAllMocks());
+
+  const client = new QueryClient();
 
   test('Renders component with Loading message', async () => {
     render(
-      <MockedProvider>
+      <QueryClientProvider client={client}>
         <EventsMenu />
-      </MockedProvider>,
+      </QueryClientProvider>,
     );
 
     expect(screen.getByRole('status')).toBeVisible();
   });
 
   test('Makes Successful API Call', async () => {
-    const mocks = [
-      {
-        request: {
-          query: EVENTS,
-        },
-        result: {
-          data: {
-            events: [
-              {
-                title: 'Title 1',
-                date: '2022-12-28T12:00:00+05:00',
-                description: 'Description 1',
-                image: {
-                  url: 'https://www.fillmurray.com/200/300',
-                  fileName: 'murray1.jpg',
-                },
+    mockAxios.mockResolvedValueOnce({
+      data: {
+        data: {
+          events: [
+            {
+              title: 'Title 1',
+              date: '2022-12-28T12:00:00+05:00',
+              description: 'Description 1',
+              image: {
+                url: 'https://www.fillmurray.com/200/300',
+                fileName: 'murray1.jpg',
               },
-            ],
-          },
+            },
+          ],
         },
       },
-    ];
+    });
 
     render(
-      <MockedProvider mocks={mocks}>
+      <QueryClientProvider client={client}>
         <EventsMenu />
-      </MockedProvider>,
+      </QueryClientProvider>,
     );
+
     await waitFor(() => {
       expect(screen.getByText('TITLE 1')).toBeVisible();
       expect(screen.getByText('WED DEC 28')).toBeVisible();
@@ -58,23 +61,17 @@ describe('Events Menu component', () => {
   });
 
   test('Renders Error message when API call fails', async () => {
-    const mockError = [
-      {
-        request: {
-          query: EVENTS,
-        },
-        error: new Error('Response not successful: Received status code 400'),
-      },
-    ];
+    mockAxios.mockRejectedValueOnce(new Error('Request failed with status code 400'));
 
     render(
-      <MockedProvider mocks={mockError}>
+      <QueryClientProvider client={client}>
         <EventsMenu />
-      </MockedProvider>,
+      </QueryClientProvider>,
     );
+
     await waitFor(() => {
       expect(screen.getByRole('alert')).toBeVisible();
-      expect(screen.getByText('Response not successful: Received status code 400')).toBeVisible();
+      expect(screen.getByText('Request failed with status code 400')).toBeVisible();
     });
   });
 });

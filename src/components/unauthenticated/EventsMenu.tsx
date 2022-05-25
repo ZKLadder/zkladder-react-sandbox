@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import Card from 'react-bootstrap/Card';
@@ -8,34 +8,32 @@ import Error from '../shared/Error';
 import 'glider-js/glider.min.css';
 import style from '../../styles/unauthenticated.module.css';
 
-const endpoint = 'https://api-us-east-1.graphcms.com/v2/cl12mkshi8t8s01za53ae9b2y/master';
-
 export const EVENTS = `
-query UpcomingEvents {
-  events(last: 4, orderBy: date_ASC) {
-    title
-    date
-    description
-    image {
-      url
-      fileName
+  query UpcomingEvents {
+    events(last: 4, orderBy: date_ASC) {
+      title
+      date
+      description
+      image {
+        url
+        fileName
+      }
     }
-  }
   }
 `;
 
-function EventsMenu() {
+function EventsMenu({ endpoint }: any) {
+  const [error, setError] = useState(null);
   const {
     data,
     isLoading,
-    isError,
   } = useQuery('events', () => axios({
     url: endpoint,
     method: 'POST',
     data: {
       query: EVENTS,
     },
-  }).then((response) => response.data.data));
+  }).then((response) => response.data.data).catch((err) => setError(err.message)));
 
   const formatDate = (date: any) => {
     const dateTimeString = new Date(date).toString();
@@ -45,7 +43,7 @@ function EventsMenu() {
   };
 
   if (isLoading) return <Loading />;
-  if (isError) return <Error text="We are sorry, an error has occurred." />;
+  if (error !== null) return <Error text={error as any} />;
 
   return (
     <div className={style['events-menu']}>

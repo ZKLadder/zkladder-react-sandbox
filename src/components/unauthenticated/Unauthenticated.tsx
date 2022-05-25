@@ -1,8 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-// import { ApolloProvider } from '@apollo/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
-// import { client } from './ApolloClient/client';
 import PageBody from '../shared/PageBody';
 import UnauthenticatedSidebar from './UnauthenticatedSidebar';
 import PostsMenu from './PostsMenu';
@@ -11,6 +9,7 @@ import Navbar from '../navbar/Navbar';
 import style from '../../styles/shared.module.css';
 
 const client = new QueryClient();
+const endpoint = 'https://api-us-east-1.graphcms.com/v2/cl12mkshi8t8s01za53ae9b2y/master';
 
 function Unauthenticated() {
   return (
@@ -22,8 +21,8 @@ function Unauthenticated() {
             <UnauthenticatedSidebar />
           </Col>
           <Col lg={9}>
-            <PostsMenu />
-            <EventsMenu />
+            <PostsMenu endpoint={endpoint} />
+            <EventsMenu endpoint={endpoint} />
           </Col>
         </Row>
       </PageBody>
