@@ -22,7 +22,7 @@ const initializeState = (settings:any) => {
     address: '0xaddressToTest',
     whitelisted: 500,
     chainId: 31337,
-    templateId: 3,
+    templateId: 1,
   }]);
 };
 
@@ -46,7 +46,7 @@ describe('ProjectBox tests', () => {
       <RecoilRoot initializeState={initializeState}>
         <MemoryRouter>
           <ProjectBox
-            contract={{ address: '0xaddressToTest', chainId: 31337, templateId: 3 } as any}
+            contract={{ address: '0xaddressToTest', chainId: 31337, templateId: 1 } as any}
           />
         </MemoryRouter>
       </RecoilRoot>,
@@ -70,7 +70,7 @@ describe('ProjectBox tests', () => {
       <RecoilRoot initializeState={initializeState}>
         <MemoryRouter>
           <ProjectBox
-            contract={{ address: '0xaddressToTest', chainId: 31337, templateId: 3 } as any}
+            contract={{ address: '0xaddressToTest', chainId: 31337, templateId: 1 } as any}
           />
         </MemoryRouter>
       </RecoilRoot>,
@@ -101,7 +101,7 @@ describe('ProjectBox tests', () => {
               path="*"
               element={(
                 <ProjectBox
-                  contract={{ address: '0xaddressToTest', chainId: 31337, templateId: 3 } as any}
+                  contract={{ address: '0xaddressToTest', chainId: 31337, templateId: 1 } as any}
                 />
             )}
             />

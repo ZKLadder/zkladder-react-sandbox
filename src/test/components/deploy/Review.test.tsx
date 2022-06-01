@@ -157,7 +157,7 @@ describe('DefineRoles component tests', () => {
         address: '0xmockContract',
         creator: 'mockuser',
         chainId: '4',
-        templateId: '3',
+        templateId: '1',
       });
     });
 
