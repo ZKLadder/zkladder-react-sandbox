@@ -45,6 +45,7 @@
   font-weight: bold;
   padding: 27px 25px 19px 25px;
   border-radius: 0px 0px 10px 10px;
+  margin-top: -1px;
 }
 
 .connected-labels {
@@ -54,7 +55,8 @@
   margin-top: 5px;
   font-size: 14px;
   font-weight: bold;
-  max-width: 255px;
+  max-width: 290px;
+  white-space: nowrap;
 }
 
 .icon {

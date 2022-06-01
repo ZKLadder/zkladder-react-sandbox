@@ -142,6 +142,19 @@
   color: #DB0056;
   border: 1px solid #DB0056;
   font-weight: bold;
+  border-radius: 10px;
+  font-size: 14px;
+  padding: 10px;
+}
+
+.new-project-button:hover {
+  background-color: #DB0056;
+  color: white;
+  border: 1px solid white;
+  font-weight: bold;
+  border-radius: 10px;
+  font-size: 14px;
+  padding: 10px;
 }
 
 .contract-image {
