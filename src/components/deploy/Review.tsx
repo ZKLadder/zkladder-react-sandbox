@@ -221,7 +221,7 @@ function Review() {
                   address: deployTx.address,
                   creator: address?.[0] as string,
                   chainId: chainId?.toString() as string,
-                  templateId: '3',
+                  templateId: '1',
                 });
 
                 await deployTx.transaction.wait();
