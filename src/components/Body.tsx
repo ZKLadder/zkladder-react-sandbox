@@ -1,18 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Spinner } from 'react-bootstrap';
-import {
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import style from '../styles/body.module.css';
 import Dashboard from './memberDashboard/Dashboard';
 import Nft from './nft/Nft';
 import Ipfs from './ipfs/Ipfs';
 import Deploy from './deploy/Deploy';
 import ManageProjects from './manageProjects/ManageProjects';
+import { getContract } from '../utils/api';
+import { walletState } from '../state/wallet';
+import { contractsState } from '../state/contract';
+import { contractRefreshCounter } from '../state/page';
 
 function Body() {
+  const refreshCounter = useRecoilValue(contractRefreshCounter);
+  const setContracts = useSetRecoilState(contractsState);
+  const { address } = useRecoilValue(walletState);
+
+  // Prefetch all of the users deployed contracts
+  useEffect(() => {
+    async function getContracts() {
+      const contractRecords = await getContract({ userAddress: address?.[0] });
+      setContracts(contractRecords);
+    }
+
+    getContracts();
+  }, [refreshCounter]);
+
   return (
     <React.Suspense fallback={<Spinner animation="border" role="status" />}>
       <Routes>
@@ -49,7 +64,7 @@ function Body() {
 
         <Route path="projects" element={<ManageProjects />}>
           <Route
-            path=":contractid"
+            path=":address"
             element={<ManageProjects />}
           />
         </Route>

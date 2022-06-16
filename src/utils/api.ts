@@ -1,6 +1,12 @@
 import axios from 'axios';
 import {
-  HttpOptions, StoreVoucherOptions, GetVoucherOptions, CreateContractOptions, GetContractOptions, GetTransactionsOptions,
+  HttpOptions,
+  StoreVoucherOptions,
+  GetVoucherOptions,
+  CreateContractOptions,
+  GetContractOptions,
+  GetTransactionsOptions,
+  SearchVoucherOptions,
 } from '../interfaces/api';
 import config from '../config';
 
@@ -69,6 +75,15 @@ const getVoucher = async (options: GetVoucherOptions) => {
   return response;
 };
 
+const getAllVouchers = async (options: SearchVoucherOptions) => {
+  const response = await request({
+    method: 'get',
+    url: '/v1/vouchers/all',
+    params: options,
+  });
+  return response;
+};
+
 const createContract = async (options: CreateContractOptions) => {
   const response = await request({
     method: 'post',
@@ -105,6 +120,7 @@ export {
   deleteSession,
   storeVoucher,
   getVoucher,
+  getAllVouchers,
   createContract,
   getContract,
   getTransactions,

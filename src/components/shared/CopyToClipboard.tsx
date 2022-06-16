@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Alert } from 'react-bootstrap';
+import { Clipboard, ClipboardCheck } from 'react-bootstrap-icons';
+import style from '../../styles/shared.module.css';
 
-function CopyToClipboard({ text }:{text:string}) {
+function CopyToClipboard({ text, className }:{text:string, className?:string}) {
   const [copied, setCopied] = useState(false);
 
   const copy = () => {
@@ -9,24 +10,30 @@ function CopyToClipboard({ text }:{text:string}) {
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
-    }, 3000);
+    }, 2000);
   };
 
   return (
-    <div>
-      <Alert
-        style={{ overflow: 'scroll' }}
-      >
-        {text}
-      </Alert>
-      <button
-        type="button"
-        onClick={copy}
-      >
-        {copied ? 'Copied!' : 'Copy to Clipboard'}
-      </button>
-    </div>
+    <span className={className}>
+      {text}
+      {copied ? (
+        <ClipboardCheck
+          className={style['copy-icon']}
+          size={14}
+        />
+      ) : (
+        <Clipboard
+          onClick={copy}
+          className={style['copy-icon']}
+          size={14}
+        />
+      )}
+    </span>
   );
 }
+
+CopyToClipboard.defaultProps = {
+  className: '',
+};
 
 export default CopyToClipboard;

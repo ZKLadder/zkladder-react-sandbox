@@ -8,6 +8,7 @@ import {
 } from 'react-bootstrap';
 import { Ipfs, MemberNft } from '@zkladder/zkladder-sdk-ts';
 import style from '../../styles/onboarding.module.css';
+import sharedStyle from '../../styles/shared.module.css';
 import P5Sketch, { saveImage } from '../shared/P5Sketch';
 import { onboardingState } from '../../state/onboarding';
 import { walletState } from '../../state/wallet';
@@ -69,7 +70,7 @@ function Mint() {
   }, [progress]);
 
   return (
-    <Container style={{ paddingLeft: '25px', paddingTop: '60px' }}>
+    <Container className={sharedStyle['body-wrapper']}>
       {/* Title */}
       <p className={style.title}>
         PREVIEW AND MINT YOUR MEMBER NFT

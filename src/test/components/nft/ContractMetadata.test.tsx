@@ -18,6 +18,8 @@ const initializeState = (settings:any) => {
   });
 };
 
+jest.mock('@zkladder/zkladder-sdk-ts', () => ({}));
+
 describe.skip('Contract Metadata component tests', () => {
   test('It renders', async () => {
     render(

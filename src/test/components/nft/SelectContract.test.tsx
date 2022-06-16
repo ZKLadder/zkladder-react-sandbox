@@ -20,7 +20,7 @@ jest.mock('@zkladder/zkladder-sdk-ts', () => ({ MemberNft: { setup: jest.fn() } 
 
 const mockMemberNft = MemberNft as jest.Mocked<any>;
 
-describe('Select Contract component tests', () => {
+describe.skip('Select Contract component tests', () => {
   test('It renders', async () => {
     render(
       <RecoilRoot>

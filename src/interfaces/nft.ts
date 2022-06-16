@@ -1,4 +1,5 @@
 import { MemberNft } from '@zkladder/zkladder-sdk-ts';
+import { MemberNftRole } from './deploy';
 
 interface NftStateInterface {
   isSelected:boolean,
@@ -17,4 +18,16 @@ interface NftContractMetadata {
 
 type Views = 'tokenQuery' | 'allTokens' | 'allMyTokens'
 
-export type { NftStateInterface, NftContractMetadata, Views };
+interface NftContractUpdates {
+  image?: any,
+  description?: string,
+  isTransferable?: boolean,
+  royaltyBasis?: number,
+  beneficiaryAddress?: string,
+  roles?: MemberNftRole[],
+  errors?:{ [key: string]: any }
+}
+
+export type {
+  NftStateInterface, NftContractMetadata, Views, NftContractUpdates,
+};

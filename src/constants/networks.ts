@@ -58,7 +58,7 @@ export default {
   31337: {
     label: 'Hardhat',
     token: 'TEST-ETH',
-    id: '0x7A69',
+    id: '0x7a69',
     rpcUrl: 'http://localhost:8545',
     logo: ethereumLogo,
     hide: true,

@@ -7,8 +7,8 @@ import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import AllProjects from '../../../components/manageProjects/AllProjects';
-import { contractState } from '../../../state/contract';
-import { contractAddressState, networkFiltersState } from '../../../state/page';
+import { contractsState } from '../../../state/contract';
+import { contractAddressSearch, networkFiltersState } from '../../../state/page';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(() => ({ getGatewayUrl: jest.fn() })),
@@ -42,17 +42,17 @@ const contracts = [
 ];
 
 const initializeWithoutFilters = (settings: any) => {
-  settings.set(contractState, contracts);
+  settings.set(contractsState, contracts);
 };
 
 const initializeWithFilters = (settings: any) => {
-  settings.set(contractState, contracts);
+  settings.set(contractsState, contracts);
   settings.set(networkFiltersState, '3');
 };
 
 const initializeWithAddressSearch = (settings: any) => {
-  settings.set(contractState, contracts);
-  settings.set(contractAddressState, '0xcontract50000000000000000000000000000000');
+  settings.set(contractsState, contracts);
+  settings.set(contractAddressSearch, '0xcontract50000000000000000000000000000000');
 };
 
 describe('All projects tests', () => {

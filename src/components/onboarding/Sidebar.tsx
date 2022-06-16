@@ -1,6 +1,8 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { Container, ListGroup } from 'react-bootstrap';
+import {
+  Container, ListGroup, Row, Col,
+} from 'react-bootstrap';
 import { QuestionCircle } from 'react-bootstrap-icons';
 import logo from '../../images/memberMint/logo_transparent.png';
 import style from '../../styles/onboarding.module.css';
@@ -16,6 +18,7 @@ function MemberMintSidebar() {
         src={logo}
         width="205"
         height="35"
+        style={{ marginTop: '5px' }}
       />
       {/* Title */}
       <p className={style.title}>
@@ -52,15 +55,26 @@ function MemberMintSidebar() {
           isActivated={currentStep === 4}
         />
 
-        {/* Help link */}
-        <ListGroup.Item className={style.footer}>
-          <QuestionCircle size={20} style={{ marginRight: '5px' }} />
-          <p style={{ display: 'inline' }}>
-            Information incorrect? Having connection issues?
-            {' '}
-            <a target="_blank" href="https://www.zkladder.com/#join" rel="noreferrer">Get in touch here.</a>
-          </p>
-        </ListGroup.Item>
+        <div className={style['footer-wrapper']}>
+          <hr style={{ margin: '0px 0px 8px 0px' }} />
+
+          {/* Support link */}
+          <ListGroup.Item className={style.footer}>
+            <Row>
+              <Col style={{ padding: '5px 0px 0px 0px' }} xs={1}>
+                <QuestionCircle size={20} style={{ alignSelf: 'center' }} />
+              </Col>
+              <Col style={{ marginLeft: '1px' }}>
+                <p style={{ display: 'inline' }}>
+                  Having issues? Questions?
+                  {' '}
+                  <a target="_blank" href="https://www.zkladder.com/#join" rel="noreferrer">Get in touch here.</a>
+                </p>
+              </Col>
+            </Row>
+          </ListGroup.Item>
+          <hr style={{ margin: '8px 0px 0px 0px' }} />
+        </div>
       </ListGroup>
 
     </Container>

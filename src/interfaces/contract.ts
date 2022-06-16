@@ -1,3 +1,6 @@
+import { MemberNftReadOnly } from '@zkladder/zkladder-sdk-ts';
+import { MemberNftRole } from './deploy';
+
 interface Contract {
   address:string,
   chainId:string,
@@ -13,7 +16,11 @@ interface ContractWithMetadata extends Contract{
   description?:string,
   image?:string,
   totalSupply:number,
-  whitelisted?:32
+  whitelisted?:32,
+  memberNft: MemberNftReadOnly,
+  roles:MemberNftRole[],
+  adminAccounts?: string[],
+  minterAccounts?: string[]
 }
 
 interface ContractMetrics {
@@ -21,7 +28,17 @@ interface ContractMetrics {
   totalMinted:number,
   totalRevenue:string,
   totalTrades: number
-
 }
 
-export type { Contract, ContractWithMetadata, ContractMetrics };
+interface MintVoucher {
+  userAddress:string,
+  createdAt:string,
+  balance:number,
+  note:string,
+  roleId:string,
+  redeemed?:boolean
+}
+
+export type {
+  Contract, ContractWithMetadata, ContractMetrics, MintVoucher,
+};

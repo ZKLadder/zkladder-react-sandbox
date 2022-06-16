@@ -38,7 +38,8 @@ describe('Navbar tests', () => {
       </RecoilRoot>,
     );
 
-    expect(screen.getByText('ZKL MEMBER DASHBOARD')).toBeVisible();
+    expect(screen.getByText('MEMBER DASHBOARD')).toBeVisible();
+    expect(screen.getByText('CREATOR TOOLS')).toBeVisible();
     expect(screen.getByText('125 MATIC')).toBeVisible();
     expect(screen.getByText('Polygon : 0xmock...test')).toBeVisible();
     expect(screen.getByTestId('disconnectButton')).toBeVisible();

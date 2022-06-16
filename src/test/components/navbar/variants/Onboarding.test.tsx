@@ -39,8 +39,10 @@ describe('Navbar tests', () => {
       </RecoilRoot>,
     );
 
-    expect(screen.getByText('ZKL MEMBER TOKEN MINT')).toBeVisible();
-    expect(screen.getByText('MEMBERS CONNECT YOUR WALLET')).toBeVisible();
+    await waitFor(() => {
+      expect(screen.getByText('MEMBER TOKEN MINT')).toBeVisible();
+      expect(screen.getByText('MEMBERS CONNECT YOUR WALLET')).toBeVisible();
+    });
   });
 
   test('Connect wallet workflow', async () => {
@@ -57,8 +59,10 @@ describe('Navbar tests', () => {
       </RecoilRoot>,
     );
 
-    expect(screen.getByText('ZKL MEMBER TOKEN MINT')).toBeVisible();
-    expect(screen.getByText('MEMBERS CONNECT YOUR WALLET')).toBeVisible();
+    await waitFor(() => {
+      expect(screen.getByText('MEMBER TOKEN MINT')).toBeVisible();
+      expect(screen.getByText('MEMBERS CONNECT YOUR WALLET')).toBeVisible();
+    });
 
     mockConnect.mockResolvedValue({
       address: ['0x1234abcde0987'],

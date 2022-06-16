@@ -24,6 +24,13 @@ interface GetVoucherOptions{
   chainId:number,
 }
 
+interface SearchVoucherOptions{
+  contractAddress?: string,
+  userAddress?: string,
+  roleId?:string,
+  chainId?:number,
+}
+
 interface CreateContractOptions {
   address: string,
   creator: string,
@@ -49,6 +56,7 @@ export type {
   HttpOptions,
   StoreVoucherOptions,
   GetVoucherOptions,
+  SearchVoucherOptions,
   CreateContractOptions,
   GetContractOptions,
   GetTransactionsOptions,

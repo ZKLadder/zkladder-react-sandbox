@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Row, Col, Figure, ProgressBar,
 } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { useRecoilValueLoadable } from 'recoil';
 import { Ipfs } from '@zkladder/zkladder-sdk-ts';
 import style from '../../styles/manageProjects.module.css';
@@ -10,10 +11,10 @@ import networks from '../../constants/networks';
 import templates from '../../constants/templates';
 import placeholder from '../../images/dashboard/placeholder.png';
 import { Contract } from '../../interfaces/contract';
-import { contractWithMetadataState } from '../../state/contract';
+import { contractsWithMetadataState } from '../../state/contract';
 
 function ProjectBox({ contract }:{contract:Contract}) {
-  const contractsWithMetadata = useRecoilValueLoadable(contractWithMetadataState);
+  const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
   const ipfs = new Ipfs(config.ipfs.projectId, config.ipfs.projectId);
   const {
     address, chainId, templateId,
@@ -22,7 +23,7 @@ function ProjectBox({ contract }:{contract:Contract}) {
   // Render placeholder if contractMetadata is not populated for this contract
   if (!contractsWithMetadata?.contents?.[address]) {
     return (
-      <Col lg={4} data-testid="placeholder">
+      <Col key={address} lg={4} data-testid="placeholder">
         <div className={`mx-auto ${style['placeholder-image']} ${style.placeholder}`} />
         <Row style={{ marginTop: '3px' }}>
           <Col style={{ padding: '0px 3px 0px 13px' }}>
@@ -40,7 +41,7 @@ function ProjectBox({ contract }:{contract:Contract}) {
   // Render project box data if contractMetadata is populated
   const { contents } = contractsWithMetadata;
   return (
-    <Col lg={4} data-testid="projectData">
+    <Col key={address} lg={4} data-testid="projectData">
       <Figure className={style['project-image']}>
         {/* Contract Image */}
         <Figure.Image
@@ -52,28 +53,30 @@ function ProjectBox({ contract }:{contract:Contract}) {
         />
 
         {/* Contract Label */}
-        <Figure.Caption className={style['project-label-wrapper']}>
-          {/* Name */}
-          <p style={{ marginTop: '5px' }} className={style['project-name']}>{contents[address]?.name}</p>
+        <Link to={`/projects/${address}`}>
+          <Figure.Caption className={style['project-label-wrapper']}>
+            {/* Name */}
+            <p style={{ marginTop: '5px' }} className={style['project-name']}>{contents[address]?.name}</p>
 
-          {/* Vouchers Redeemed */}
-          <span
-            className={style['project-name']}
-            style={{ marginBottom: '5px', fontSize: '11px' }}
-          >
-            VOUCHERS REDEEMED:
-          </span>
-          <span
-            className={style['project-name']}
-            style={{ marginBottom: '5px', fontSize: '12px', fontWeight: 'normal' }}
-          >
-            {`${contents[address]?.totalSupply}/${contents[address]?.whitelisted}`}
+            {/* Vouchers Redeemed */}
+            <span
+              className={style['project-name']}
+              style={{ marginBottom: '5px', fontSize: '11px' }}
+            >
+              VOUCHERS REDEEMED:
+            </span>
+            <span
+              className={style['project-name']}
+              style={{ marginBottom: '5px', fontSize: '12px', fontWeight: 'normal' }}
+            >
+              {`${contents[address]?.totalSupply}/${contents[address]?.whitelisted}`}
 
-          </span>
+            </span>
 
-          {/* Vouchers Redeemed Progress Bar */}
-          <ProgressBar id="progress-bar" min={0} max={contents[address]?.whitelisted} now={contents[address]?.totalSupply} />
-        </Figure.Caption>
+            {/* Vouchers Redeemed Progress Bar */}
+            <ProgressBar id="progress-bar" min={0} max={contents[address]?.whitelisted} now={contents[address]?.totalSupply} />
+          </Figure.Caption>
+        </Link>
       </Figure>
 
       <Row style={{ margin: '0px', marginTop: '3px' }}>

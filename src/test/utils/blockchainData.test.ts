@@ -1,5 +1,10 @@
 import {
-  nftContractTotalMinted, nftContractSecondaryTransfers, nftContractRevenue, nftContractRevenueAndTransfers, generateNftMetrics,
+  nftContractTotalMinted,
+  nftContractSecondaryTransfers,
+  nftContractRevenue,
+  nftContractRevenueAndTransfers,
+  generateNftMetrics,
+  getOwnerBalances,
 } from '../../utils/blockchainData';
 import { ethZeroAddress } from '../../constants/address';
 import { getTransactions } from '../../utils/api';
@@ -83,7 +88,7 @@ describe('nftContractRevenueAndTransfers tests', () => {
     });
     expect(await nftContractRevenueAndTransfers({
       address: 'test',
-      chainId: 'test',
+      chainId: '137',
     } as any)).toStrictEqual({ contractRevenue: 226.5, transfers: 4 });
   });
 });
@@ -93,5 +98,50 @@ describe('generateNftMetrics tests', () => {
     expect(await generateNftMetrics(contracts)).toStrictEqual({
       totalRevenue: '0.00', totalTrades: 0, totalMinted: 135, totalProjects: 5,
     });
+  });
+});
+
+describe('getOwnerBalances tests', () => {
+  const nfts:any = [
+    { owner: 'one' },
+    { owner: 'two' },
+    { owner: 'two' },
+    { owner: 'three' },
+    { owner: 'three' },
+    { owner: 'three' },
+    { owner: 'four' },
+    { owner: 'four' },
+    { owner: 'four' },
+    { owner: 'four' },
+  ];
+
+  const contract:any = {
+    memberNft: {
+      getAllTokens: jest.fn(),
+    },
+  };
+
+  test('It returns the correct results when given an array of NFTs', async () => {
+    expect(await getOwnerBalances(contract, nfts)).toStrictEqual({
+      one: 1,
+      two: 2,
+      three: 3,
+      four: 4,
+    });
+  });
+
+  test('It correctly queries for NFTs', async () => {
+    contract.memberNft.getAllTokens.mockResolvedValueOnce(nfts);
+
+    const results = await getOwnerBalances(contract);
+
+    expect(results).toStrictEqual({
+      one: 1,
+      two: 2,
+      three: 3,
+      four: 4,
+    });
+
+    expect(contract.memberNft.getAllTokens).toHaveBeenCalledTimes(1);
   });
 });

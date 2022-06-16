@@ -5,6 +5,7 @@ import {
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import userEvent from '@testing-library/user-event';
 import { Ipfs, MemberNft } from '@zkladder/zkladder-sdk-ts';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Review from '../../../components/deploy/Review';
 import { deployState } from '../../../state/deploy';
 import { walletState } from '../../../state/wallet';
@@ -85,7 +86,9 @@ describe('DefineRoles component tests', () => {
   test('It renders', async () => {
     render(
       <RecoilRoot initializeState={initializeState}>
-        <Review />
+        <MemoryRouter>
+          <Review />
+        </MemoryRouter>
       </RecoilRoot>,
     );
 
@@ -109,7 +112,12 @@ describe('DefineRoles component tests', () => {
   test('Deploy workflow', async () => {
     render(
       <RecoilRoot initializeState={initializeState}>
-        <Review />
+        <MemoryRouter>
+          <Routes>
+            <Route path="projects" element={<p>PROJECTS</p>} />
+            <Route path="*" element={<Review />} />
+          </Routes>
+        </MemoryRouter>
       </RecoilRoot>,
     );
 
@@ -123,7 +131,7 @@ describe('DefineRoles component tests', () => {
       Hash: 'scriptHash',
     }]);
 
-    mockDeploy.mockResolvedValueOnce({ address: '0xmockContract' });
+    mockDeploy.mockResolvedValueOnce({ address: '0xmockContract', transaction: { wait: () => {} } });
 
     await userEvent.click(screen.getByText('DEPLOY YOUR SMART CONTRACT'));
 
@@ -149,15 +157,24 @@ describe('DefineRoles component tests', () => {
         address: '0xmockContract',
         creator: 'mockuser',
         chainId: '4',
-        templateId: '3',
+        templateId: '1',
       });
+    });
+
+    /* eslint-disable-next-line */
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    await waitFor(() => {
+      expect(screen.getByText('PROJECTS')).toBeVisible();
     });
   });
 
   test('Errors are displayed', async () => {
     render(
       <RecoilRoot initializeState={initializeState}>
-        <Review />
+        <MemoryRouter>
+          <Review />
+        </MemoryRouter>
       </RecoilRoot>,
     );
 
@@ -185,7 +202,9 @@ describe('DefineRoles component tests', () => {
     render(
       <RecoilRoot initializeState={initializeState}>
         <RecoilObserver node={deployState} onChange={deployStateObserver} />
-        <Review />
+        <MemoryRouter>
+          <Review />
+        </MemoryRouter>
       </RecoilRoot>,
     );
 
