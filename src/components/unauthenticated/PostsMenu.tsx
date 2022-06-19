@@ -1,108 +1,55 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useQuery } from 'react-query';
+import React from 'react';
 import Glider from 'react-glider';
 import 'glider-js/glider.min.css';
-import Card from 'react-bootstrap/Card';
-import Loading from '../shared/Loading';
+import { useRecoilValue } from 'recoil';
 import Error from '../shared/Error';
 import style from '../../styles/unauthenticated.module.css';
+import { postsState } from '../../state/cms';
+import FeaturedPost from './FeaturedPost';
 
-export const POSTS = `
-  {
-    postCategories {
-      name
-      id
-      posts(last: 1) {
-        title
-        id
-        subHeadline
-        fullDescription
-        images {
-          fileName
-          url
-        }
-        slug
-        text {
-          markdown
-        }
-      }
-    }
+function PostsMenu() {
+  const posts = useRecoilValue(postsState);
+
+  if (!posts.loaded) {
+    return null;
   }
-`;
 
-function PostsMenu({ endpoint }: any) {
-  const [error, setError] = useState(null);
-  const {
-    data,
-    isLoading,
-  } = useQuery('posts', () => axios({
-    url: endpoint,
-    method: 'POST',
-    data: {
-      query: POSTS,
-    },
-  }).then((response) => response.data.data).catch((err) => setError(err.message)));
-
-  if (isLoading) return <Loading />;
-  if (error !== null) return <Error text={error as string} />;
+  if (posts.error.length) return <Error text={posts.error} />;
 
   return (
     <div className={style['post-menu']}>
       <Glider
         draggable
+        hasArrows
         hasDots
         slidesToShow={1}
         slidesToScroll={3}
         responsive={[
           {
-            breakpoint: 1450,
+            breakpoint: 450,
             settings: {
-              slidesToShow: 2,
+              slidesToShow: 1,
             },
           },
           {
-            breakpoint: 891,
+            breakpoint: 1000,
             settings: {
               slidesToShow: 1.5,
             },
           },
+          {
+            breakpoint: 1700,
+            settings: {
+              slidesToShow: 2,
+            },
+          },
         ]}
       >
-        {data.postCategories.map((category: any, i: any) => {
-          if (i === 0) {
-            return (
-              <div key={category.id}>
-                <p className={style['menu-name']}>{category.name.toUpperCase()}</p>
-                <Card className={`bg-dark text-white ${style['featured-post']}`}>
-                  <Card.Img
-                    className={style['featured-post-img']}
-                    src={category.posts[0].images[0].url}
-                    alt={category.posts[0].images[0].fileName}
-                  />
-                  <Card.ImgOverlay>
-                    <p id={style['featured-post-sub-head']}>{category.posts[0].subHeadline.toUpperCase()}</p>
-                    <div className={style['title-box']}>
-                      <span>LEARN MORE</span>
-                    </div>
-                  </Card.ImgOverlay>
-                </Card>
-                <div className={style['post-description-box']}>
-                  <img
-                    className={style['featured-post-secondary-img']}
-                    src={category.posts[0].images[1].url}
-                    alt={category.posts[0].images[1].fileName}
-                  />
-                  <div className={style['post-description-text']}>
-                    <h4><b>{category.posts[0].title.toUpperCase()}</b></h4>
-                    <p>{category.posts[0].fullDescription}</p>
-                  </div>
-                </div>
-              </div>
-            );
-          }
+        {posts.posts.map((post) => (
+          <FeaturedPost post={post} />
+        ))}
 
-          return (
+        {/* return (
             <div key={category.id}>
               <p className={style['menu-name']}>{category.name.toUpperCase()}</p>
               <Card className={`bg-dark text-white ${style.posts}`} id={i + 1}>
@@ -120,7 +67,7 @@ function PostsMenu({ endpoint }: any) {
               </Card>
             </div>
           );
-        })}
+        }) */}
       </Glider>
     </div>
   );

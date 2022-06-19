@@ -30,7 +30,7 @@ describe('Unauthenticated component', () => {
     await waitFor(() => {
       expect(screen.getByText('NAVBAR')).toBeVisible();
       expect(screen.getByText('UNAUTHENTICATEDSIDEBAR')).toBeVisible();
-      expect(screen.getByText('EVENTSMENU')).toBeVisible();
+      // expect(screen.getByText('EVENTSMENU')).toBeVisible();
       expect(screen.queryByText('POSTSMENU')).toBeVisible();
     });
   });

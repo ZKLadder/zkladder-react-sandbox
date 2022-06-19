@@ -11,4 +11,7 @@ export default {
     memberSketchCid: process.env.REACT_APP_MEMBER_SKETCH || 'https://bafkreigffdunlooimcbhxynkjm2mpfqbuawwxyoahkf265m4dnkuownjl4.ipfs.infura-ipfs.io',
     memberNftChainId: process.env.REACT_APP_MEMBER_CHAINID || '137',
   },
+  cms: {
+    url: process.env.GRAPH_CMS_ENDPOINT || 'https://api-us-east-1.graphcms.com/v2/cl12mkshi8t8s01za53ae9b2y/master',
+  },
 };

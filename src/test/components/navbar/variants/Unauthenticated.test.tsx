@@ -36,7 +36,7 @@ describe('Navbar tests', () => {
       </RecoilRoot>,
     );
 
-    expect(screen.getByText('ZKL COMMUNITY DASHBOARD')).toBeVisible();
+    expect(screen.getByText('COMMUNITY DASHBOARD')).toBeVisible();
     expect(screen.getByText('MEMBERS CONNECT YOUR WALLET')).toBeVisible();
   });
 
@@ -54,7 +54,7 @@ describe('Navbar tests', () => {
       </RecoilRoot>,
     );
 
-    expect(screen.getByText('ZKL COMMUNITY DASHBOARD')).toBeVisible();
+    expect(screen.getByText('COMMUNITY DASHBOARD')).toBeVisible();
     expect(screen.getByText('MEMBERS CONNECT YOUR WALLET')).toBeVisible();
 
     mockConnect.mockResolvedValue({

@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useQuery } from 'react-query';
+import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Glider from 'react-glider';
-import Loading from '../shared/Loading';
-import Error from '../shared/Error';
+// import Error from '../shared/Error';
 import 'glider-js/glider.min.css';
 import style from '../../styles/unauthenticated.module.css';
 
@@ -22,9 +19,9 @@ export const EVENTS = `
   }
 `;
 
-function EventsMenu({ endpoint }: any) {
-  const [error, setError] = useState(null);
-  const {
+function EventsMenu() {
+  // const [error, setError] = useState(null);
+  /* const {
     data,
     isLoading,
   } = useQuery('events', () => axios({
@@ -33,7 +30,7 @@ function EventsMenu({ endpoint }: any) {
     data: {
       query: EVENTS,
     },
-  }).then((response) => response.data.data).catch((err) => setError(err.message)));
+  }).then((response) => response.data.data).catch((err) => setError(err.message))); */
 
   const formatDate = (date: any) => {
     const dateTimeString = new Date(date).toString();
@@ -42,8 +39,8 @@ function EventsMenu({ endpoint }: any) {
     return dateString;
   };
 
-  if (isLoading) return <Loading />;
-  if (error !== null) return <Error text={error as any} />;
+  // if (isLoading) return <Loading />;
+  // if (error !== null) return <Error text={error as any} />;
 
   return (
     <div className={style['events-menu']}>
@@ -68,7 +65,7 @@ function EventsMenu({ endpoint }: any) {
           },
         ]}
       >
-        {data.events.map((event: any) => (
+        {[].map((event: any) => (
           <div key={event.id}>
             <Card className={`bg-light text-white ${style.events}`}>
               <Card.Img className={style['event-img']} src={event.image.url} alt={event.image.fileName} />
