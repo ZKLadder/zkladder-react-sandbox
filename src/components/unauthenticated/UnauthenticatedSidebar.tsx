@@ -15,6 +15,7 @@ function UnauthenticatedSidebar() {
         height="35"
         style={{ marginTop: '5px' }}
       />
+      <hr />
       {/* Description */}
       <p className={style.description}>
         Welcome to the ZKLadder Venture Studio.
