@@ -1,12 +1,12 @@
-import React from 'react';
+// import React from 'react';
 import axios from 'axios';
 import {
-  render,
+  // render,
   screen,
   waitFor,
   cleanup,
 } from '@testing-library/react';
-import EventsMenu from '../../../components/unauthenticated/EventsMenu';
+// import EventsMenu from '../../../components/unauthenticated/EventsMenu';
 
 jest.mock('axios');
 const mockAxios = axios as jest.Mocked<any>;
