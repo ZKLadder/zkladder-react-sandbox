@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Nav, Navbar, Row, Col,
 } from 'react-bootstrap';
-import { useRecoilState } from 'recoil';
-import Error from '../../shared/Error';
+import { useSetRecoilState } from 'recoil';
 import { walletState } from '../../../state/wallet';
 import logo from '../../../images/navbar/mint_logo.png';
 import banner from '../../../images/navbar/dashboard_banner.png';
 import { connect, apiSession } from '../../../utils/walletConnect';
 import style from '../../../styles/navbar.module.css';
+import { errorState } from '../../../state/page';
 
 function UnauthenticatedNavbar() {
-  const [wallet, setWalletState] = useRecoilState(walletState) as any;
-  const [errorState, setErrorState] = useState(false) as any;
+  const setWalletState = useSetRecoilState(walletState) as any;
+  const setErrorState = useSetRecoilState(errorState);
 
   return (
     <Row style={{ margin: '0px 4vw 0px 2vw' }}>
@@ -55,7 +55,7 @@ function UnauthenticatedNavbar() {
                   data-testid="connectButton"
                   onClick={async () => {
                     try {
-                      setErrorState(false);
+                      setErrorState({ showError: false });
 
                       const {
                         address, balance, provider, chainId,
@@ -67,7 +67,7 @@ function UnauthenticatedNavbar() {
                         address, balance, provider, chainId, isConnected: true, isMember: true, memberToken,
                       });
                     } catch (error:any) {
-                      setErrorState(error.message);
+                      setErrorState({ showError: true, content: error.message });
                     }
                   }}
                 >
@@ -75,10 +75,6 @@ function UnauthenticatedNavbar() {
                 </button>
               </div>
             </Nav>
-            {/* Error Indicator */}
-            <div style={{ paddingLeft: '10px' }}>
-              {(errorState || wallet.reason) ? <Error text={errorState || wallet.reason || 'It appears your account does not have access'} /> : null}
-            </div>
           </Navbar.Collapse>
         </Navbar>
       </Col>

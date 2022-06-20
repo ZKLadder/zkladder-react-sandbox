@@ -5,6 +5,8 @@ import userEvent from '@testing-library/user-event';
 import Onboarding from '../../../../components/navbar/variants/Onboarding';
 import { connect, disconnect, apiSession } from '../../../../utils/walletConnect';
 import { walletState } from '../../../../state/wallet';
+import { RecoilObserver } from '../../../mocks';
+import { errorState } from '../../../../state/page';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => (jest.fn()));
 
@@ -110,6 +112,41 @@ describe('Navbar tests', () => {
 
     await waitFor(() => {
       expect(mockDisconnect).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  test('Errors correctly update state', async () => {
+    const mockWalletState = {
+      isConnected: false,
+    };
+
+    const errorStateObserver = jest.fn();
+
+    render(
+      <RecoilRoot initializeState={(settings:any) => {
+        settings.set(walletState, mockWalletState);
+      }}
+      >
+        <RecoilObserver node={errorState} onChange={errorStateObserver} />
+        <Onboarding />
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('MEMBER TOKEN MINT')).toBeVisible();
+    expect(screen.getByText('MEMBERS CONNECT YOUR WALLET')).toBeVisible();
+
+    mockConnect.mockRejectedValue({
+      message: 'UNABLE TO CONNECT',
+    });
+
+    userEvent.click(
+      screen.getByTestId('connectButton'),
+    );
+
+    await waitFor(() => {
+      expect(mockConnect).toHaveBeenCalledTimes(1);
+      expect(mockApiSession).toHaveBeenCalledTimes(0);
+      expect(errorStateObserver).toHaveBeenCalledWith({ showError: true, content: 'UNABLE TO CONNECT' });
     });
   });
 });
