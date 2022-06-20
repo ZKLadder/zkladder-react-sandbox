@@ -49,6 +49,7 @@ const onboard = Onboard({
   })) as any,
   wallets: [injected, walletLink, /* walletConnect, */ ledger, trezor],
   i18n: languageOverrides,
+  accountCenter: { desktop: { enabled: false }, mobile: { enabled: false } },
 });
 
 const metaMaskUnlocked = async () => {
@@ -69,7 +70,7 @@ const connect = async (requestPermissions:boolean = true) => {
   // Brings up the web3 wallet select modal
   const [wallet] = await onboard.connectWallet(cachedWallet ? { autoSelect: { label: cachedWallet, disableModals: true } } : {});
 
-  if (!wallet) throw new Error('Please select a wallet to continue');
+  if (!wallet) throw new Error('Please connect a wallet to continue');
 
   const { provider } = wallet;
 

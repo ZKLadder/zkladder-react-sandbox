@@ -6,4 +6,9 @@ interface LoadingStateInterface {
   content?:string | JSX.Element
 }
 
-export type { LoadingStateInterface };
+interface ErrorStateInterface {
+  showError: boolean,
+  content?: string
+}
+
+export type { LoadingStateInterface, ErrorStateInterface };

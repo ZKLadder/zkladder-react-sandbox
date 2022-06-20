@@ -5,11 +5,13 @@ import reportWebVitals from './reportWebVitals';
 import Router from './components/Router';
 import LoadingModal from './components/shared/LoadingModal';
 import './styles/walletSelectModal.css';
+import ErrorToast from './components/shared/ErrorToast';
 
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
       <LoadingModal />
+      <ErrorToast />
       <Router />
     </RecoilRoot>
   </React.StrictMode>,

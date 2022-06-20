@@ -1,10 +1,15 @@
 import { atom } from 'recoil';
-import { LoadingStateInterface } from '../interfaces/page';
+import { ErrorStateInterface, LoadingStateInterface } from '../interfaces/page';
 import networks from '../constants/networks';
 
 const loadingState = atom({
   key: 'loadingState',
   default: { loading: false } as LoadingStateInterface,
+});
+
+const errorState = atom({
+  key: 'errorState',
+  default: { showError: false } as ErrorStateInterface,
 });
 
 const contractAddressSearch = atom({
@@ -23,5 +28,5 @@ const contractRefreshCounter = atom({
 });
 
 export {
-  loadingState, contractAddressSearch, networkFiltersState, contractRefreshCounter,
+  loadingState, errorState, contractAddressSearch, networkFiltersState, contractRefreshCounter,
 };
