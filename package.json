@@ -22,6 +22,7 @@
     "axios": "^0.24.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
+    "glider-js": "^1.7.7",
     "http-browserify": "^1.7.0",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
@@ -31,6 +32,7 @@
     "react-bootstrap-icons": "^1.7.2",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.4.2",
+    "react-glider": "^3.1.0",
     "react-responsive-virtual-grid": "0.0.19",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
@@ -63,6 +65,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
+    "eslint": "^8.17.0",
     "eslint-config-airbnb": "^19.0.2",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",

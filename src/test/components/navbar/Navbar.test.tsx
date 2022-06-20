@@ -12,6 +12,11 @@ jest.mock('../../../components/navbar/variants/Authenticated', () => ({
   default: () => <p>AUTHENTICATED NAVBAR</p>,
 }));
 
+jest.mock('../../../components/navbar/variants/Unauthenticated', () => ({
+  __esModule: true,
+  default: () => <p>AUTHENTICATED NAVBAR</p>,
+}));
+
 describe('Navbar component tests', () => {
   test('Correctly renders the mintNavbar variant', () => {
     render(<Navbar variant="onboarding" />);

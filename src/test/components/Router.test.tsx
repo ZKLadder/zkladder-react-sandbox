@@ -2,7 +2,7 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import ZklRouter from '../../components/Router';
-
+import { getPosts } from '../../utils/cms';
 import { getSession } from '../../utils/api';
 import { connect } from '../../utils/walletConnect';
 
@@ -26,7 +26,7 @@ jest.mock('../../components/Body', () => ({
   default: () => <p>BODY</p>,
 }));
 
-jest.mock('../../components/login/Login', () => ({
+jest.mock('../../components/unauthenticated/Unauthenticated', () => ({
   __esModule: true,
   default: () => <p>LOGIN</p>,
 }));
@@ -37,12 +37,17 @@ jest.mock('../../utils/api', () => ({
   getSession: jest.fn(),
 }));
 
+jest.mock('../../utils/cms', () => ({
+  getPosts: jest.fn(),
+}));
+
 jest.mock('../../utils/walletConnect', () => ({
   connect: jest.fn(),
 }));
 
 const mockGetSession = getSession as jest.Mocked<any>;
 const mockConnect = connect as jest.Mocked<any>;
+const mockGetPosts = getPosts as jest.Mocked<any>;
 
 describe('ZklRouter component tests', () => {
   test('useEffect correctly calls dependencies on page load', async () => {
@@ -58,6 +63,7 @@ describe('ZklRouter component tests', () => {
 
     await waitFor(() => {
       expect(mockGetSession).toHaveBeenCalledTimes(1);
+      expect(mockGetPosts).toHaveBeenCalledTimes(1);
       expect(storage.getItem).toHaveBeenCalledWith('CACHED_WALLET_CONNECTION');
       expect(mockConnect).toHaveBeenCalledTimes(1);
     });

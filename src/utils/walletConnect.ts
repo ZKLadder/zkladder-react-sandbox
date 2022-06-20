@@ -28,7 +28,7 @@ const languageOverrides = {
       },
     },
   },
-};
+} as any;
 
 const injected = injectedModule();
 // const walletConnect = walletConnectModule();

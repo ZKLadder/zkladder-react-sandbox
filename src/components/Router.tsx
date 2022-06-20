@@ -6,7 +6,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import Login from './login/Login';
 import Body from './Body';
 import PageBody from './shared/PageBody';
@@ -16,12 +16,16 @@ import { getSession } from '../utils/api';
 import { connect, disconnect } from '../utils/walletConnect';
 import Loading from './shared/Loading';
 import Onboarding from './onboarding/Onboarding';
+import Unauthenticated from './unauthenticated/Unauthenticated';
+import { postsState } from '../state/cms';
+import { getPosts } from '../utils/cms';
 
 let timeOutId:any;
 
 function ZklRouter() {
   const [wallet, setWalletState] = useRecoilState(walletState);
   const [loadingState, setLoadingState] = useState(true);
+  const setPosts = useSetRecoilState(postsState);
 
   // Respond to user switching account outside of application
   const updateAccount = async (accounts:string[]) => {
@@ -100,6 +104,28 @@ function ZklRouter() {
     checkAuthStatus();
   }, []);
 
+  // Prefetch the posts that will populate the dashboard
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const response = await getPosts();
+        setPosts({
+          loaded: true,
+          posts: response,
+          error: '',
+        });
+      } catch (err:any) {
+        setPosts({
+          posts: [],
+          loaded: true,
+          error: err.message,
+        });
+      }
+    }
+
+    fetchPosts();
+  }, []);
+
   // Loading spinner while app fetches auth
   if (loadingState) return (<Loading />);
 
@@ -131,7 +157,7 @@ function ZklRouter() {
       <Routes>
         <Route
           path="/"
-          element={<Login />}
+          element={<Unauthenticated />}
         />
         <Route
           path="/mint"
