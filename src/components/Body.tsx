@@ -12,6 +12,7 @@ import { getContract } from '../utils/api';
 import { walletState } from '../state/wallet';
 import { contractsState } from '../state/contract';
 import { contractRefreshCounter } from '../state/page';
+import AccessSchemas from './accessSchemas/AccessSchemas';
 
 function Body() {
   const refreshCounter = useRecoilValue(contractRefreshCounter);
@@ -48,6 +49,15 @@ function Body() {
               <Card.Body className={`mx-auto ${style['body-cardText']}`}>
                 <Nft />
               </Card.Body>
+            </Card>
+              )}
+        />
+
+        <Route
+          path="schemas-demo"
+          element={(
+            <Card className={`mx-auto ${style['body-card']}`}>
+              <AccessSchemas />
             </Card>
               )}
         />

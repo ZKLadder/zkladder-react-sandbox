@@ -1,11 +1,12 @@
 @font-face {
   font-family: 'Avenir Next';
   src: url("../../public/Avenir_Next.otf");
-  }
+}
 
 * {
   font-family: "Avenir Next" !important;
 }
+
 .background-container {
   width: 100%;
   position: absolute;
@@ -14,15 +15,15 @@
   top: 0;
   left: 0;
   z-index: -1;
-  border-width:0;
-  border-radius:0;
+  border-width: 0;
+  border-radius: 0;
 }
 
 .body-card {
-  padding: '15px';
-  background-color: '#f8f9fa';
-  margin-top: '30px';
-  width: '90%';
+  padding: 15px;
+  background-color: #f8f9fa;
+  min-width: 75%;
+  min-height: 90vh;
 }
 
 .body-cardText {

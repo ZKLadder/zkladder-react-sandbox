@@ -27,6 +27,12 @@ const contractRefreshCounter = atom({
   default: 0,
 });
 
+// @TODO Remove this temporary atom when refactoring access schema components
+const schemaPageState = atom({
+  key: 'schemaPageState',
+  default: { section: 'list' } as {section:string, schema?:any},
+});
+
 export {
-  loadingState, errorState, contractAddressSearch, networkFiltersState, contractRefreshCounter,
+  loadingState, errorState, contractAddressSearch, networkFiltersState, contractRefreshCounter, schemaPageState,
 };
