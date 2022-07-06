@@ -7,6 +7,9 @@ import {
   GetContractOptions,
   GetTransactionsOptions,
   SearchVoucherOptions,
+  GetAccessSchemasOptions,
+  CreateAccessSchemaOptions,
+  UpdateAccessSchemaOptions,
 } from '../interfaces/api';
 import config from '../config';
 
@@ -114,6 +117,36 @@ const getTransactions = async (options: GetTransactionsOptions) => {
   return response;
 };
 
+const getAccessSchemas = async (options: GetAccessSchemasOptions) => {
+  const response = await request({
+    method: 'get',
+    url: '/v1/accessSchemas',
+    params: options,
+  });
+
+  return response;
+};
+
+const createAccessSchema = async (options: CreateAccessSchemaOptions) => {
+  const response = await request({
+    method: 'post',
+    url: '/v1/accessSchemas',
+    data: options,
+  });
+
+  return response;
+};
+
+const updateAccessSchema = async (options: UpdateAccessSchemaOptions) => {
+  const response = await request({
+    method: 'patch',
+    url: '/v1/accessSchemas',
+    data: options,
+  });
+
+  return response;
+};
+
 export {
   getSession,
   createSession,
@@ -124,6 +157,9 @@ export {
   createContract,
   getContract,
   getTransactions,
+  getAccessSchemas,
+  createAccessSchema,
+  updateAccessSchema,
 
   // exported for unit testing
   request,

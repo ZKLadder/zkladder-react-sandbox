@@ -1,5 +1,6 @@
 import ethereumLogo from '../images/networkLogos/ethereum-logo.png';
 import polygonLogo from '../images/networkLogos/polygon-logo.png';
+import gnosisLogo from '../images/networkLogos/gnosis-logo.png';
 
 export default {
   1: {
@@ -45,6 +46,15 @@ export default {
     rpcUrl: 'https://polygon-mainnet.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
     blockExplorer: 'https://polygonscan.com/tx/',
     logo: polygonLogo,
+    hide: false,
+  },
+  100: {
+    label: 'Gnosis Chain',
+    token: 'xDai',
+    id: '0x64',
+    rpcUrl: 'https://rpc.xdaichain.com',
+    blockExplorer: 'https://blockscout.com/xdai/mainnet/',
+    logo: gnosisLogo,
     hide: false,
   },
   1337: {

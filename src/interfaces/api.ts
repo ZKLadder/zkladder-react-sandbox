@@ -52,6 +52,24 @@ interface GetTransactionsOptions {
   chainId: string
 }
 
+interface GetAccessSchemasOptions {
+  id?: string,
+  creatorAddress?: string
+}
+
+interface CreateAccessSchemaOptions {
+  name?:string,
+  creatorAddress:string,
+  accessSchema: { [key: string]: any; }[]
+}
+
+interface UpdateAccessSchemaOptions {
+  id: number,
+  name?: string,
+  isArchived?: boolean,
+  accessSchema?: { [key: string]: any; }[]
+}
+
 export type {
   HttpOptions,
   StoreVoucherOptions,
@@ -60,4 +78,7 @@ export type {
   CreateContractOptions,
   GetContractOptions,
   GetTransactionsOptions,
+  GetAccessSchemasOptions,
+  CreateAccessSchemaOptions,
+  UpdateAccessSchemaOptions,
 };
