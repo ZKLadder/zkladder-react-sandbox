@@ -219,6 +219,7 @@
   left: 50%;
   transform: translateX(-50%);
   max-height: 205px;
+  min-height: 145px;
 }
 
 .project-label-wrapper {
