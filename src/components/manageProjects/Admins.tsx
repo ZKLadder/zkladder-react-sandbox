@@ -92,6 +92,12 @@ function Admins() {
 
                               const tx = await writeableContract.revokeRole('DEFAULT_ADMIN_ROLE', admin);
 
+                              setLoading({
+                                loading: true,
+                                header: `Removing minter ${shortenAddress(admin)}`,
+                                content: 'Transaction is being mined',
+                              });
+
                               await tx.wait();
 
                               await updateContract({
@@ -179,6 +185,12 @@ function Admins() {
                               });
 
                               const tx = await writeableContract.revokeRole('MINTER_ROLE', minter);
+
+                              setLoading({
+                                loading: true,
+                                header: `Removing minter ${shortenAddress(minter)}`,
+                                content: 'Transaction is being mined',
+                              });
 
                               await tx.wait();
 
