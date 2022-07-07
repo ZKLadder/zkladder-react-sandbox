@@ -24,7 +24,7 @@ function Admins() {
   const setError = useSetRecoilState(errorState);
   const setLoading = useSetRecoilState(loadingState);
   const [modalOpen, setModalOpen] = useState('');
-  // console.log(writeableContract);
+
   const admins = contractData?.admins;
 
   return (
