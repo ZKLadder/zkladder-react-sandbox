@@ -6,6 +6,7 @@ import AdminsModal from '../../../components/manageProjects/AdminsModal';
 import { contractsState, selectedContractState } from '../../../state/contract';
 import { mockMemberNftInstance } from '../../mocks';
 import { walletState } from '../../../state/wallet';
+import { updateContract } from '../../../utils/api';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(() => ({ getGatewayUrl: jest.fn() })),
@@ -14,6 +15,12 @@ jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   },
   utilities: { isEthereumAddress: () => (true) },
 }));
+
+jest.mock('../../../utils/api', () => ({
+  updateContract: jest.fn(),
+}));
+
+const mockUpdateContract = updateContract as jest.Mocked<any>;
 
 const contracts = [
   { address: '0xcontract10000000000000000000000000000000', chainId: '1' },
@@ -81,6 +88,10 @@ describe('Admins modal tests', () => {
     await waitFor(() => {
       expect(mockMemberNftInstance.grantRole).toHaveBeenCalledWith('DEFAULT_ADMIN_ROLE', '0xMockUserAddress');
       expect(wait).toHaveBeenCalledTimes(1);
+      expect(mockUpdateContract).toHaveBeenCalledWith({
+        address: '0xmockNFTaddress',
+        admins: ['0xmockuseraddress'],
+      });
     });
   });
 

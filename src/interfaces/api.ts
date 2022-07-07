@@ -47,6 +47,12 @@ interface GetContractOptions {
   projectId?: string,
 }
 
+interface UpdateContractOptions {
+  address: string,
+  admins?: string[],
+  projectId?: string,
+}
+
 interface GetTransactionsOptions {
   address: string,
   chainId: string
@@ -77,6 +83,7 @@ export type {
   SearchVoucherOptions,
   CreateContractOptions,
   GetContractOptions,
+  UpdateContractOptions,
   GetTransactionsOptions,
   GetAccessSchemasOptions,
   CreateAccessSchemaOptions,

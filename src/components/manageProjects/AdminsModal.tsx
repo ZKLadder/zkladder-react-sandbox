@@ -8,9 +8,12 @@ import { contractsWithMetadataState, writableContractState } from '../../state/c
 import style from '../../styles/deploy.module.css';
 import projectStyle from '../../styles/manageProjects.module.css';
 import Error from '../shared/Error';
+import { updateContract } from '../../utils/api';
 
 function WhitelistModal({ open, closeModal }:{open:string, closeModal:()=>void}) {
   const writeableContract = useRecoilValueLoadable(writableContractState)?.contents;
+  const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
+  const admins = contractsWithMetadata?.contents?.[writeableContract?.address as string]?.admins;
   const refresh = useRecoilRefresherUnstable(contractsWithMetadataState);
   const [userAddress, setUserAddress] = useState('');
   const [loading, setLoading] = useState(false);
@@ -73,6 +76,10 @@ function WhitelistModal({ open, closeModal }:{open:string, closeModal:()=>void})
                     let tx;
                     if (open === 'admin') {
                       tx = await writeableContract.grantRole('DEFAULT_ADMIN_ROLE', userAddress);
+                      await updateContract({
+                        address: writeableContract.address,
+                        admins: admins ? [...admins, userAddress.toLowerCase()] : [userAddress.toLowerCase()],
+                      });
                     } else {
                       tx = await writeableContract.grantRole('MINTER_ROLE', userAddress);
                     }
