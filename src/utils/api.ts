@@ -5,6 +5,7 @@ import {
   GetVoucherOptions,
   CreateContractOptions,
   GetContractOptions,
+  UpdateContractOptions,
   GetTransactionsOptions,
   SearchVoucherOptions,
   GetAccessSchemasOptions,
@@ -107,6 +108,16 @@ const getContract = async (options: GetContractOptions) => {
   return response;
 };
 
+const updateContract = async (options: UpdateContractOptions) => {
+  const response = await request({
+    method: 'patch',
+    url: '/v1/contracts',
+    data: options,
+  });
+
+  return response;
+};
+
 const getTransactions = async (options: GetTransactionsOptions) => {
   const response = await request({
     method: 'get',
@@ -156,6 +167,7 @@ export {
   getAllVouchers,
   createContract,
   getContract,
+  updateContract,
   getTransactions,
   getAccessSchemas,
   createAccessSchema,

@@ -10,6 +10,7 @@ import {
   createContract,
   getContract,
   getTransactions,
+  updateContract,
 } from '../../utils/api';
 
 jest.mock('axios', () => ({ request: jest.fn() }));
@@ -257,6 +258,32 @@ describe('getContract tests', () => {
       method: 'get',
       url: '/v1/contracts',
       params: contractOptions,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ contract: 'mocked' });
+  });
+});
+
+describe('updateContract tests', () => {
+  test('updateContract correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { contract: 'mocked' } });
+
+    const contractOptions = {
+      address: '0xcontract',
+      admins: ['0xadmin'],
+      projectId: '123',
+    };
+    const response = await updateContract(contractOptions);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'patch',
+      url: '/v1/contracts',
+      data: contractOptions,
       headers: {
         Accept: '*/*',
       },

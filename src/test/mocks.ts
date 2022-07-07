@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 
 const mockMemberNftInstance = {
+  address: '0xmockNFTaddress',
+
   getCollectionMetadata: jest.fn(),
   totalSupply: jest.fn(),
   isTransferrable: jest.fn(),
@@ -13,6 +15,7 @@ const mockMemberNftInstance = {
 
   // transactions
   grantRole: jest.fn(),
+  revokeRole: jest.fn(),
   setContractUri: jest.fn(),
   setRoyalty: jest.fn(),
   setBeneficiary: jest.fn(),

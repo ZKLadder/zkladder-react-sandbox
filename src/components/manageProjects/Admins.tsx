@@ -2,18 +2,30 @@ import React, { useState } from 'react';
 import {
   Container, Row, Col, Button, Table,
 } from 'react-bootstrap';
-import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import {
+  useRecoilValue, useRecoilValueLoadable, useSetRecoilState, useRecoilRefresher_UNSTABLE as useRecoilRefresherUnstable,
+} from 'recoil';
 import { PlusCircleFill } from 'react-bootstrap-icons';
-import { contractsWithMetadataState, selectedContractState } from '../../state/contract';
+import { contractsWithMetadataState, selectedContractState, writableContractState } from '../../state/contract';
+import { errorState, loadingState } from '../../state/page';
 import AdminsModal from './AdminsModal';
 import style from '../../styles/deploy.module.css';
 import projectStyle from '../../styles/manageProjects.module.css';
+import { shortenAddress } from '../../utils/helpers';
+import { updateContract } from '../../utils/api';
 
 function Admins() {
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
   const address = useRecoilValue(selectedContractState);
   const contractData = contractsWithMetadata?.contents?.[address as string];
+  const writeableContract = useRecoilValueLoadable(writableContractState)?.contents;
+  const refresh = useRecoilRefresherUnstable(contractsWithMetadataState);
+
+  const setError = useSetRecoilState(errorState);
+  const setLoading = useSetRecoilState(loadingState);
   const [modalOpen, setModalOpen] = useState('');
+  // console.log(writeableContract);
+  const admins = contractData?.admins;
 
   return (
     <Container className={style['template-wrapper']}>
@@ -57,8 +69,52 @@ function Admins() {
               <tbody>
                 {contractData?.adminAccounts?.map((admin:string) => (
                   <tr key={admin}>
-                    <td style={{ padding: '2px 20px 2px 10px' }}>
+
+                    {/* Admin Address */}
+                    <td style={{ padding: '2px 10px 2px 10px', width: '95%' }}>
                       <div className={projectStyle['table-data']}>{admin}</div>
+                    </td>
+
+                    {/* Remove Admin Button */}
+                    <td style={{ padding: '2px 5px 2px 5px' }}>
+                      <Button
+                        data-testid={`removeAdmin-${admin}`}
+                        className={projectStyle['remove-whitelist-record']}
+                        style={{ minHeight: '0px', padding: '10px', margin: '0px' }}
+                        onClick={async () => {
+                          try {
+                            if (writeableContract) {
+                              setLoading({
+                                loading: true,
+                                header: `Removing admin ${shortenAddress(admin)}`,
+                                content: 'Awaiting user signature',
+                              });
+
+                              const tx = await writeableContract.revokeRole('DEFAULT_ADMIN_ROLE', admin);
+
+                              await tx.wait();
+
+                              await updateContract({
+                                address: address as string,
+                                admins: admins ? admins.filter((adm:string) => (adm.toLowerCase() !== admin.toLowerCase())) : [],
+                              });
+
+                              refresh();
+                              setLoading({ loading: false });
+                            }
+                          } catch (err:any) {
+                            setLoading({
+                              loading: false,
+                            });
+                            setError({
+                              showError: true,
+                              content: err.message || 'There was an error completing your transaction',
+                            });
+                          }
+                        }}
+                      >
+                        REMOVE
+                      </Button>
                     </td>
                   </tr>
                 ))}
@@ -101,8 +157,47 @@ function Admins() {
               <tbody>
                 {contractData?.minterAccounts?.map((minter:string) => (
                   <tr key={minter}>
-                    <td style={{ padding: '2px 20px 2px 10px' }}>
+
+                    {/* Minter Address */}
+                    <td style={{ padding: '2px 10px 2px 10px', width: '95%' }}>
                       <div className={projectStyle['table-data']}>{minter}</div>
+                    </td>
+
+                    {/* Remove Minter Button */}
+                    <td style={{ padding: '2px 5px 2px 5px' }}>
+                      <Button
+                        data-testid={`removeMinter-${minter}`}
+                        className={projectStyle['remove-whitelist-record']}
+                        style={{ minHeight: '0px', padding: '10px', margin: '0px' }}
+                        onClick={async () => {
+                          try {
+                            if (writeableContract) {
+                              setLoading({
+                                loading: true,
+                                header: `Removing minter ${shortenAddress(minter)}`,
+                                content: 'Awaiting user signature',
+                              });
+
+                              const tx = await writeableContract.revokeRole('MINTER_ROLE', minter);
+
+                              await tx.wait();
+
+                              refresh();
+                              setLoading({ loading: false });
+                            }
+                          } catch (err:any) {
+                            setLoading({
+                              loading: false,
+                            });
+                            setError({
+                              showError: true,
+                              content: err.message || 'There was an error completing your transaction',
+                            });
+                          }
+                        }}
+                      >
+                        REMOVE
+                      </Button>
                     </td>
                   </tr>
                 ))}
