@@ -14,11 +14,11 @@ jest.mock('../../../components/deploy/SelectTemplate', () => ({
   default: () => <p>SELECTTEMPLATE</p>,
 }));
 
-jest.mock('../../../components/deploy/MemberNftV2/ConfigureContract', () => ({
+jest.mock('../../../components/deploy/memberNftV2/ConfigureContract', () => ({
   __esModule: true,
   default: () => <p>CONFIGURECONTRACT</p>,
 }));
-jest.mock('../../../components/deploy/MemberNftV2/Review', () => ({
+jest.mock('../../../components/deploy/memberNftV2/Review', () => ({
   __esModule: true,
   default: () => <p>REVIEW</p>,
 }));
