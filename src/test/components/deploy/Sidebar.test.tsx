@@ -22,7 +22,6 @@ describe('Onboarding Sidebar component', () => {
       expect(screen.getByText('SELECT TEMPLATE')).toBeVisible();
       expect(screen.getByText('SELECT TEMPLATE')).toHaveAttribute('class', 'sidebar-step-text-activated');
       expect(screen.getByText('CONFIGURE SMART CONTRACT')).toBeVisible();
-      expect(screen.getByText('DEFINE COMMUNITY ROLES')).toBeVisible();
       expect(screen.getByText('REVIEW AND LAUNCH')).toBeVisible();
     });
   });
@@ -38,7 +37,6 @@ describe('Onboarding Sidebar component', () => {
       expect(screen.getByText('SELECT TEMPLATE')).toBeVisible();
       expect(screen.getByText('CONFIGURE SMART CONTRACT')).toBeVisible();
       expect(screen.getByText('CONFIGURE SMART CONTRACT')).toHaveAttribute('class', 'sidebar-step-text-activated');
-      expect(screen.getByText('DEFINE COMMUNITY ROLES')).toBeVisible();
       expect(screen.getByText('REVIEW AND LAUNCH')).toBeVisible();
     });
   });

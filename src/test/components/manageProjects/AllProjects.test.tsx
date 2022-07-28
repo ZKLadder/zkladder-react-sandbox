@@ -32,12 +32,12 @@ jest.mock('../../../utils/blockchainData', () => ({
 }));
 
 const contracts = [
-  { address: '0xcontract10000000000000000000000000000000', chainId: '1' },
-  { address: '0xcontract20000000000000000000000000000000', chainId: '1' },
-  { address: '0xcontract30000000000000000000000000000000', chainId: '3' },
-  { address: '0xcontract40000000000000000000000000000000', chainId: '3' },
-  { address: '0xcontract50000000000000000000000000000000', chainId: '4' },
-  { address: '0xcontract60000000000000000000000000000000', chainId: '4' },
+  { address: '0xcontract10000000000000000000000000000000', chainId: '1', templateId: '1' },
+  { address: '0xcontract20000000000000000000000000000000', chainId: '1', templateId: '1' },
+  { address: '0xcontract30000000000000000000000000000000', chainId: '3', templateId: '1' },
+  { address: '0xcontract40000000000000000000000000000000', chainId: '3', templateId: '1' },
+  { address: '0xcontract50000000000000000000000000000000', chainId: '4', templateId: '1' },
+  { address: '0xcontract60000000000000000000000000000000', chainId: '4', templateId: '1' },
 
 ];
 

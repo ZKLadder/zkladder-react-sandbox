@@ -27,7 +27,7 @@ jest.mock('../../../utils/api', () => ({
 const mockUpdateContract = updateContract as jest.Mocked<any>;
 
 const contracts = [
-  { address: '0xcontract10000000000000000000000000000000', chainId: '1' },
+  { address: '0xcontract10000000000000000000000000000000', chainId: '1', templateId: '1' },
 ];
 
 const initializeState = (settings: any) => {

@@ -4,8 +4,8 @@ import {
 } from '@testing-library/react';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import userEvent from '@testing-library/user-event';
-import ConfigureContract from '../../../components/deploy/ConfigureContract';
-import { deployState } from '../../../state/deploy';
+import ConfigureContract from '../../../../components/deploy/memberNftV1/ConfigureContract';
+import { deployState } from '../../../../state/deploy';
 
 const initializeState = (settings:any) => {
   settings.set(deployState, {
@@ -101,6 +101,7 @@ describe('ConfigureContract component tests', () => {
           symbol: 'Mock Symbol',
           description: 'Mock Description',
           beneficiaryAddress: 'Mock Beneficiary',
+          external_link: '',
           image: mockImage,
           script: mockScript,
         },
@@ -147,6 +148,7 @@ describe('ConfigureContract component tests', () => {
           name: '',
           symbol: '',
           description: '',
+          external_link: '',
           beneficiaryAddress: '',
           image: undefined,
           script: undefined,

@@ -103,4 +103,22 @@ describe('ZklRouter component tests', () => {
       expect(screen.getByText('BODY')).toBeVisible();
     });
   });
+
+  test('Renders authenticated routes when an error is thrown', async () => {
+    mockGetSession.mockResolvedValueOnce({ session: true });
+    storage.getItem.mockResolvedValueOnce('cachedProvider');
+    mockConnect.mockRejectedValueOnce(new Error('Some connection error'));
+
+    render(
+      <RecoilRoot>
+        <ZklRouter />
+      </RecoilRoot>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('LOGIN')).toBeVisible();
+      expect(screen.queryByText('NAVBAR')).not.toBeInTheDocument();
+      expect(screen.queryByText('BODY')).not.toBeInTheDocument();
+    });
+  });
 });

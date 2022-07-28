@@ -97,7 +97,10 @@ function ZklRouter() {
         }
         setLoadingState(false);
       } catch (err) {
-        // do nothing
+        setWalletState({
+          isConnected: false, isMember: false,
+        });
+        setLoadingState(false);
       }
     };
 

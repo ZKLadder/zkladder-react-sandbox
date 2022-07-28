@@ -2,6 +2,7 @@ interface MemberNftConfig {
   name:string,
   symbol:string,
   description:string,
+  external_link:string,
   image:any,
   beneficiaryAddress: string,
   script:any
@@ -18,7 +19,7 @@ interface NewDeploymentStateInterface {
   currentStep:number,
   selectedTemplate?:string
   config:MemberNftConfig
-  roles: MemberNftRole[]
+  roles?: MemberNftRole[]
 }
 
 export type { NewDeploymentStateInterface, MemberNftRole };

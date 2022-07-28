@@ -27,7 +27,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('axios', () => jest.fn());
 
 const contracts = [
-  { address: '0xselectedContract', chainId: '1' },
+  { address: '0xselectedContract', chainId: '1', templateId: '1' },
 ];
 
 // renders when state is loaded

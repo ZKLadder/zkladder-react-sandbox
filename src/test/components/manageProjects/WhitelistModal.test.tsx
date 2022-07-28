@@ -21,7 +21,9 @@ jest.mock('../../../utils/api', () => ({
 }));
 
 const contracts = [
-  { address: '0xselectedContract', chainId: '1', whitelisted: 2000 },
+  {
+    address: '0xselectedContract', chainId: '1', whitelisted: 2000, templateId: '1',
+  },
 ];
 
 const initializeState = (settings: any) => {

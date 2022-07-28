@@ -1,5 +1,5 @@
 import { atom, selector } from 'recoil';
-import { MemberNft } from '@zkladder/zkladder-sdk-ts';
+import { MemberNft, MemberNftV2 } from '@zkladder/zkladder-sdk-ts';
 import { Contract, ContractWithMetadata } from '../interfaces/contract';
 import { getAllVouchers } from '../utils/api';
 import { generateNftMetrics, nftContractRevenueAndTransfers, getOwnerBalances } from '../utils/blockchainData';
@@ -42,33 +42,65 @@ const contractsWithMetadataState = selector({
 
     // Fetch metadata for each contract in the contractState array
     const promises = contracts.map(async (record) => {
-      const memberNft = await MemberNft.setup({
-        address: record.address,
-        chainId: parseInt(record.chainId, 10),
-        infuraIpfsProjectId: config.ipfs.projectId,
-        infuraIpfsProjectSecret: config.ipfs.projectSecret,
-      });
-      const contractMetadata = await memberNft.getCollectionMetadata();
-      const totalSupply = await memberNft.totalSupply();
-      const isTransferable = await memberNft.isTransferrable();
-      const royaltyBasis = await memberNft.royaltyBasis();
-      const royaltyPercent = royaltyBasis * 0.01;
-      const beneficiary = await memberNft.beneficiaryAddress();
-      const adminAccounts = await memberNft.getRoleMembers('DEFAULT_ADMIN_ROLE');
-      const minterAccounts = await memberNft.getRoleMembers('MINTER_ROLE');
+      // Contract is a MemberNftV1
+      if (record.templateId === '1') {
+        const memberNft = await MemberNft.setup({
+          address: record.address,
+          chainId: parseInt(record.chainId, 10),
+          infuraIpfsProjectId: config.ipfs.projectId,
+          infuraIpfsProjectSecret: config.ipfs.projectSecret,
+        });
+        const contractMetadata = await memberNft.getCollectionMetadata();
+        const totalSupply = await memberNft.totalSupply();
+        const isTransferable = await memberNft.isTransferrable();
+        const royaltyBasis = await memberNft.royaltyBasis();
+        const royaltyPercent = royaltyBasis * 0.01;
+        const beneficiary = await memberNft.beneficiaryAddress();
+        const adminAccounts = await memberNft.getRoleMembers('DEFAULT_ADMIN_ROLE');
+        const minterAccounts = await memberNft.getRoleMembers('MINTER_ROLE');
 
-      return {
-        ...record,
-        ...contractMetadata,
-        memberNft,
-        totalSupply,
-        isTransferable,
-        royaltyBasis,
-        royaltyPercent,
-        beneficiary,
-        adminAccounts,
-        minterAccounts,
-      };
+        return {
+          ...record,
+          ...contractMetadata,
+          memberNft,
+          totalSupply,
+          isTransferable,
+          royaltyBasis,
+          royaltyPercent,
+          beneficiary,
+          adminAccounts,
+          minterAccounts,
+        };
+      }
+      // Contract is a MemberNftV2
+      if (record.templateId === '3') {
+        const memberNft = await MemberNftV2.setup({
+          address: record.address,
+          chainId: parseInt(record.chainId, 10),
+          infuraIpfsProjectId: config.ipfs.projectId,
+          infuraIpfsProjectSecret: config.ipfs.projectSecret,
+        });
+        const contractMetadata = await memberNft.getCollectionMetadata();
+        const totalSupply = await memberNft.totalSupply();
+        const beneficiary = await memberNft.beneficiaryAddress();
+        const adminAccounts = await memberNft.getRoleMembers('DEFAULT_ADMIN_ROLE');
+        const minterAccounts = await memberNft.getRoleMembers('MINTER_ROLE');
+        const totalTiers = await memberNft.totalTiers();
+
+        return {
+          ...record,
+          ...contractMetadata,
+          memberNft,
+          totalSupply,
+          totalTiers,
+          beneficiary,
+          adminAccounts,
+          minterAccounts,
+        };
+      }
+
+      // TemplateId is not supported (should never reach this case)
+      throw new Error('Unsupported contract type');
     });
 
     // Wait for all promises to resolve
