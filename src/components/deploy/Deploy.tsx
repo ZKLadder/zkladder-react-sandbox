@@ -5,9 +5,8 @@ import Sidebar from './Sidebar';
 import sharedStyle from '../../styles/shared.module.css';
 import { deployState } from '../../state/deploy';
 import SelectTemplate from './SelectTemplate';
-import ConfigureContract from './ConfigureContract';
-import DefineRoles from './DefineRoles';
-import Review from './Review';
+import ConfigureContract from './memberNftV2/ConfigureContract';
+import Review from './memberNftV2/Review';
 
 function Deploy() {
   const { currentStep } = useRecoilValue(deployState);
@@ -20,8 +19,7 @@ function Deploy() {
       <Col>
         {currentStep === 1 ? <SelectTemplate /> : null}
         {currentStep === 2 ? <ConfigureContract /> : null}
-        {currentStep === 3 ? <DefineRoles /> : null }
-        {currentStep === 4 ? <Review /> : null }
+        {currentStep === 3 ? <Review /> : null }
       </Col>
     </Row>
   );

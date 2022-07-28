@@ -4,18 +4,14 @@ import {
 } from '@testing-library/react';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import userEvent from '@testing-library/user-event';
-import { Ipfs, MemberNft } from '@zkladder/zkladder-sdk-ts';
+import { Ipfs, MemberNftV2 } from '@zkladder/zkladder-sdk-ts';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import Review from '../../../components/deploy/Review';
-import { deployState } from '../../../state/deploy';
-import { walletState } from '../../../state/wallet';
-import { createContract } from '../../../utils/api';
+import Review from '../../../../components/deploy/memberNftV2/Review';
+import { deployState } from '../../../../state/deploy';
+import { walletState } from '../../../../state/wallet';
+import { createContract } from '../../../../utils/api';
 
 global.URL.createObjectURL = jest.fn(() => ('mockData.png'));
-
-const mockScript = new File(['script'], 'mockScript.js', {
-  type: 'text/javascript',
-});
 
 const mockImage = new File(['image'], 'mockImage.png', {
   type: 'image/png',
@@ -23,28 +19,19 @@ const mockImage = new File(['image'], 'mockImage.png', {
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(),
-  MemberNft: { deploy: jest.fn(() => ({ address: '0xnewcontract', transaction: { wait: jest.fn() } })) },
+  MemberNftV2: { deploy: jest.fn(() => ({ address: '0xnewcontract', transaction: { wait: jest.fn() } })) },
 }));
 
-jest.mock('../../../config', () => ({
+jest.mock('../../../../config', () => ({
   ipfs: {
     projectId: 'mockProjectId',
     projectSecret: 'mockProjectSecret',
   },
 }));
 
-jest.mock('../../../utils/api', () => ({
+jest.mock('../../../../utils/api', () => ({
   createContract: jest.fn(),
 }));
-
-const roles = [
-  {
-    name: 'Test Role', description: 'Test Description', id: 'Test Id', price: 100,
-  },
-  {
-    name: 'Role2', description: 'Role2 Description', id: 'Role2 Id', price: 5,
-  },
-];
 
 const initializeState = (settings:any) => {
   settings.set(deployState, {
@@ -55,10 +42,9 @@ const initializeState = (settings:any) => {
       description: 'mock description',
       beneficiaryAddress: '0xuser',
       image: mockImage,
-      script: mockScript,
+      external_link: 'https://mock.com',
 
     },
-    roles,
   });
   settings.set(walletState, {
     chainId: 4,
@@ -68,7 +54,7 @@ const initializeState = (settings:any) => {
 };
 
 const mockIpfs = Ipfs as jest.Mocked<any>;
-const mockDeploy = MemberNft.deploy as jest.Mocked<any>;
+const mockDeploy = MemberNftV2.deploy as jest.Mocked<any>;
 const mockCreateContract = createContract as jest.Mocked<any>;
 
 function RecoilObserver({ node, onChange }:{node:any, onChange:any}) {
@@ -96,16 +82,14 @@ describe('DefineRoles component tests', () => {
       expect(screen.getByText('mock contract')).toBeVisible();
       expect(screen.getByText('mock symbol')).toBeVisible();
       expect(screen.getByText('mock description')).toBeVisible();
+      expect(screen.getByText('https://mock.com')).toBeVisible();
       expect(screen.getByText('0xuser')).toBeVisible();
-      expect(screen.getByText('Test Role')).toBeVisible();
-      expect(screen.getByText('Test Description')).toBeVisible();
-      expect(screen.getByText('Test Id')).toBeVisible();
-      expect(screen.getByText('100 RIN')).toBeVisible();
-      expect(screen.getByText('Role2')).toBeVisible();
-      expect(screen.getByText('Role2 Description')).toBeVisible();
-      expect(screen.getByText('Role2 Id')).toBeVisible();
-      expect(screen.getByText('5 RIN')).toBeVisible();
-      expect(screen.getByText('mockScript.js')).toBeVisible();
+      expect(screen.getByText('Network:')).toBeVisible();
+      expect(screen.getByText('Community Name:')).toBeVisible();
+      expect(screen.getByText('Collection Symbol:')).toBeVisible();
+      expect(screen.getByText('Community Web URL:')).toBeVisible();
+      expect(screen.getByText('Beneficiary Address:')).toBeVisible();
+      expect(screen.getByText('Community Description:')).toBeVisible();
     });
   });
 
@@ -127,8 +111,6 @@ describe('DefineRoles component tests', () => {
 
     addFiles.mockResolvedValueOnce([{
       Hash: 'imagehash',
-    }]).mockResolvedValueOnce([{
-      Hash: 'scriptHash',
     }]);
 
     mockDeploy.mockResolvedValueOnce({ address: '0xmockContract', transaction: { wait: () => {} } });
@@ -144,8 +126,7 @@ describe('DefineRoles component tests', () => {
           description: 'mock description',
           beneficiaryAddress: '0xuser',
           image: 'ipfs://imagehash',
-          script: 'ipfs://scriptHash',
-          roles,
+          external_link: 'https://mock.com',
         },
         infuraIpfs: {
           projectId: 'mockProjectId',
@@ -157,7 +138,7 @@ describe('DefineRoles component tests', () => {
         address: '0xmockContract',
         creator: 'mockuser',
         chainId: '4',
-        templateId: '1',
+        templateId: '3',
       });
     });
 
@@ -184,8 +165,6 @@ describe('DefineRoles component tests', () => {
 
     addFiles.mockResolvedValueOnce([{
       Hash: 'imagehash',
-    }]).mockResolvedValueOnce([{
-      Hash: 'scriptHash',
     }]);
 
     mockDeploy.mockRejectedValueOnce(new Error('An error occured'));
@@ -208,11 +187,11 @@ describe('DefineRoles component tests', () => {
       </RecoilRoot>,
     );
 
-    userEvent.click(screen.getByText('RETURN TO ROLE CONFIGURATION'));
+    userEvent.click(screen.getByText('RETURN TO CONTRACT CONFIGURATION'));
 
     await waitFor(() => {
       expect(deployStateObserver).toHaveBeenCalledWith(expect.objectContaining({
-        currentStep: 3,
+        currentStep: 2,
       }));
     });
   });

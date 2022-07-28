@@ -17,4 +17,17 @@ const hashString = (dataUrl:string) => {
   return hash;
 };
 
-export { shortenAddress, weiToEth, hashString };
+const isValidUrl = (url:string) => {
+  const inputElement = document.createElement('input');
+  inputElement.type = 'url';
+  inputElement.value = url;
+
+  if (!inputElement.checkValidity()) {
+    return false;
+  }
+  return true;
+};
+
+export {
+  shortenAddress, weiToEth, hashString, isValidUrl,
+};

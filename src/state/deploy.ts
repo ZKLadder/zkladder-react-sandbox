@@ -10,15 +10,10 @@ const deployState = atom(({
       symbol: '',
       description: '',
       beneficiaryAddress: '',
+      external_link: '',
       image: undefined,
       script: undefined,
     },
-    roles: [{
-      id: '',
-      name: '',
-      description: '',
-      price: 0,
-    }],
   } as NewDeploymentStateInterface,
   dangerouslyAllowMutability: true,
 }));

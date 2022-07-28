@@ -1,5 +1,7 @@
 /* eslint-disable no-loss-of-precision */
-import { shortenAddress, weiToEth, hashString } from '../../utils/helpers';
+import {
+  shortenAddress, weiToEth, hashString, isValidUrl,
+} from '../../utils/helpers';
 
 describe('shortenAddress', () => {
   test('shortenAddress functions as expected', () => {
@@ -26,5 +28,14 @@ describe('weiToEth', () => {
 describe('hashString', () => {
   test('hashString functions as expected', () => {
     expect(hashString('12345678912345678')).toStrictEqual(1222314937);
+  });
+});
+
+describe('isValidUrl', () => {
+  test('isValidUrl functions as expected', () => {
+    expect(isValidUrl('https://tirl.xyz')).toStrictEqual(true);
+    expect(isValidUrl('https://abc.123')).toStrictEqual(true);
+    expect(isValidUrl('http://www.zkladder.com')).toStrictEqual(true);
+    expect(isValidUrl('notaurl')).toStrictEqual(false);
   });
 });

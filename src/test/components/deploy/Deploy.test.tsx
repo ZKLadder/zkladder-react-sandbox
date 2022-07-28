@@ -14,15 +14,11 @@ jest.mock('../../../components/deploy/SelectTemplate', () => ({
   default: () => <p>SELECTTEMPLATE</p>,
 }));
 
-jest.mock('../../../components/deploy/ConfigureContract', () => ({
+jest.mock('../../../components/deploy/memberNftV2/ConfigureContract', () => ({
   __esModule: true,
   default: () => <p>CONFIGURECONTRACT</p>,
 }));
-jest.mock('../../../components/deploy/DefineRoles', () => ({
-  __esModule: true,
-  default: () => <p>DEFINEROLES</p>,
-}));
-jest.mock('../../../components/deploy/Review', () => ({
+jest.mock('../../../components/deploy/memberNftV2/Review', () => ({
   __esModule: true,
   default: () => <p>REVIEW</p>,
 }));
@@ -45,7 +41,6 @@ describe('Onboarding component', () => {
       expect(screen.getByText('SIDEBAR')).toBeVisible();
       expect(screen.getByText('SELECTTEMPLATE')).toBeVisible();
       expect(screen.queryByText('CONFIGURECONTRACT')).not.toBeInTheDocument();
-      expect(screen.queryByText('DEFINEROLES')).not.toBeInTheDocument();
       expect(screen.queryByText('REVIEW')).not.toBeInTheDocument();
     });
   });
@@ -61,7 +56,6 @@ describe('Onboarding component', () => {
       expect(screen.getByText('SIDEBAR')).toBeVisible();
       expect(screen.queryByText('SELECTTEMPLATE')).not.toBeInTheDocument();
       expect(screen.getByText('CONFIGURECONTRACT')).toBeVisible();
-      expect(screen.queryByText('DEFINEROLES')).not.toBeInTheDocument();
       expect(screen.queryByText('REVIEW')).not.toBeInTheDocument();
     });
   });

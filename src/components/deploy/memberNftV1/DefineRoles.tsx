@@ -5,12 +5,12 @@ import {
 } from 'react-bootstrap';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { XCircleFill, Plus } from 'react-bootstrap-icons';
-import { deployState } from '../../state/deploy';
-import style from '../../styles/deploy.module.css';
-import sharedStyle from '../../styles/shared.module.css';
-import Tooltip from '../shared/Tooltip';
-import { walletState } from '../../state/wallet';
-import networks from '../../constants/networks';
+import { deployState } from '../../../state/deploy';
+import style from '../../../styles/deploy.module.css';
+import sharedStyle from '../../../styles/shared.module.css';
+import Tooltip from '../../shared/Tooltip';
+import { walletState } from '../../../state/wallet';
+import networks from '../../../constants/networks';
 
 const castNetworks = networks as any;
 
@@ -22,7 +22,7 @@ function DefineRoles() {
 
   const hasMissingFields = () => {
     let missingFields = false;
-    deploy.roles.forEach((role, index) => {
+    deploy.roles?.forEach((role, index) => {
       if (!role.name) {
         setError(`Role #${index + 1} is missing a name`);
         missingFields = true;
@@ -49,11 +49,11 @@ function DefineRoles() {
         {/* Roles dropdown */}
         <Dropdown>
           <Dropdown.Toggle className={style['role-tab']}>
-            {deploy.roles[currentRoleIndex]?.name || 'Unnamed Role'}
+            {deploy.roles?.[currentRoleIndex]?.name || 'Unnamed Role'}
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            {deploy.roles.map((role, index) => {
+            {deploy.roles?.map((role, index) => {
               let newRoles:any[] = [];
               return (
                 <Dropdown.Item
@@ -70,10 +70,10 @@ function DefineRoles() {
                     style={{ float: 'right' }}
                     size={20}
                     onClick={async () => {
-                      if (deploy.roles.length > 1) {
+                      if ((deploy.roles?.length as number) > 1) {
                         newRoles = [];
 
-                        deploy.roles.forEach((cancelRole, cancelIndex) => {
+                        deploy.roles?.forEach((cancelRole, cancelIndex) => {
                           if (index !== cancelIndex) newRoles.push(cancelRole);
                         });
 
@@ -99,13 +99,13 @@ function DefineRoles() {
           data-testid="addRole"
           onClick={() => {
             setError(undefined);
-            deploy.roles.push({
+            deploy.roles?.push({
               name: '',
               id: '',
               description: '',
               price: 0,
             });
-            setCurrentRoleIndex(deploy.roles.length - 1);
+            setCurrentRoleIndex((deploy.roles?.length as number) - 1);
           }}
         >
           <Plus style={{ verticalAlign: 'bottom' }} size={24} />
@@ -126,11 +126,11 @@ function DefineRoles() {
                   className={style['form-input']}
                   type="text"
                   data-testid="name"
-                  value={deploy.roles[currentRoleIndex]?.name}
+                  value={deploy.roles?.[currentRoleIndex]?.name}
                   onChange={(event) => {
                     setDeployState({
                       ...deploy,
-                      roles: deploy.roles.map((role, index) => {
+                      roles: deploy.roles?.map((role, index) => {
                         if (index === currentRoleIndex && (!role.id || role.id === role.name)) role.id = event.target.value;
                         if (index === currentRoleIndex) role.name = event.target.value;
                         return role;
@@ -148,11 +148,11 @@ function DefineRoles() {
                   className={style['form-input']}
                   type="text"
                   data-testid="id"
-                  value={deploy.roles[currentRoleIndex]?.id || deploy.roles[currentRoleIndex]?.name}
+                  value={deploy.roles?.[currentRoleIndex]?.id || deploy.roles?.[currentRoleIndex]?.name}
                   onChange={(event) => {
                     setDeployState({
                       ...deploy,
-                      roles: deploy.roles.map((role, index) => {
+                      roles: deploy.roles?.map((role, index) => {
                         if (index === currentRoleIndex) role.id = event.target.value;
                         return role;
                       }),
@@ -172,11 +172,11 @@ function DefineRoles() {
                   as="textarea"
                   rows={3}
                   data-testid="description"
-                  value={deploy.roles[currentRoleIndex]?.description}
+                  value={deploy.roles?.[currentRoleIndex]?.description}
                   onChange={(event) => {
                     setDeployState({
                       ...deploy,
-                      roles: deploy.roles.map((role, index) => {
+                      roles: deploy.roles?.map((role, index) => {
                         if (index === currentRoleIndex) role.description = event.target.value;
                         return role;
                       }),
@@ -201,11 +201,11 @@ function DefineRoles() {
                   step="0.1"
                   min="0"
                   data-testid="price"
-                  value={deploy.roles[currentRoleIndex]?.price}
+                  value={deploy.roles?.[currentRoleIndex]?.price}
                   onChange={(event) => {
                     setDeployState({
                       ...deploy,
-                      roles: deploy.roles.map((role, index) => {
+                      roles: deploy.roles?.map((role, index) => {
                         if (index === currentRoleIndex) role.price = parseFloat(event.target.value);
                         return role;
                       }),

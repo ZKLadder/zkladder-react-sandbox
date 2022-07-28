@@ -68,7 +68,8 @@ const connect = async (requestPermissions:boolean = true) => {
   const previousMetamaskConnection = await metaMaskUnlocked();
 
   // Brings up the web3 wallet select modal
-  const [wallet] = await onboard.connectWallet(cachedWallet ? { autoSelect: { label: cachedWallet, disableModals: true } } : {});
+  const [wallet] = await onboard.connectWallet((cachedWallet && previousMetamaskConnection)
+    ? { autoSelect: { label: cachedWallet, disableModals: true } } : {});
 
   if (!wallet) throw new Error('Please connect a wallet to continue');
 

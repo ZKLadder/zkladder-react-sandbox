@@ -49,7 +49,7 @@ jest.mock('../../../utils/walletConnect', () => ({
 }));
 
 const contracts = [
-  { address: '0xselectedContract', chainId: '1' },
+  { address: '0xselectedContract', chainId: '1', templateId: '1' },
 ];
 
 const initializeState = (settings: any) => {

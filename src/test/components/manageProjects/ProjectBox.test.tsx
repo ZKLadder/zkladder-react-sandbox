@@ -22,7 +22,7 @@ const initializeState = (settings:any) => {
     address: '0xaddressToTest',
     whitelisted: 500,
     chainId: 31337,
-    templateId: 1,
+    templateId: '1',
   }]);
 };
 
@@ -56,7 +56,7 @@ describe('ProjectBox tests', () => {
       expect(screen.getByText('MOCK ZKL CONTRACT')).toBeVisible();
       expect(screen.getByText('100/500')).toBeVisible();
       expect(screen.getByText('Hardhat')).toBeVisible();
-      expect(screen.getByText('Member NFT')).toBeVisible();
+      expect(screen.getByText('Member NFT (v1)')).toBeVisible();
       expect(screen.getByTestId('image')).toHaveAttribute('src', 'https://mockCID');
     });
   });

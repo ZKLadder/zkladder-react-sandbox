@@ -44,13 +44,8 @@ function DeploySidebar() {
         />
         <SidebarStep
           step={3}
-          text="DEFINE COMMUNITY ROLES"
-          isActivated={currentStep === 3}
-        />
-        <SidebarStep
-          step={4}
           text="REVIEW AND LAUNCH"
-          isActivated={currentStep === 4}
+          isActivated={currentStep === 3}
         />
 
         <div className={style['footer-wrapper']}>
