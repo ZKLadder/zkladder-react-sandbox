@@ -47,7 +47,7 @@ const nftTokensEnumerable = selector({
     const contracts = get(contractsWithMetadataState);
     const selectedContract = get(selectedContractState);
     const nfts = [];
-    for (let x = 0; x < contracts?.[selectedContract as string]?.totalSupply; x += 1) {
+    for (let x = 0; x < contracts?.[selectedContract.address as string]?.totalSupply; x += 1) {
       nfts.push(get(nftTokenState(x)));
     }
     return nfts;

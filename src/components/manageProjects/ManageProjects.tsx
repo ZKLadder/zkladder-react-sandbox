@@ -7,20 +7,23 @@ import sharedStyle from '../../styles/shared.module.css';
 import SearchSidebar from './SearchSidebar';
 import ProjectSidebar from './ProjectSidebar';
 import AllProjects from './AllProjects';
-import ProjectBody from './ProjectBody';
+import ProjectBodyV1 from './memberNftV1/ProjectBody';
+import ProjectBodyV2 from './memberNftV2/ProjectBody';
 import { selectedContractState } from '../../state/contract';
 
 function ManageProjects() {
-  const { address } = useParams();
+  const { contractId } = useParams();
   const setSelectedContract = useSetRecoilState(selectedContractState);
 
   useEffect(() => {
-    if (address) {
-      setSelectedContract(address);
+    if (contractId) {
+      const [address, templateId, chainId] = contractId.split('-');
+      setSelectedContract({ address, templateId, chainId });
     }
-  }, [address]);
+  }, [contractId]);
 
-  if (address) {
+  if (contractId) {
+    const templateId = contractId.split('-')[1];
     return (
       <Row className={sharedStyle['content-wrapper']}>
         {/* Project Sidebar */}
@@ -30,7 +33,8 @@ function ManageProjects() {
 
         {/* Project Body */}
         <Col>
-          <ProjectBody isUnitTest={false} />
+          {templateId === '1' ? <ProjectBodyV1 isUnitTest={false} /> : null}
+          {templateId === '3' ? <ProjectBodyV2 isUnitTest={false} /> : null}
         </Col>
       </Row>
     );

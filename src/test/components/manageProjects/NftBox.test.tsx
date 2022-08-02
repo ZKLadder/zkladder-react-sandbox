@@ -36,7 +36,7 @@ const contracts = [
 // click sets selected index
 
 const initializeState = (settings: any) => {
-  settings.set(selectedContractState, '0xselectedContract');
+  settings.set(selectedContractState, { address: '0xselectedContract' });
   settings.set(contractsState, contracts);
   settings.set(walletState, {
     chainId: '1', provider: jest.fn(),
@@ -53,7 +53,7 @@ const initializeState = (settings: any) => {
 };
 
 const initializeNoNftState = (settings: any) => {
-  settings.set(selectedContractState, '0xselectedContract');
+  settings.set(selectedContractState, { address: '0xselectedContract' });
   settings.set(contractsState, contracts);
   settings.set(walletState, {
     chainId: '1', provider: jest.fn(),
@@ -61,7 +61,7 @@ const initializeNoNftState = (settings: any) => {
 };
 
 const initializeSearchState = (settings: any) => {
-  settings.set(selectedContractState, '0xselectedContract');
+  settings.set(selectedContractState, { address: '0xselectedContract' });
   settings.set(contractsState, contracts);
   settings.set(walletState, {
     chainId: '1', provider: jest.fn(),

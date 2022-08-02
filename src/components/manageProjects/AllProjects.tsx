@@ -10,7 +10,7 @@ import { PlusCircleFill } from 'react-bootstrap-icons';
 import style from '../../styles/manageProjects.module.css';
 import { Contract } from '../../interfaces/contract';
 import { filteredContractsState, allMetricsState } from '../../state/contract';
-import ProjectBox from './ProjectBox';
+import ProjectBox from '../memberDashboard/ProjectBox';
 
 function AllProjects() {
   const filteredContracts = useRecoilValue(filteredContractsState);

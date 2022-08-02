@@ -52,8 +52,9 @@ function ProjectBox({ contract }:{contract:Contract}) {
           alt={placeholder}
         />
 
-        {/* Contract Label */}
-        <Link to={`/projects/${address}`}>
+        {/* Link To Project Config */}
+        <Link to={`/projects/${address}-${templateId}-${chainId}`}>
+          {/* Contract Label */}
           <Figure.Caption className={style['project-label-wrapper']}>
             {/* Name */}
             <p style={{ marginTop: '5px' }} className={style['project-name']}>{contents[address]?.name}</p>

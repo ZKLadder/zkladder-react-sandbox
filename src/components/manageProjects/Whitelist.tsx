@@ -15,7 +15,7 @@ import { MintVoucher } from '../../interfaces/contract';
 
 function Whitelist() {
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const address = useRecoilValue(selectedContractState);
+  const { address } = useRecoilValue(selectedContractState);
   const contractData = contractsWithMetadata?.contents?.[address as string];
   const whitelist = useRecoilValueLoadable(WhitelistState);
   const nftTokens = useRecoilValueLoadable(nftTokensEnumerable);

@@ -10,7 +10,7 @@
 .background-container {
   width: 100%;
   position: absolute;
-  background-size: 100% 66% !important;
+  background-size: 100% 70vh !important;
   background-repeat: no-repeat !important;
   top: 0;
   left: 0;

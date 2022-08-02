@@ -20,7 +20,7 @@ import CopyToClipboard from '../shared/CopyToClipboard';
 function Collection() {
   const ipfs = new Ipfs(config.ipfs.projectId, config.ipfs.projectId);
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const address = useRecoilValue(selectedContractState);
+  const { address } = useRecoilValue(selectedContractState);
   const contractData = contractsWithMetadata?.contents?.[address as string];
   const selectedNft = useRecoilValue(nftTokenState(`${address}:${useRecoilValue(selectedNftState)}`));
   const [nftSearch, setNftSearch] = useRecoilState(nftSearchText);

@@ -251,7 +251,8 @@
   font-weight: bold !important;
 }
 
-.role-tab-inactive {
+.role-tab-inactive,
+.role-tab-inactive:focus {
   margin-top: 5px;
   color: #C1C1C1;
   background-color: #F5F5F5;

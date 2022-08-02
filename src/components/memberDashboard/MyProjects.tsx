@@ -8,7 +8,7 @@ import { useRecoilValue } from 'recoil';
 import { contractsState } from '../../state/contract';
 import style from '../../styles/memberDashboard.module.css';
 import sharedStyle from '../../styles/shared.module.css';
-import ProjectBox from '../manageProjects/ProjectBox';
+import ProjectBox from './ProjectBox';
 
 function MyProjects() {
   const contracts = useRecoilValue(contractsState);
