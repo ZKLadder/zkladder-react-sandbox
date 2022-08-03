@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { Ipfs } from '@zkladder/zkladder-sdk-ts';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import ProjectBox from '../../../components/manageProjects/ProjectBox';
+import ProjectBox from '../../../components/memberDashboard/ProjectBox';
 import { contractsState } from '../../../state/contract';
 import { mockMemberNftInstance } from '../../mocks';
 
@@ -96,7 +96,7 @@ describe('ProjectBox tests', () => {
       <RecoilRoot initializeState={initializeState}>
         <MemoryRouter>
           <Routes>
-            <Route path="/projects/0xaddressToTest" element={<p>PROJECT COMPONENT</p>} />
+            <Route path="/projects/0xaddressToTest-1-31337" element={<p>PROJECT COMPONENT</p>} />
             <Route
               path="*"
               element={(

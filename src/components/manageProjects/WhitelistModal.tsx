@@ -13,7 +13,7 @@ import { storeVoucher } from '../../utils/api';
 import Error from '../shared/Error';
 
 function WhitelistModal({ open, closeModal }:{open:boolean, closeModal:()=>void}) {
-  const address = useRecoilValue(selectedContractState);
+  const { address } = useRecoilValue(selectedContractState);
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
   const contractData = contractsWithMetadata?.contents?.[address as string];
 

@@ -1,7 +1,3 @@
-// Renders contracts/metrics by default
-// Renders contracts with appopriate filters
-// New project button works
-
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -17,7 +13,7 @@ jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   },
 }));
 
-jest.mock('../../../components/manageProjects/ProjectBox', () => ({
+jest.mock('../../../components/memberDashboard/ProjectBox', () => ({
   __esModule: true,
   default: ({ contract }:{contract: {[key: string]:any}}) => <p>{contract.address}</p>,
 }));

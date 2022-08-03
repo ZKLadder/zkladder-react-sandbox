@@ -15,7 +15,7 @@ import config from '../../config';
 import networks from '../../constants/networks';
 
 function ProjectSidebar() {
-  const address = useRecoilValue(selectedContractState) as string;
+  const { address } = useRecoilValue(selectedContractState);
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
   const contractData = contractsWithMetadata?.contents?.[address as string];
 

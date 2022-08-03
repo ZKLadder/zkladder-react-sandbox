@@ -27,7 +27,7 @@ const contracts = [
 ];
 
 const initializeState = (settings: any) => {
-  settings.set(selectedContractState, '0xselectedContract');
+  settings.set(selectedContractState, { address: '0xselectedContract' });
   settings.set(contractsState, contracts);
   settings.set(walletState, {
     chainId: '1', provider: jest.fn(),

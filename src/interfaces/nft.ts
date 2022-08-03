@@ -25,9 +25,21 @@ interface NftContractUpdates {
   royaltyBasis?: number,
   beneficiaryAddress?: string,
   roles?: MemberNftRole[],
+  tiers?: Tier[],
+  external_link?: string,
   errors?:{ [key: string]: any }
 }
 
+interface Tier {
+  tierId: number,
+  royaltyBasis: number,
+  salePrice:number,
+  isTransferable: boolean
+  name: string,
+  description?:string,
+  image?: Blob | string | null
+}
+
 export type {
-  NftStateInterface, NftContractMetadata, Views, NftContractUpdates,
+  NftStateInterface, NftContractMetadata, Views, NftContractUpdates, Tier,
 };

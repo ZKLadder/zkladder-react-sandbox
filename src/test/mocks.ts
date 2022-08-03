@@ -12,6 +12,7 @@ const mockMemberNftInstance = {
   getRoleMembers: jest.fn(),
   getToken: jest.fn(),
   signMintVoucher: jest.fn(),
+  getTiers: jest.fn(),
 
   // transactions
   grantRole: jest.fn(),
@@ -20,6 +21,8 @@ const mockMemberNftInstance = {
   setRoyalty: jest.fn(),
   setBeneficiary: jest.fn(),
   setIsTransferrable: jest.fn(),
+  addTiers: jest.fn(),
+  updateTiers: jest.fn(),
 };
 
 function RecoilObserver({ node, onChange }:{node:any, onChange:any}) {

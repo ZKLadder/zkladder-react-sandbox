@@ -74,7 +74,7 @@ function Body() {
 
         <Route path="projects" element={<ManageProjects />}>
           <Route
-            path=":address"
+            path=":contractId" // composite key === {address}-{templateId}-{chainId}
             element={<ManageProjects />}
           />
         </Route>

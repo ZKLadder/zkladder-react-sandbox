@@ -1,16 +1,16 @@
 import React from 'react';
 import {
-  Container, Row, Col, Form, InputGroup,
+  Container, Row, Col, Form,
 } from 'react-bootstrap';
 import { useRecoilValue, useRecoilValueLoadable, useRecoilState } from 'recoil';
 import { utilities } from '@zkladder/zkladder-sdk-ts';
-import { contractsWithMetadataState, selectedContractState } from '../../state/contract';
-import { nftContractUpdates } from '../../state/nftContract';
-import style from '../../styles/deploy.module.css';
+import { contractsWithMetadataState, selectedContractState } from '../../../state/contract';
+import { nftContractUpdates } from '../../../state/nftContract';
+import style from '../../../styles/deploy.module.css';
 
 function Settings() {
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const address = useRecoilValue(selectedContractState);
+  const { address } = useRecoilValue(selectedContractState);
   const contractData = contractsWithMetadata?.contents?.[address as string];
 
   const [contractUpdates, setContractUpdates] = useRecoilState(nftContractUpdates);
@@ -19,9 +19,9 @@ function Settings() {
     <Container className={style['template-wrapper']}>
       <Row style={{ margin: '0px' }} className={style['form-wrapper']}>
 
-        {/* Contract Name */}
+        {/* Community Name */}
         <Col lg={5}>
-          <Form.Label className={style['form-label']}>CONTRACT NAME</Form.Label>
+          <Form.Label className={style['form-label']}>COMMUNITY NAME</Form.Label>
           <Form.Control
             style={{ backgroundColor: '#D9D9D9' }}
             className={style['form-input']}
@@ -49,7 +49,26 @@ function Settings() {
         </Col>
       </Row>
 
-      {/* Contract Description */}
+      {/* Community Web Url (external_link) */}
+      <Row style={{ margin: '3px 0px 0px 0px' }} className={style['form-wrapper']}>
+        <Col lg={8}>
+          <Form.Label className={style['form-label']}>COMMUNITY WEB URL</Form.Label>
+          <Form.Control
+            data-testid="link"
+            className={style['form-input']}
+            type="text"
+            value={contractUpdates?.external_link || contractData?.external_link}
+            onChange={(event) => {
+              setContractUpdates({
+                ...contractUpdates,
+                external_link: event.target.value,
+              });
+            }}
+          />
+        </Col>
+      </Row>
+
+      {/* Community Description */}
       <Row style={{ margin: '3px 0px 0px 0px' }} className={style['form-wrapper']}>
         <Col lg={8}>
           <Form.Label className={style['form-label']}>DESCRIPTION</Form.Label>
@@ -69,62 +88,9 @@ function Settings() {
         </Col>
       </Row>
 
-      {/* Contract isTransferable */}
+      {/* Community beneficiaryAddress */}
       <Row style={{ margin: '3px 0px 0px 0px' }} className={style['form-wrapper']}>
-        <Col>
-          <Form.Check>
-            <Form.Check.Input
-              data-testid="transferable"
-              style={{ marginTop: '6px' }}
-              type="checkbox"
-              checked={contractUpdates?.isTransferable?.toString()
-                ? contractUpdates?.isTransferable : contractData?.isTransferable}
-              onChange={() => {
-                const currentState = contractUpdates?.isTransferable?.toString()
-                  ? contractUpdates?.isTransferable : contractData?.isTransferable;
-
-                setContractUpdates({
-                  ...contractUpdates,
-                  isTransferable: !currentState,
-                });
-              }}
-            />
-            <Form.Check.Label />
-            <span style={{ fontSize: '13px' }} className={style['form-label']}>TRANSFERABLE</span>
-          </Form.Check>
-        </Col>
-      </Row>
-
-      {/* Contract royaltyBasis */}
-      <Row style={{ margin: '3px 0px 0px 0px' }} className={style['form-wrapper']}>
-        <Col lg={4}>
-          <Form.Label className={style['form-label']}>ROYALTY ON SECONDARY SALES</Form.Label>
-          <InputGroup className="mb-2">
-            <InputGroup.Text
-              style={{ borderRadius: '5px 0px 0px 5px', color: '#16434B', fontSize: '14px' }}
-              className={style['form-input']}
-            >
-              %
-            </InputGroup.Text>
-            <Form.Control
-              data-testid="royalty"
-              style={{ maxWidth: '35%' }}
-              className={style['form-input']}
-              type="number"
-              min={0}
-              value={contractUpdates.royaltyBasis?.toString() ? contractUpdates.royaltyBasis / 100 : contractData?.royaltyPercent}
-              onChange={(event) => {
-                setContractUpdates({
-                  ...contractUpdates,
-                  royaltyBasis: parseInt(event.target.value, 10) * 100,
-                });
-              }}
-            />
-          </InputGroup>
-        </Col>
-
-        {/* Contract beneficiaryAddress */}
-        <Col lg={5}>
+        <Col lg={8}>
           <Form.Label className={style['form-label']}>BENEFICIARY ADDRESS</Form.Label>
           <Form.Control
             data-testid="beneficiary"
@@ -138,7 +104,7 @@ function Settings() {
                   beneficiaryAddress: utilities.isEthereumAddress(event.target.value) as string,
                 });
               } catch (err:any) {
-                // Do nothing
+                // Do not update state as user is pasting in an invalid ETH address
               }
             }}
           />

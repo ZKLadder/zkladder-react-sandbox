@@ -4,10 +4,10 @@ import {
 } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
 import userEvent from '@testing-library/user-event';
-import Roles from '../../../components/manageProjects/Roles';
-import { selectedContractState, contractsState } from '../../../state/contract';
-import { nftContractUpdates } from '../../../state/nftContract';
-import { mockMemberNftInstance, RecoilObserver } from '../../mocks';
+import Roles from '../../../../components/manageProjects/memberNftV1/Roles';
+import { selectedContractState, contractsState } from '../../../../state/contract';
+import { nftContractUpdates } from '../../../../state/nftContract';
+import { mockMemberNftInstance, RecoilObserver } from '../../../mocks';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(() => ({ getGatewayUrl: jest.fn() })),
@@ -24,7 +24,7 @@ const contracts = [
 ];
 
 const initializeState = (settings:any) => {
-  settings.set(selectedContractState, '0xselectedContract');
+  settings.set(selectedContractState, { address: '0xselectedContract' });
   settings.set(contractsState, contracts);
   settings.set(nftContractUpdates, {
     roles: [
@@ -36,7 +36,7 @@ const initializeState = (settings:any) => {
 };
 
 const initializeEmptyState = (settings:any) => {
-  settings.set(selectedContractState, '0xselectedContract');
+  settings.set(selectedContractState, { address: '0xselectedContract' });
   settings.set(contractsState, contracts);
   settings.set(nftContractUpdates, {
     roles: [

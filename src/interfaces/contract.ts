@@ -1,5 +1,6 @@
 import { MemberNftReadOnly, MemberNftV2ReadOnly } from '@zkladder/zkladder-sdk-ts';
 import { MemberNftRole } from './deploy';
+import { Tier } from './nft';
 
 interface Contract {
   address:string,
@@ -17,7 +18,7 @@ interface ContractWithMetadata extends Contract{
   image?:string,
   totalSupply:number,
   whitelisted?:32,
-  totalTiers?:number,
+  tiers?:Tier[],
   memberNft: MemberNftReadOnly | MemberNftV2ReadOnly,
   roles?:MemberNftRole[],
   adminAccounts?: string[],

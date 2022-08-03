@@ -5,19 +5,19 @@ import {
 } from 'react-bootstrap';
 import { useRecoilValue, useRecoilValueLoadable, useRecoilState } from 'recoil';
 import { XCircleFill, Plus } from 'react-bootstrap-icons';
-import style from '../../styles/deploy.module.css';
-import Tooltip from '../shared/Tooltip';
-import networks from '../../constants/networks';
-import { contractsWithMetadataState, selectedContractState } from '../../state/contract';
-import { nftContractUpdates } from '../../state/nftContract';
-import { ContractWithMetadata } from '../../interfaces/contract';
-import { MemberNftRole } from '../../interfaces/deploy';
+import style from '../../../styles/deploy.module.css';
+import Tooltip from '../../shared/Tooltip';
+import networks from '../../../constants/networks';
+import { contractsWithMetadataState, selectedContractState } from '../../../state/contract';
+import { nftContractUpdates } from '../../../state/nftContract';
+import { ContractWithMetadata } from '../../../interfaces/contract';
+import { MemberNftRole } from '../../../interfaces/deploy';
 
 const castNetworks = networks as any;
 
 function Roles() {
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const address = useRecoilValue(selectedContractState);
+  const { address } = useRecoilValue(selectedContractState);
   const contractData = contractsWithMetadata?.contents?.[address as string] as ContractWithMetadata;
 
   const [contractUpdates, setContractUpdates] = useRecoilState(nftContractUpdates);

@@ -13,30 +13,29 @@ import {
 import { Link } from 'react-router-dom';
 import { Ipfs } from '@zkladder/zkladder-sdk-ts';
 import { CloudUpload, ExclamationTriangle } from 'react-bootstrap-icons';
-import style from '../../styles/manageProjects.module.css';
-import { contractsWithMetadataState, writableContractState, selectedContractState } from '../../state/contract';
-import { loadingState } from '../../state/page';
-import { walletState } from '../../state/wallet';
-import { nftContractUpdates } from '../../state/nftContract';
-import networks from '../../constants/networks';
-import { switchChain } from '../../utils/walletConnect';
-import Collection from './Collection';
-import config from '../../config';
+import style from '../../../styles/manageProjects.module.css';
+import { contractsWithMetadataState, writableContractState, selectedContractState } from '../../../state/contract';
+import { loadingState } from '../../../state/page';
+import { walletState } from '../../../state/wallet';
+import { nftContractUpdates } from '../../../state/nftContract';
+import networks from '../../../constants/networks';
+import { switchChain } from '../../../utils/walletConnect';
+import Collection from '../Collection';
+import config from '../../../config';
 import Settings from './Settings';
-import Roles from './Roles';
-import Whitelist from './Whitelist';
-import Admins from './Admins';
+import Tiers from './Tiers';
+import Whitelist from '../Whitelist';
+import Admins from '../Admins';
 
 function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const address = useRecoilValue(selectedContractState);
+  const { address } = useRecoilValue(selectedContractState);
   const contractData = contractsWithMetadata?.contents?.[address as string];
   const [changes, setChanges] = useRecoilState(nftContractUpdates);
   const { chainId } = useRecoilValue(walletState);
   const memberNft = useRecoilValueLoadable(writableContractState)?.contents;
   const refresh = useRecoilRefresherUnstable(contractsWithMetadataState);
   const setTransactionLoading = useSetRecoilState(loadingState);
-
   const ipfs = new Ipfs(config.ipfs.projectId, config.ipfs.projectSecret);
 
   const [currentSection, setCurrentSection] = useState('collection');
@@ -49,18 +48,14 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
   const isChangePending = () => {
     let changesPending = false;
 
-    if (JSON.stringify(changes?.roles) !== JSON.stringify(contractData?.roles)
-    || changes.image
-    || (changes.description && changes.description !== contractData?.description)) changesPending = true;
-
-    if (changes.royaltyBasis?.toString()
-      && changes.royaltyBasis !== contractData?.royaltyBasis) changesPending = true;
+    if (changes.image
+    || (changes.description && changes.description !== contractData?.description)
+    || (changes.external_link && changes.external_link !== contractData?.external_link)) changesPending = true;
 
     if (changes.beneficiaryAddress
       && changes.beneficiaryAddress !== contractData?.beneficiaryAddress) changesPending = true;
 
-    if (changes.isTransferable?.toString()
-    && changes.isTransferable !== contractData?.isTransferable) changesPending = true;
+    if (changes.tiers && JSON.stringify(changes.tiers) !== JSON.stringify(contractData?.tiers)) changesPending = true;
 
     return changesPending;
   };
@@ -75,37 +70,16 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
         imageHash = `ipfs://${cids[0].Hash}`;
       }
 
-      // If the roles have changed, perform validation to ensure no missing names or id's
-      if (JSON.stringify(changes?.roles) !== JSON.stringify(contractData?.roles)) {
-        changes?.roles?.forEach((role, index) => {
-          if (!role.name) {
-            setChanges({
-              ...changes,
-              errors: { roleIndex: index, roleError: `Role #${index + 1} is missing a name` },
-            });
-            setCurrentSection('roles');
-          } else if (!role.id) {
-            setChanges({
-              ...changes,
-              errors: { roleIndex: index, roleError: `Role #${index + 1} is missing an ID` },
-            });
-            setCurrentSection('roles');
-          }
-        });
-      }
-
-      // Create transaction for contract metadata (image, description, roles)
-      if (JSON.stringify(changes?.roles) !== JSON.stringify(contractData?.roles)
-    || changes.image
-    || (changes.description && changes.description !== contractData?.description)) {
+      // Create transaction for contract metadata (image, description, external_link)
+      if (changes.image
+        || (changes.description && changes.description !== contractData?.description)
+        || (changes.external_link && changes.external_link !== contractData?.external_link)) {
         const newCollectionMetadata = {
           name: contractData?.name,
           symbol: contractData?.symbol,
-          beneficiaryAddress: changes.beneficiaryAddress || contractData?.beneficiaryAddress,
           image: imageHash || contractData?.image,
           description: changes.description || contractData?.description,
-          script: contractData?.script,
-          roles: changes.roles || contractData?.roles,
+          external_link: changes.external_link || contractData?.external_link,
         };
 
         const file = new Blob([JSON.stringify(newCollectionMetadata)], { type: 'application/json' });
@@ -114,7 +88,7 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
 
         setTransactionLoading({
           loading: true,
-          header: 'Creating a transaction to update the collection\'s roles/metadata',
+          header: 'Creating a transaction to update collection metadata',
           content: 'Awaiting user signature',
         });
 
@@ -122,27 +96,7 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
 
         setTransactionLoading({
           loading: true,
-          header: 'Creating a transaction to update the collection\'s roles/metadata',
-          content: 'Transaction is being mined',
-        });
-
-        await tx?.wait();
-      }
-
-      // Create transaction for royaltyBasis
-      if (changes.royaltyBasis?.toString()
-      && changes.royaltyBasis !== contractData?.royaltyBasis) {
-        setTransactionLoading({
-          loading: true,
-          header: `Creating a transaction to set royalty to ${changes.royaltyBasis} basis points`,
-          content: 'Awaiting user signature',
-        });
-
-        const tx = await memberNft?.setRoyalty(changes.royaltyBasis);
-
-        setTransactionLoading({
-          loading: true,
-          header: `Creating a transaction to set royalty to ${changes.royaltyBasis} basis points`,
+          header: 'Creating a transaction to update collection metadata',
           content: 'Transaction is being mined',
         });
 
@@ -169,24 +123,92 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
         await tx?.wait();
       }
 
-      // Create transaction for isTransferable
-      if (changes.isTransferable?.toString()
-    && changes.isTransferable !== contractData?.isTransferable) {
-        setTransactionLoading({
-          loading: true,
-          header: `Creating a transaction to make this collection ${changes.isTransferable ? 'TRANSFERABLE' : 'NON-TRANSFERABLE'}`,
-          content: 'Awaiting user signature',
-        });
+      // Transactions for tier updates
+      if (changes.tiers && JSON.stringify(changes.tiers) !== JSON.stringify(contractData.tiers)) {
+        // Create transaction to add new tiers
+        if (changes.tiers.length > contractData.tiers.length) {
+          const additions = changes.tiers
+            .slice(contractData.tiers.length, changes.tiers.length)
+            .map(({
+              name, description, image, royaltyBasis, isTransferable, salePrice,
+            }) => ({
+              name,
+              description,
+              image,
+              royaltyBasis,
+              isTransferable,
+              salePrice,
+            }));
 
-        const tx = await memberNft?.setIsTransferrable(changes.isTransferable);
+          setTransactionLoading({
+            loading: true,
+            header: `Creating a transaction to add ${additions.length} new tiers`,
+            content: 'Awaiting user signature',
+          });
 
-        setTransactionLoading({
-          loading: true,
-          header: `Creating a transaction to make this collection ${changes.isTransferable ? 'TRANSFERABLE' : 'NON-TRANSFERABLE'}`,
-          content: 'Transaction is being mined',
-        });
+          /* eslint-disable no-restricted-syntax, no-await-in-loop */
+          // If new images have been added, upload them to IPFS
+          for (const addition of additions) {
+            if (addition.image) {
+              const cids = await ipfs.addFiles([{ file: addition.image as Blob, fileName: (addition.image as any)?.name }]);
+              addition.image = `ipfs://${cids[0].Hash}`;
+            }
+          }
 
-        await tx?.wait();
+          const tx = await memberNft?.addTiers(additions);
+
+          setTransactionLoading({
+            loading: true,
+            header: `Creating a transaction to add ${additions.length} new tiers`,
+            content: 'Transaction is being mined',
+          });
+
+          await tx?.wait();
+        }
+
+        // Create transaction to update existing tiers
+        const updates = changes.tiers
+          .slice(0, contractData.tiers.length)
+          .filter((potentialUpdate, index) => JSON.stringify(potentialUpdate) !== JSON.stringify(contractData.tiers?.[index]))
+          .map(({
+            tierId, name, description, image, royaltyBasis, isTransferable, salePrice,
+          }) => ({
+            tierId,
+            tierUpdates: {
+              name,
+              description,
+              image,
+              royaltyBasis,
+              isTransferable,
+              salePrice,
+            },
+          }));
+
+        if (updates.length > 0) {
+          setTransactionLoading({
+            loading: true,
+            header: `Creating a transaction to update ${updates.length} existing tiers`,
+            content: 'Awaiting user signature',
+          });
+
+          // If new images have been added, upload them to IPFS
+          for (const { tierUpdates } of updates) {
+            if (typeof tierUpdates.image !== 'string' && tierUpdates.image) {
+              const cids = await ipfs.addFiles([{ file: tierUpdates.image as Blob, fileName: (tierUpdates.image as any)?.name }]);
+              tierUpdates.image = `ipfs://${cids[0].Hash}`;
+            }
+          }
+
+          const tx = await memberNft?.updateTiers(updates);
+
+          setTransactionLoading({
+            loading: true,
+            header: `Creating a transaction to update ${updates.length} existing tiers`,
+            content: 'Transaction is being mined',
+          });
+
+          await tx?.wait();
+        }
       }
 
       // Refresh contract data to capture all changes
@@ -194,7 +216,7 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
       setTransactionLoading({ loading: false });
     } catch (err:any) {
       // If error occured anywhere above, set error text and refresh data
-      setError(err.message || 'There was an error commiting your changes to the blockchain. Resetting all changes.');
+      setError(err.message || 'There was an error commiting your changes to the blockchain. Resetting to latest blockchain state.');
       refresh();
       setTransactionLoading({ loading: false });
     }
@@ -204,7 +226,7 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
   useEffect(() => {
     if (!isUnitTest) {
       setChanges({
-        roles: contractData?.roles,
+        tiers: contractData?.tiers,
       });
     }
   }, [contractData]);
@@ -281,7 +303,8 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
               style={{ fontSize: '12px', margin: '3px 0px 0px 0px' }}
               className={style['switch-chain-notice']}
               onClick={() => {
-                setChanges({ roles: contractData.roles });
+                setError('');
+                setChanges({ tiers: contractData.tiers });
               }}
             >
               RESET CHANGES
@@ -328,10 +351,10 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
             </ListGroup.Item>
 
             <ListGroup.Item
-              className={currentSection === 'roles' ? style['contract-body-nav-active'] : style['contract-body-nav']}
-              onClick={() => { setCurrentSection('roles'); }}
+              className={currentSection === 'tiers' ? style['contract-body-nav-active'] : style['contract-body-nav']}
+              onClick={() => { setCurrentSection('tiers'); }}
             >
-              ROLES
+              TIERS
             </ListGroup.Item>
 
             <ListGroup.Item
@@ -354,7 +377,7 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
       {/* Render section depending on currentSection state variable */}
       {currentSection === 'collection' ? <Collection /> : null}
       {currentSection === 'settings' ? <Settings /> : null}
-      {currentSection === 'roles' ? <Roles /> : null}
+      {currentSection === 'tiers' ? <Tiers /> : null}
       {currentSection === 'whitelist' ? <Whitelist /> : null}
       {currentSection === 'admins' ? <Admins /> : null}
     </Container>

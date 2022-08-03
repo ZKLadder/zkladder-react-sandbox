@@ -4,12 +4,12 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { Ipfs } from '@zkladder/zkladder-sdk-ts';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import ProjectBody from '../../../components/manageProjects/ProjectBody';
-import { contractsState, selectedContractState } from '../../../state/contract';
-import { mockMemberNftInstance } from '../../mocks';
-import { walletState } from '../../../state/wallet';
-import { switchChain } from '../../../utils/walletConnect';
-import { nftContractUpdates } from '../../../state/nftContract';
+import ProjectBody from '../../../../components/manageProjects/memberNftV1/ProjectBody';
+import { contractsState, selectedContractState } from '../../../../state/contract';
+import { mockMemberNftInstance } from '../../../mocks';
+import { walletState } from '../../../../state/wallet';
+import { switchChain } from '../../../../utils/walletConnect';
+import { nftContractUpdates } from '../../../../state/nftContract';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(() => ({ getGatewayUrl: jest.fn() })),
@@ -19,32 +19,32 @@ jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   utilities: { isEthereumAddress: () => (true) },
 }));
 
-jest.mock('../../../components/manageProjects/Collection', () => ({
+jest.mock('../../../../components/manageProjects/Collection', () => ({
   __esModule: true,
   default: () => <p>COLLECTION COMPONENT</p>,
 }));
 
-jest.mock('../../../components/manageProjects/Settings', () => ({
+jest.mock('../../../../components/manageProjects/memberNftV1/Settings', () => ({
   __esModule: true,
   default: () => <p>SETTINGS COMPONENT</p>,
 }));
 
-jest.mock('../../../components/manageProjects/Roles', () => ({
+jest.mock('../../../../components/manageProjects/memberNftV1/Roles', () => ({
   __esModule: true,
   default: () => <p>ROLES COMPONENT</p>,
 }));
 
-jest.mock('../../../components/manageProjects/Whitelist', () => ({
+jest.mock('../../../../components/manageProjects/Whitelist', () => ({
   __esModule: true,
   default: () => <p>WHITELIST COMPONENT</p>,
 }));
 
-jest.mock('../../../components/manageProjects/Admins', () => ({
+jest.mock('../../../../components/manageProjects/Admins', () => ({
   __esModule: true,
   default: () => <p>ADMINS COMPONENT</p>,
 }));
 
-jest.mock('../../../utils/walletConnect', () => ({
+jest.mock('../../../../utils/walletConnect', () => ({
   switchChain: jest.fn(),
 }));
 
@@ -53,7 +53,7 @@ const contracts = [
 ];
 
 const initializeState = (settings: any) => {
-  settings.set(selectedContractState, '0xselectedContract');
+  settings.set(selectedContractState, { address: '0xselectedContract' });
   settings.set(contractsState, contracts);
   settings.set(walletState, {
     chainId: '1', provider: jest.fn(),
@@ -61,7 +61,7 @@ const initializeState = (settings: any) => {
 };
 
 const initializeWrongChainState = (settings: any) => {
-  settings.set(selectedContractState, '0xselectedContract');
+  settings.set(selectedContractState, { address: '0xselectedContract' });
   settings.set(contractsState, contracts);
   settings.set(walletState, {
     chainId: '2', provider: jest.fn(),
@@ -69,7 +69,7 @@ const initializeWrongChainState = (settings: any) => {
 };
 
 const initializeContractUpdatesState = (settings:any) => {
-  settings.set(selectedContractState, '0xselectedContract');
+  settings.set(selectedContractState, { address: '0xselectedContract' });
   settings.set(contractsState, contracts);
   settings.set(walletState, {
     chainId: '1', provider: jest.fn(),

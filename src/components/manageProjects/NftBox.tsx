@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { useRecoilValueLoadable, useRecoilState, useRecoilValue } from 'recoil';
 import { Figure, Card } from 'react-bootstrap';
 import { Ipfs } from '@zkladder/zkladder-sdk-ts';
 import axios from 'axios';
 import CopyToClipboard from '../shared/CopyToClipboard';
 import { ContractWithMetadata } from '../../interfaces/contract';
-import { contractsWithMetadataState } from '../../state/contract';
+import { contractsWithMetadataState, selectedContractState } from '../../state/contract';
 import { nftTokenState, selectedNftState, nftSearchText } from '../../state/nftContract';
 import placeholder from '../../images/dashboard/placeholder.png';
 import config from '../../config';
@@ -16,7 +15,7 @@ import { shortenAddress } from '../../utils/helpers';
 function NftBox({ index }:{index:number}) {
   const ipfs = new Ipfs(config.ipfs.projectId, config.ipfs.projectId);
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const { address } = useParams();
+  const { address } = useRecoilValue(selectedContractState);
   const [nftToken, setNftToken] = useRecoilState(nftTokenState(`${address}:${index}`));
   const [selectedNft, setSelectedNft] = useRecoilState(selectedNftState);
   const nftSearch = useRecoilValue(nftSearchText);

@@ -7,7 +7,7 @@ import MyProjects from '../../../components/memberDashboard/MyProjects';
 import { walletState } from '../../../state/wallet';
 import { contractsState } from '../../../state/contract';
 
-jest.mock('../../../components/manageProjects/ProjectBox', () => ({
+jest.mock('../../../components/memberDashboard/ProjectBox', () => ({
   __esModule: true,
   default: () => <p>PROJECT BOX</p>,
 }));

@@ -30,7 +30,7 @@ const contracts = [
 ];
 
 const initializeState = (settings: any) => {
-  settings.set(selectedContractState, '0xselectedContract');
+  settings.set(selectedContractState, { address: '0xselectedContract' });
   settings.set(contractsState, contracts);
 };
 

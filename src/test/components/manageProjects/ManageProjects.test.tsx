@@ -19,9 +19,14 @@ jest.mock('../../../components/manageProjects/ProjectSidebar', () => ({
   default: () => <p>PROJECT SIDEBAR</p>,
 }));
 
-jest.mock('../../../components/manageProjects/ProjectBody', () => ({
+jest.mock('../../../components/manageProjects/memberNftV1/ProjectBody', () => ({
   __esModule: true,
-  default: () => <p>PROJECT BODY</p>,
+  default: () => <p>PROJECT BODY V1</p>,
+}));
+
+jest.mock('../../../components/manageProjects/memberNftV2/ProjectBody', () => ({
+  __esModule: true,
+  default: () => <p>PROJECT BODY V2</p>,
 }));
 
 jest.mock('react-router-dom', () => ({
@@ -48,17 +53,31 @@ describe('ManageProjects component tests', () => {
     expect(screen.getByText('ALL PROJECTS')).toBeVisible();
   });
 
-  test('It renders with an address', async () => {
-    mockUseParams.mockReturnValueOnce({ address: 'mockAddress' });
+  test('It renders with a v1 contract', async () => {
+    mockUseParams.mockReturnValueOnce({ contractId: '0x123456789-1-137' });
     render(
       <RecoilRoot>
-        <MemoryRouter initialEntries={['/route/0x123456789']}>
+        <MemoryRouter initialEntries={['/projects/0x123456789-1-137']}>
           <ManageProjects />
         </MemoryRouter>
       </RecoilRoot>,
     );
 
     expect(screen.getByText('PROJECT SIDEBAR')).toBeVisible();
-    expect(screen.getByText('PROJECT BODY')).toBeVisible();
+    expect(screen.getByText('PROJECT BODY V1')).toBeVisible();
+  });
+
+  test('It renders with a v2 contract', async () => {
+    mockUseParams.mockReturnValueOnce({ contractId: '0x123456789-3-137' });
+    render(
+      <RecoilRoot>
+        <MemoryRouter initialEntries={['/projects/0x123456789-3-137']}>
+          <ManageProjects />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    expect(screen.getByText('PROJECT SIDEBAR')).toBeVisible();
+    expect(screen.getByText('PROJECT BODY V2')).toBeVisible();
   });
 });
