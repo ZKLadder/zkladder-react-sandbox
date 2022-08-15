@@ -27,7 +27,7 @@ const contracts = [
 ];
 
 const initializeState = (settings: any) => {
-  settings.set(selectedContractState, { address: '0xcontract10000000000000000000000000000000' });
+  settings.set(selectedContractState, { ...contracts[0] });
   settings.set(contractsState, contracts);
   settings.set(walletState, {
     chainId: '1', provider: jest.fn(),
@@ -89,8 +89,9 @@ describe('Admins modal tests', () => {
       expect(mockMemberNftInstance.grantRole).toHaveBeenCalledWith('DEFAULT_ADMIN_ROLE', '0xMockUserAddress');
       expect(wait).toHaveBeenCalledTimes(1);
       expect(mockUpdateContract).toHaveBeenCalledWith({
-        address: '0xmockNFTaddress',
+        address: '0xcontract10000000000000000000000000000000',
         admins: ['0xmockuseraddress'],
+        chainId: '1',
       });
     });
   });

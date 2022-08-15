@@ -16,7 +16,7 @@ import { updateContract } from '../../utils/api';
 
 function Admins() {
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const { address } = useRecoilValue(selectedContractState);
+  const { address, chainId } = useRecoilValue(selectedContractState);
   const contractData = contractsWithMetadata?.contents?.[address as string];
   const writeableContract = useRecoilValueLoadable(writableContractState)?.contents;
   const refresh = useRecoilRefresherUnstable(contractsWithMetadataState);
@@ -102,6 +102,7 @@ function Admins() {
 
                               await updateContract({
                                 address: address as string,
+                                chainId: chainId as string,
                                 admins: admins ? admins.filter((adm:string) => (adm.toLowerCase() !== admin.toLowerCase())) : [],
                               });
 

@@ -49,6 +49,7 @@ interface GetContractOptions {
 
 interface UpdateContractOptions {
   address: string,
+  chainId: string,
   admins?: string[],
   projectId?: string,
 }

@@ -31,7 +31,7 @@ const contracts = [
 ];
 
 const initializeState = (settings: any) => {
-  settings.set(selectedContractState, { address: '0xcontract10000000000000000000000000000000' });
+  settings.set(selectedContractState, { ...contracts[0] });
   settings.set(contractsState, contracts);
   settings.set(walletState, {
     chainId: '1', provider: jest.fn(),
@@ -134,6 +134,7 @@ describe('Admin component tests', () => {
       expect(wait).toHaveBeenCalledTimes(1);
       expect(mockUpdateContract).toHaveBeenCalledWith({
         address: '0xcontract10000000000000000000000000000000',
+        chainId: '1',
         admins: [],
       });
     });
