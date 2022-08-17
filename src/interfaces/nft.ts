@@ -40,6 +40,18 @@ interface Tier {
   image?: Blob | string | null
 }
 
+interface NftMintParams {
+  tierId:number,
+  userAddress:string,
+  metadata: {
+    image?: File | string,
+    name?:string,
+    description?:string,
+    tierName?:string,
+    attributes?: { [key: string]: any }[]
+  }
+}
+
 export type {
-  NftStateInterface, NftContractMetadata, Views, NftContractUpdates, Tier,
+  NftStateInterface, NftContractMetadata, Views, NftContractUpdates, Tier, NftMintParams,
 };

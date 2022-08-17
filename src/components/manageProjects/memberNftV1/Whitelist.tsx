@@ -4,14 +4,14 @@ import {
 } from 'react-bootstrap';
 import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { CheckSquare, PlusCircleFill, XCircle } from 'react-bootstrap-icons';
-import style from '../../styles/deploy.module.css';
-import projectStyle from '../../styles/manageProjects.module.css';
-import { contractsWithMetadataState, selectedContractState, WhitelistState } from '../../state/contract';
-import { nftTokensEnumerable } from '../../state/nftContract';
-import Loading from '../shared/Loading';
+import style from '../../../styles/deploy.module.css';
+import projectStyle from '../../../styles/manageProjects.module.css';
+import { contractsWithMetadataState, selectedContractState, WhitelistState } from '../../../state/contract';
+import { nftTokensEnumerable } from '../../../state/nftContract';
+import Loading from '../../shared/Loading';
 import WhitelistModal from './WhitelistModal';
-import { getOwnerBalances } from '../../utils/blockchainData';
-import { MintVoucher } from '../../interfaces/contract';
+import { getOwnerBalances } from '../../../utils/blockchainData';
+import { MintVoucher } from '../../../interfaces/contract';
 
 function Whitelist() {
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);

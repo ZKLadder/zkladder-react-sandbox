@@ -276,6 +276,7 @@ describe('updateContract tests', () => {
     const contractOptions = {
       address: '0xcontract',
       admins: ['0xadmin'],
+      chainId: '1',
       projectId: '123',
     };
     const response = await updateContract(contractOptions);

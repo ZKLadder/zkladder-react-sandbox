@@ -2,11 +2,11 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { storeVoucher } from '../../../utils/api';
-import WhitelistModal from '../../../components/manageProjects/WhitelistModal';
-import { contractsState, selectedContractState } from '../../../state/contract';
-import { mockMemberNftInstance } from '../../mocks';
-import { walletState } from '../../../state/wallet';
+import { storeVoucher } from '../../../../utils/api';
+import WhitelistModal from '../../../../components/manageProjects/memberNftV1/WhitelistModal';
+import { contractsState, selectedContractState } from '../../../../state/contract';
+import { mockMemberNftInstance } from '../../../mocks';
+import { walletState } from '../../../../state/wallet';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(() => ({ getGatewayUrl: jest.fn() })),
@@ -16,7 +16,7 @@ jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   utilities: { isEthereumAddress: () => (true) },
 }));
 
-jest.mock('../../../utils/api', () => ({
+jest.mock('../../../../utils/api', () => ({
   storeVoucher: jest.fn(),
 }));
 

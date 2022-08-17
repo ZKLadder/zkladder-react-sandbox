@@ -16,7 +16,7 @@ import { updateContract } from '../../utils/api';
 
 function Admins() {
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const { address } = useRecoilValue(selectedContractState);
+  const { address, chainId } = useRecoilValue(selectedContractState);
   const contractData = contractsWithMetadata?.contents?.[address as string];
   const writeableContract = useRecoilValueLoadable(writableContractState)?.contents;
   const refresh = useRecoilRefresherUnstable(contractsWithMetadataState);
@@ -33,15 +33,15 @@ function Admins() {
 
         {/* Heading and Description */}
         <Col lg={12}>
-          <p style={{ fontSize: '16px', fontWeight: 'bold', margin: '0px' }}>SET UP OTHER ACCOUNTS AS CONTRACT MANAGERS</p>
-          <p style={{ fontSize: '14px' }}>You can assign individual wallets the appropriate permissions below. Adminstrators will have full access to revoke permissions for other accounts.</p>
+          <p style={{ fontSize: '14px', fontWeight: 'bold', margin: '0px' }}>DESIGNATE CONTRACT MANAGERS</p>
+          <p style={{ fontSize: '14px' }}>You can assign other accounts the appropriate permissions below.</p>
           <hr />
         </Col>
 
         {/* Administrators Section */}
         <Col lg={2} style={{ backgroundColor: '#F5F5F5', padding: '6px', marginLeft: '5px' }}>
           <p style={{ lineHeight: '16px' }} className={projectStyle['metrics-figure']}>{contractData?.adminAccounts?.length}</p>
-          <p style={{ lineHeight: '16px', margin: '0px' }} className={projectStyle['metrics-title']}>Records</p>
+          <p style={{ lineHeight: '16px', margin: '0px' }} className={projectStyle['metrics-title']}>Accounts</p>
         </Col>
         <Col lg={3} style={{ paddingLeft: '5px' }}>
           <Button
@@ -52,7 +52,7 @@ function Admins() {
             }}
           >
             <PlusCircleFill size={20} className={projectStyle['add-whitelist-icon']} />
-            ADD NEW RECORD
+            ADD NEW ADMIN
             {' '}
 
           </Button>
@@ -102,6 +102,7 @@ function Admins() {
 
                               await updateContract({
                                 address: address as string,
+                                chainId: chainId as string,
                                 admins: admins ? admins.filter((adm:string) => (adm.toLowerCase() !== admin.toLowerCase())) : [],
                               });
 
@@ -137,7 +138,7 @@ function Admins() {
         {/* Minters Section */}
         <Col lg={2} style={{ backgroundColor: '#F5F5F5', padding: '6px', marginLeft: '5px' }}>
           <p style={{ lineHeight: '16px' }} className={projectStyle['metrics-figure']}>{contractData?.minterAccounts?.length}</p>
-          <p style={{ lineHeight: '16px', margin: '0px' }} className={projectStyle['metrics-title']}>Records</p>
+          <p style={{ lineHeight: '16px', margin: '0px' }} className={projectStyle['metrics-title']}>Accounts</p>
         </Col>
         <Col lg={3} style={{ paddingLeft: '5px' }}>
           <Button
@@ -148,7 +149,7 @@ function Admins() {
             }}
           >
             <PlusCircleFill size={20} className={projectStyle['add-whitelist-icon']} />
-            ADD NEW RECORD
+            ADD NEW MINTER
           </Button>
         </Col>
         <Col lg={12} style={{ marginTop: '5px', borderRadius: '5px', border: '1px solid #D5D5D5' }}>

@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import {
   Modal, Container, Row, Col, Form, Button, Spinner,
 } from 'react-bootstrap';
-import { useRecoilValueLoadable, useRecoilRefresher_UNSTABLE as useRecoilRefresherUnstable } from 'recoil';
+import { useRecoilValueLoadable, useRecoilRefresher_UNSTABLE as useRecoilRefresherUnstable, useRecoilValue } from 'recoil';
 import { utilities } from '@zkladder/zkladder-sdk-ts';
-import { contractsWithMetadataState, writableContractState } from '../../state/contract';
+import { contractsWithMetadataState, selectedContractState, writableContractState } from '../../state/contract';
 import style from '../../styles/deploy.module.css';
 import projectStyle from '../../styles/manageProjects.module.css';
 import Error from '../shared/Error';
 import { updateContract } from '../../utils/api';
 
-function WhitelistModal({ open, closeModal }:{open:string, closeModal:()=>void}) {
-  const writeableContract = useRecoilValueLoadable(writableContractState)?.contents;
+function AdminsModal({ open, closeModal }:{open:string, closeModal:()=>void}) {
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const admins = contractsWithMetadata?.contents?.[writeableContract?.address as string]?.admins;
+  const { address, chainId } = useRecoilValue(selectedContractState);
+  const admins = contractsWithMetadata?.contents?.[address as string]?.admins;
+  const writeableContract = useRecoilValueLoadable(writableContractState)?.contents;
   const refresh = useRecoilRefresherUnstable(contractsWithMetadataState);
   const [userAddress, setUserAddress] = useState('');
   const [loading, setLoading] = useState(false);
@@ -77,7 +78,8 @@ function WhitelistModal({ open, closeModal }:{open:string, closeModal:()=>void})
                     if (open === 'admin') {
                       tx = await writeableContract.grantRole('DEFAULT_ADMIN_ROLE', userAddress);
                       await updateContract({
-                        address: writeableContract.address,
+                        address: address as string,
+                        chainId: chainId as string,
                         admins: admins ? [...admins, userAddress.toLowerCase()] : [userAddress.toLowerCase()],
                       });
                     } else {
@@ -119,4 +121,4 @@ function WhitelistModal({ open, closeModal }:{open:string, closeModal:()=>void})
   );
 }
 
-export default WhitelistModal;
+export default AdminsModal;
