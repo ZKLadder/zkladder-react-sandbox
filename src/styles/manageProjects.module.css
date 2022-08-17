@@ -546,19 +546,8 @@
   font-weight: bold;
 }
 
-.add-whitelist-record:hover {
-  cursor: pointer;
-  background-color: transparent;
-  color: #4EB9B1;
-  border: 1px solid #4EB9B1;
-}
-
-.add-whitelist-record:focus {
-  background-color: transparent;
-  color: #4EB9B1;
-  border: 1px solid #4EB9B1;
-}
-
+.add-whitelist-record:hover,
+.add-whitelist-record:focus,
 .add-whitelist-record:active {
   background-color: transparent;
   color: #4EB9B1;
@@ -568,6 +557,29 @@
 .add-whitelist-icon {
   margin: 0px 5px 3px 5px;
   color: #4EB9B1;
+}
+
+.admin-mint-button {
+  min-height: 46px;
+  background-color: transparent;
+  color: #a3a3a3;
+  border: 1px solid #F5F5F5;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.admin-mint-button:hover,
+.admin-mint-button:focus,
+.admin-mint-button:active {
+  cursor: pointer;
+  background-color: transparent;
+  color: #a3a3a3;
+  border: 1px solid #a3a3a3;
+}
+
+.admin-mint-icon {
+  margin: 0px 5px 3px 5px;
+  color: #a3a3a3;
 }
 
 .remove-whitelist-record {
@@ -608,4 +620,10 @@
   font-size: 12px;
   padding: 10px;
   min-height: 40px;
+}
+
+.tooltip {
+  color: #16434B !important;
+  margin: -2px 0px 0px 8px;
+  vertical-align: middle;
 }

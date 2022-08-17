@@ -2,9 +2,9 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Whitelist from '../../../components/manageProjects/Whitelist';
-import { contractsState, selectedContractState } from '../../../state/contract';
-import { mockMemberNftInstance } from '../../mocks';
+import Whitelist from '../../../../components/manageProjects/memberNftV1/Whitelist';
+import { contractsState, selectedContractState } from '../../../../state/contract';
+import { mockMemberNftInstance } from '../../../mocks';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(() => ({ getGatewayUrl: jest.fn() })),
@@ -14,17 +14,17 @@ jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   utilities: { isEthereumAddress: () => (true) },
 }));
 
-jest.mock('../../../utils/blockchainData', () => ({
+jest.mock('../../../../utils/blockchainData', () => ({
   getOwnerBalances: () => ({ one: 1, two: 2, three: 3 }),
   nftContractRevenueAndTransfers: () => ({ contractRevenue: 123, transfers: 15 }),
 }));
 
-jest.mock('../../../components/manageProjects/WhitelistModal', () => ({
+jest.mock('../../../../components/manageProjects/memberNftV1/WhitelistModal', () => ({
   __esModule: true,
   default: () => <p>MODAL OPEN</p>,
 }));
 
-jest.mock('../../../utils/api', () => ({
+jest.mock('../../../../utils/api', () => ({
   getAllVouchers: () => ([{
     createdAt: '2022-03-13 20:17:45.942 -0400',
     userAddress: 'one',

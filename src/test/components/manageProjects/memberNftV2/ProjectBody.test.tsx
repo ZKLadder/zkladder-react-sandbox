@@ -34,9 +34,9 @@ jest.mock('../../../../components/manageProjects/memberNftV2/Tiers', () => ({
   default: () => <p>TIERS COMPONENT</p>,
 }));
 
-jest.mock('../../../../components/manageProjects/Whitelist', () => ({
+jest.mock('../../../../components/manageProjects/memberNftV2/Drops', () => ({
   __esModule: true,
-  default: () => <p>WHITELIST COMPONENT</p>,
+  default: () => <p>DROPS COMPONENT</p>,
 }));
 
 jest.mock('../../../../components/manageProjects/Admins', () => ({
@@ -133,10 +133,10 @@ describe('ProjectBody tests', () => {
       expect(screen.getByText('TIERS COMPONENT')).toBeVisible();
     });
 
-    await userEvent.click(screen.getByText('WHITELIST'));
+    await userEvent.click(screen.getByText('DROPS'));
 
     await waitFor(() => {
-      expect(screen.getByText('WHITELIST COMPONENT')).toBeVisible();
+      expect(screen.getByText('DROPS COMPONENT')).toBeVisible();
     });
 
     await userEvent.click(screen.getByText('ADMINS'));

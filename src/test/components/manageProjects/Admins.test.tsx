@@ -58,7 +58,7 @@ describe('Admin component tests', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('SET UP OTHER ACCOUNTS AS CONTRACT MANAGERS')).toBeVisible();
+      expect(screen.getByText('DESIGNATE CONTRACT MANAGERS')).toBeVisible();
       expect(screen.getByText('ADMINISTRATOR ACCOUNTS')).toBeVisible();
       expect(screen.getByText('0xadmin')).toBeVisible();
       expect(screen.getByText('MINTER ACCOUNTS')).toBeVisible();

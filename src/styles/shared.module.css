@@ -99,7 +99,7 @@
 }
 
 .error-toast {
-  position: absolute;
+  position: fixed;
   top: 9% !important;
   right: 4% !important;
   color: #A40A3E;

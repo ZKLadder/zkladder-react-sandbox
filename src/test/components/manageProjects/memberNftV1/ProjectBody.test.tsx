@@ -34,7 +34,7 @@ jest.mock('../../../../components/manageProjects/memberNftV1/Roles', () => ({
   default: () => <p>ROLES COMPONENT</p>,
 }));
 
-jest.mock('../../../../components/manageProjects/Whitelist', () => ({
+jest.mock('../../../../components/manageProjects/memberNftV1/Whitelist', () => ({
   __esModule: true,
   default: () => <p>WHITELIST COMPONENT</p>,
 }));

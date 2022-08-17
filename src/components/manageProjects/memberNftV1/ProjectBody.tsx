@@ -24,7 +24,7 @@ import Collection from '../Collection';
 import config from '../../../config';
 import Settings from './Settings';
 import Roles from './Roles';
-import Whitelist from '../Whitelist';
+import Whitelist from './Whitelist';
 import Admins from '../Admins';
 
 function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {

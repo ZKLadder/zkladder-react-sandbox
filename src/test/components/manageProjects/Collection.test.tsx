@@ -35,6 +35,7 @@ const initializeState = (settings: any) => {
   settings.set(selectedNftState, 0);
   settings.set(nftTokenState('0xselectedContract:0'), {
     image: 'ipfs CID',
+    name: 'mock nft',
     tokenUri: 'tokenURI',
     owner: '0xOwnerAddress',
     tokenId: '0',

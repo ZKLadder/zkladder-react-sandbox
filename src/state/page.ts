@@ -27,6 +27,16 @@ const contractRefreshCounter = atom({
   default: 0,
 });
 
+const manageProjectsPageState = atom({
+  key: 'manageProjectsPage',
+  default: 'collection',
+});
+
+const dropSectionState = atom({
+  key: 'dropSectionState',
+  default: 'dropTable',
+});
+
 // @TODO Remove this temporary atom when refactoring access schema components
 const schemaPageState = atom({
   key: 'schemaPageState',
@@ -34,5 +44,12 @@ const schemaPageState = atom({
 });
 
 export {
-  loadingState, errorState, contractAddressSearch, networkFiltersState, contractRefreshCounter, schemaPageState,
+  loadingState,
+  errorState,
+  contractAddressSearch,
+  networkFiltersState,
+  contractRefreshCounter,
+  schemaPageState,
+  dropSectionState,
+  manageProjectsPageState,
 };

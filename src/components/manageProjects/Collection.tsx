@@ -46,7 +46,7 @@ function Collection() {
 
               {/* Selected Nft Name */}
               <div style={{ fontWeight: 'bold' }} className={style['nft-sidebar-field']}>
-                {contractData?.name}
+                {selectedNft?.name || selectedNft?.tokenId}
               </div>
 
               {/* Selected Nft Owner Address */}
@@ -91,7 +91,7 @@ function Collection() {
               <Row style={{ margin: '5px 0px 0px 0px' }} className={style['nft-sidebar-field']}>
                 <p style={{ marginBottom: '5px' }}>PROPERTIES (METADATA)</p>
                 {selectedNft?.attributes?.map((attribute:any) => (
-                  <Col key={attribute.trait_type} className={style['nft-property']}>
+                  <Col lg={3} key={attribute.trait_type + attribute.value} className={`${style['nft-property']} mx-1`}>
                     <p style={{
                       fontWeight: 'bold', color: '#4EB9B1', margin: '0px', lineHeight: '20px',
                     }}

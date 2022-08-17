@@ -23,6 +23,7 @@ const mockMemberNftInstance = {
   setIsTransferrable: jest.fn(),
   addTiers: jest.fn(),
   updateTiers: jest.fn(),
+  mintTo: jest.fn(),
 };
 
 function RecoilObserver({ node, onChange }:{node:any, onChange:any}) {

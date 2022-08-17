@@ -15,7 +15,7 @@ import { Ipfs } from '@zkladder/zkladder-sdk-ts';
 import { CloudUpload, ExclamationTriangle } from 'react-bootstrap-icons';
 import style from '../../../styles/manageProjects.module.css';
 import { contractsWithMetadataState, writableContractState, selectedContractState } from '../../../state/contract';
-import { loadingState } from '../../../state/page';
+import { loadingState, manageProjectsPageState } from '../../../state/page';
 import { walletState } from '../../../state/wallet';
 import { nftContractUpdates } from '../../../state/nftContract';
 import networks from '../../../constants/networks';
@@ -24,7 +24,7 @@ import Collection from '../Collection';
 import config from '../../../config';
 import Settings from './Settings';
 import Tiers from './Tiers';
-import Whitelist from '../Whitelist';
+import Drops from './Drops';
 import Admins from '../Admins';
 
 function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
@@ -38,7 +38,7 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
   const setTransactionLoading = useSetRecoilState(loadingState);
   const ipfs = new Ipfs(config.ipfs.projectId, config.ipfs.projectSecret);
 
-  const [currentSection, setCurrentSection] = useState('collection');
+  const [currentSection, setCurrentSection] = useRecoilState(manageProjectsPageState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -358,10 +358,10 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
             </ListGroup.Item>
 
             <ListGroup.Item
-              className={currentSection === 'whitelist' ? style['contract-body-nav-active'] : style['contract-body-nav']}
-              onClick={() => { setCurrentSection('whitelist'); }}
+              className={currentSection === 'drops' ? style['contract-body-nav-active'] : style['contract-body-nav']}
+              onClick={() => { setCurrentSection('drops'); }}
             >
-              WHITELIST
+              DROPS
             </ListGroup.Item>
 
             <ListGroup.Item
@@ -378,7 +378,7 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
       {currentSection === 'collection' ? <Collection /> : null}
       {currentSection === 'settings' ? <Settings /> : null}
       {currentSection === 'tiers' ? <Tiers /> : null}
-      {currentSection === 'whitelist' ? <Whitelist /> : null}
+      {currentSection === 'drops' ? <Drops /> : null}
       {currentSection === 'admins' ? <Admins /> : null}
     </Container>
   );

@@ -4,13 +4,13 @@ import {
 } from 'react-bootstrap';
 import { useRecoilValue, useRecoilValueLoadable, useRecoilRefresher_UNSTABLE as useRecoilRefresherUnstable } from 'recoil';
 import { utilities } from '@zkladder/zkladder-sdk-ts';
-import style from '../../styles/deploy.module.css';
-import projectStyle from '../../styles/manageProjects.module.css';
+import style from '../../../styles/deploy.module.css';
+import projectStyle from '../../../styles/manageProjects.module.css';
 import {
   contractsWithMetadataState, selectedContractState, writableContractState, WhitelistState,
-} from '../../state/contract';
-import { storeVoucher } from '../../utils/api';
-import Error from '../shared/Error';
+} from '../../../state/contract';
+import { storeVoucher } from '../../../utils/api';
+import Error from '../../shared/Error';
 
 function WhitelistModal({ open, closeModal }:{open:boolean, closeModal:()=>void}) {
   const { address } = useRecoilValue(selectedContractState);
