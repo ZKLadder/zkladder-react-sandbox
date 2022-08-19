@@ -107,3 +107,20 @@
   font-weight: bold;
   background-color: white;
 }
+
+.options-hidden {
+  position: absolute;
+  opacity: 0%;
+  visibility: hidden;
+  width: 100%;
+  transition: visibility .5s, opacity .5s;
+}
+
+.options {
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  opacity: 100%;
+  visibility: visible;
+  transition: visibility .5s, opacity .5s;
+}

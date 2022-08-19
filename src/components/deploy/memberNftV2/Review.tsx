@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Container, Row, Col, Button, ListGroup,
+  Container, Row, Col, Button, ListGroup, Dropdown,
 } from 'react-bootstrap';
 import {
   useRecoilState, useRecoilValue, useSetRecoilState, useResetRecoilState,
@@ -14,9 +14,9 @@ import Tooltip from '../../shared/Tooltip';
 import { walletState } from '../../../state/wallet';
 import networks from '../../../constants/networks';
 import config from '../../../config';
-import Error from '../../shared/Error';
-import { loadingState, contractRefreshCounter } from '../../../state/page';
+import { loadingState, errorState, contractRefreshCounter } from '../../../state/page';
 import { createContract } from '../../../utils/api';
+import { switchChain } from '../../../utils/walletConnect';
 
 const castNetworks = networks as any;
 
@@ -25,7 +25,7 @@ function Review() {
   const resetDeployState = useResetRecoilState(deployState);
   const { chainId, provider, address } = useRecoilValue(walletState);
   const setLoading = useSetRecoilState(loadingState);
-  const [error, setError] = useState() as any;
+  const setError = useSetRecoilState(errorState) as any;
   const navigate = useNavigate();
   const [refresh, setRefresh] = useRecoilState(contractRefreshCounter);
 
@@ -45,10 +45,45 @@ function Review() {
           <Row>
             <Col className={style['template-title']}>
               Network:
-              <span className={style['config-field']}>
-                {castNetworks[chainId as number].label}
-                <Tooltip className={style.tooltip} header="Blockchain Network" body="ZKLadder supports deploying contracts onto Ethereum Mainnet, as well as various L2's and Testnets. Ensure this is the network you want or update your network within your crypto wallet." />
-              </span>
+              <Dropdown style={{ display: 'inline' }}>
+                <Dropdown.Toggle
+                  style={{
+                    backgroundColor: 'transparent', fontWeight: 'bold', marginLeft: '10px', minWidth: '169px',
+                  }}
+                  variant="light"
+                  className={style['form-dropdown']}
+                  data-testid="dropdown"
+                >
+                  {castNetworks?.[chainId as number]?.label}
+                </Dropdown.Toggle>
+                <Dropdown.Menu
+                  style={{
+                    marginTop: '5px', padding: '1px',
+                  }}
+                  className={style['form-dropdown']}
+                >
+                  {Object.values(castNetworks).map((network: any, index: any) => (
+                    <Dropdown.Item
+                      style={{ fontWeight: 'bold' }}
+                      key={network.label}
+                      data-testid={network.label}
+                      onClick={async () => {
+                        try {
+                          setLoading({ loading: true, header: `Switching to ${network.label} network`, content: 'Awaiting wallet approval' });
+                          await switchChain(Object.keys(castNetworks)[index]);
+                          setLoading({ loading: false });
+                        } catch (err:any) {
+                          setLoading({ loading: false });
+                        }
+                      }}
+                    >
+                      {network.label}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+
+              <Tooltip className={style.tooltip} header="Blockchain Network" body="ZKLadder supports deploying contracts onto Ethereum Mainnet, as well as various L2's and Testnets. Ensure this is the network you want or update your network within your crypto wallet." />
             </Col>
           </Row>
         </div>
@@ -171,7 +206,7 @@ function Review() {
                 }, 3000);
               } catch (err:any) {
                 setLoading({ loading: false });
-                setError(err.message || 'There was a problem with deployment');
+                setError({ showError: true, content: err.message || 'There was a problem with deployment' });
               }
             }}
           >
@@ -194,7 +229,6 @@ function Review() {
           </Button>
         </Col>
       </Row>
-      {error ? <Error text={error} /> : null}
     </Container>
   );
 }

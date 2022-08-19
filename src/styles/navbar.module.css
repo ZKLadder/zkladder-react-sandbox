@@ -57,16 +57,17 @@
   font-weight: bold;
   max-width: 290px;
   white-space: nowrap;
+  min-width: 286px;
+}
+
+.connected-labels:hover {
+  cursor: pointer;
+  background-color: #76d8d1;
 }
 
 .icon {
   margin-left: 8px;
   margin-bottom: 3px;
-}
-
-.icon:hover {
-  cursor: pointer;
-  transform: scale(1.25);
 }
 
 .dashboard-nav-balance {
@@ -91,4 +92,37 @@
 .dashboard-nav-text {
   line-height: 25px;
   vertical-align: middle;
+}
+
+.popover {
+  border-radius: 10px;
+  background-color: #3C9891;
+  padding: 10px;
+  margin-top: 5px;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 12px 0px 12px 0px;
+}
+
+.popover-option {
+  display: block;
+  font-size: 15px;
+  padding: 6px 20px 6px 20px;
+}
+
+.popover-option:hover {
+  background-color: #4eb9b1;
+  cursor: pointer;
+}
+
+.chain-select {
+  color: white;
+  font-weight: bold;
+}
+
+.chain-select:hover {
+  background-color: #4eb9b1;
+  cursor: pointer;
+  color: white;
 }

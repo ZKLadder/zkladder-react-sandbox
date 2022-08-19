@@ -183,7 +183,6 @@ function ConnectWallet() {
         ? (
           <Button
             className={style['active-button']}
-            style={{ fontWeight: 'normal' }}
             onClick={async () => {
               try {
                 setLoading('Switching chain');
@@ -212,6 +211,9 @@ function ConnectWallet() {
                     mintVoucher,
                     currentStep: 2,
                   });
+                } else {
+                  setLoading(false);
+                  setError('Unable to switch chain. Please do so manually from your wallet interface');
                 }
               } catch (err:any) {
                 setLoading(false);
