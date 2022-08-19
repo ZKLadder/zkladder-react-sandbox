@@ -10,6 +10,8 @@ import Review from '../../../../components/deploy/memberNftV2/Review';
 import { deployState } from '../../../../state/deploy';
 import { walletState } from '../../../../state/wallet';
 import { createContract } from '../../../../utils/api';
+import { switchChain } from '../../../../utils/walletConnect';
+import { errorState } from '../../../../state/page';
 
 global.URL.createObjectURL = jest.fn(() => ('mockData.png'));
 
@@ -31,6 +33,25 @@ jest.mock('../../../../config', () => ({
 
 jest.mock('../../../../utils/api', () => ({
   createContract: jest.fn(),
+}));
+
+jest.mock('../../../../utils/walletConnect', () => ({
+  switchChain: jest.fn(),
+}));
+
+jest.mock('../../../../constants/networks', () => ({
+  1: {
+    label: 'ETHEREUM',
+    chainId: '0x1',
+  },
+  2: {
+    label: 'SECOND',
+    chainId: '0x2',
+  },
+  3: {
+    label: 'THIRD',
+    chainId: '0x3',
+  },
 }));
 
 const initializeState = (settings:any) => {
@@ -56,6 +77,7 @@ const initializeState = (settings:any) => {
 const mockIpfs = Ipfs as jest.Mocked<any>;
 const mockDeploy = MemberNftV2.deploy as jest.Mocked<any>;
 const mockCreateContract = createContract as jest.Mocked<any>;
+const mockSwitchChain = switchChain as jest.Mocked<any>;
 
 function RecoilObserver({ node, onChange }:{node:any, onChange:any}) {
   const value = useRecoilValue(node);
@@ -67,6 +89,7 @@ describe('DefineRoles component tests', () => {
   beforeEach(() => {
     // Silence jest act() errors
     jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
   test('It renders', async () => {
@@ -151,8 +174,10 @@ describe('DefineRoles component tests', () => {
   });
 
   test('Errors are displayed', async () => {
+    const errorStateObserver = jest.fn();
     render(
       <RecoilRoot initializeState={initializeState}>
+        <RecoilObserver node={errorState} onChange={errorStateObserver} />
         <MemoryRouter>
           <Review />
         </MemoryRouter>
@@ -172,7 +197,10 @@ describe('DefineRoles component tests', () => {
     await userEvent.click(screen.getByText('DEPLOY YOUR SMART CONTRACT'));
 
     await waitFor(() => {
-      expect(screen.getByText('An error occured')).toBeVisible();
+      expect(errorStateObserver).toHaveBeenCalledWith({
+        showError: true,
+        content: 'An error occured',
+      });
     });
   });
 
@@ -193,6 +221,31 @@ describe('DefineRoles component tests', () => {
       expect(deployStateObserver).toHaveBeenCalledWith(expect.objectContaining({
         currentStep: 2,
       }));
+    });
+  });
+
+  test('Switch chain workflow', async () => {
+    mockSwitchChain.mockResolvedValue({});
+    render(
+      <RecoilRoot initializeState={initializeState}>
+        <MemoryRouter>
+          <Review />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    await userEvent.click(screen.getByTestId('dropdown'));
+
+    await waitFor(() => {
+      expect(screen.getByText('ETHEREUM')).toBeVisible();
+      expect(screen.getByText('SECOND')).toBeVisible();
+      expect(screen.getByText('THIRD')).toBeVisible();
+    });
+
+    await userEvent.click(screen.getByTestId('ETHEREUM'));
+
+    await waitFor(() => {
+      expect(mockSwitchChain).toHaveBeenCalledWith('1');
     });
   });
 });

@@ -404,12 +404,17 @@ function AirDrop() {
                   {newNft?.metadata?.attributes?.map((attribute:any, index:number) => (
                     <Col lg={4} key={attribute.trait_value} className={`${projectStyle['nft-property']} mb-3 mx-2`}>
                       <p style={{
-                        fontWeight: 'bold', color: '#4EB9B1', margin: '0px', lineHeight: '20px', fontSize: '14px',
+                        fontWeight: 'bold', color: '#4EB9B1', margin: '0px', lineHeight: '20px', fontSize: '12px', padding: '2px',
                       }}
                       >
                         {attribute.trait_type}
                       </p>
-                      <p style={{ margin: '0px', lineHeight: '20px', fontSize: '14px' }}>{attribute.value}</p>
+                      <p style={{
+                        fontWeight: 'bold', margin: '0px', lineHeight: '20px', fontSize: '12px', padding: '0px 2px 0px 2px',
+                      }}
+                      >
+                        {attribute.value}
+                      </p>
                       <XCircleFill
                         data-testid="removeImage"
                         className={style['cancel-icon-image']}

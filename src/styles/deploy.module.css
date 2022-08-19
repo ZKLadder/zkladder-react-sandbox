@@ -158,14 +158,6 @@
   font-size: 14px;
 }
 
-.form-dropdown:focus {
-  color: white;
-}
-
-.form-dropdown:active {
-  color: white;
-}
-
 .file-upload {
   border-radius: 5px;
   height: 98%;

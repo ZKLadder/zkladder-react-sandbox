@@ -27,6 +27,10 @@ describe('Navbar tests', () => {
     mockApiSession.mockClear();
   });
 
+  beforeEach(() => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
   test('It renders when wallet is not connected', async () => {
     const mockWalletState = {
       isConnected: false,
@@ -108,7 +112,9 @@ describe('Navbar tests', () => {
       expect(screen.getByText('Ethereum Mainnet : test')).toBeVisible();
     });
 
-    userEvent.click(screen.getByTestId('disconnectButton'));
+    await userEvent.click(screen.getByTestId('header'));
+
+    await userEvent.click(screen.getByText('Disconnect Wallet'));
 
     await waitFor(() => {
       expect(mockDisconnect).toHaveBeenCalledTimes(1);

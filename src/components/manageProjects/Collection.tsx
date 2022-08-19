@@ -93,12 +93,12 @@ function Collection() {
                 {selectedNft?.attributes?.map((attribute:any) => (
                   <Col lg={3} key={attribute.trait_type + attribute.value} className={`${style['nft-property']} mx-1`}>
                     <p style={{
-                      fontWeight: 'bold', color: '#4EB9B1', margin: '0px', lineHeight: '20px',
+                      fontWeight: 'bold', color: '#4EB9B1', margin: '0px', lineHeight: '20px', padding: '0px 2px 0px 2px',
                     }}
                     >
                       {attribute.trait_type}
                     </p>
-                    <p style={{ margin: '0px', lineHeight: '20px' }}>{attribute.value}</p>
+                    <p style={{ margin: '0px', lineHeight: '20px', padding: '0px 2px 0px 2px' }}>{attribute.value}</p>
                   </Col>
                 ))}
               </Row>
