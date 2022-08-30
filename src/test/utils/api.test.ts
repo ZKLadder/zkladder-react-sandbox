@@ -11,6 +11,11 @@ import {
   getContract,
   getTransactions,
   updateContract,
+  createDrop,
+  getDrops,
+  updateDrop,
+  uploadAssets,
+  deleteAssets,
 } from '../../utils/api';
 
 jest.mock('axios', () => ({ request: jest.fn() }));
@@ -310,6 +315,133 @@ describe('getTransactions tests', () => {
       method: 'get',
       url: '/v1/data/transactions',
       params: options,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ transactions: 'mocked' });
+  });
+});
+
+describe('createDrop tests', () => {
+  test('createDrop correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { transactions: 'mocked' } });
+
+    const options = {
+      contractAddress: '0xcontract',
+      chainId: '10',
+      tierId: 2,
+    };
+    const response = await createDrop(options);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'post',
+      url: '/v1/drops',
+      data: options,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ transactions: 'mocked' });
+  });
+});
+
+describe('getDrops tests', () => {
+  test('getDrops correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { transactions: 'mocked' } });
+
+    const options = {
+      contractAddress: '0xcontract',
+      chainId: '10',
+    };
+    const response = await getDrops(options);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'get',
+      url: '/v1/drops',
+      params: options,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ transactions: 'mocked' });
+  });
+});
+
+describe('updateDrop tests', () => {
+  test('updateDrop correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { transactions: 'mocked' } });
+
+    const options = {
+      id: 1,
+      tierId: 23,
+      totalTokens: 100,
+    };
+    const response = await updateDrop(options);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'patch',
+      url: '/v1/drops',
+      data: options,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ transactions: 'mocked' });
+  });
+});
+
+describe('uploadAssets tests', () => {
+  test('uploadAssets correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { transactions: 'mocked' } });
+
+    const options = {
+      assets: [
+        { tokenUri: 'ipfs://123456789', dropId: 123 },
+      ],
+    };
+    const response = await uploadAssets(options);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'post',
+      url: '/v1/assets',
+      data: options,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ transactions: 'mocked' });
+  });
+});
+
+describe('deleteAssets tests', () => {
+  test('deleteAssets correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { transactions: 'mocked' } });
+
+    const options = {
+      assetIds: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    };
+    const response = await deleteAssets(options);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'delete',
+      url: '/v1/assets',
+      data: options,
       headers: {
         Accept: '*/*',
       },

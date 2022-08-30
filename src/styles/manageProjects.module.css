@@ -627,3 +627,44 @@
   margin: -2px 0px 0px 8px;
   vertical-align: middle;
 }
+
+.drop-form-step {
+  background-color: white;
+  display: block;
+  padding: 17px 0px 15px 0px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 5px 5px 0px 0px;
+  color: #16434B;
+}
+
+.drop-form-step:hover {
+  padding: 16px 7px 14px 7px;
+  border: 1px solid #16434B;
+}
+
+.drop-form-step-icon {
+  margin: 0px 8px 3px 5px;
+  color: #16434B;
+}
+
+.drop-form-step-active {
+  background-color: white;
+  display: block;
+  padding: 17px 0px 15px 0px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 5px 5px 0px 0px;
+  color: #4EB9B1;
+  box-shadow: 0px 0px 8px .5px #cfcdcd;
+}
+
+
+.drop-form-step-icon-active {
+  margin: 0px 8px 3px 5px;
+  color: #4EB9B1;
+}
+
+.drop-form-step-icon-active:hover {
+  cursor: pointer;
+}

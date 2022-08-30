@@ -26,10 +26,14 @@ const mockMemberNftInstance = {
   mintTo: jest.fn(),
 };
 
+const mockIpfsInstance = {
+  addFiles: jest.fn(),
+};
+
 function RecoilObserver({ node, onChange }:{node:any, onChange:any}) {
   const value = useRecoilValue(node);
   useEffect(() => onChange(value), [onChange, value]);
   return null;
 }
 
-export { mockMemberNftInstance, RecoilObserver };
+export { mockMemberNftInstance, mockIpfsInstance, RecoilObserver };

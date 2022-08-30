@@ -2,11 +2,11 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import AirDrop from '../../../../components/manageProjects/memberNftV2/AirDrop';
-import { manageProjectsPageState } from '../../../../state/page';
-import { selectedContractState, contractsState } from '../../../../state/contract';
-import { walletState } from '../../../../state/wallet';
-import { RecoilObserver, mockMemberNftInstance } from '../../../mocks';
+import AirDrop from '../../../../../components/manageProjects/memberNftV2/drops/AirDrop';
+import { manageProjectsPageState } from '../../../../../state/page';
+import { selectedContractState, contractsState } from '../../../../../state/contract';
+import { walletState } from '../../../../../state/wallet';
+import { RecoilObserver, mockMemberNftInstance } from '../../../../mocks';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(() => ({ getGatewayUrl: jest.fn() })),
@@ -34,19 +34,7 @@ describe('DropTable component tests', () => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
-  test('It renders when tiers DO NOT exist', async () => {
-    render(
-      <RecoilRoot>
-        <AirDrop />
-      </RecoilRoot>,
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText('You must create at least one tier for this community before you can mint any NFT\'s')).toBeVisible();
-    });
-  });
-
-  test('It renders when tiers exist', async () => {
+  test('It renders', async () => {
     mockMemberNftInstance.getTiers.mockResolvedValue([
       {
         name: 'Test Tier', description: 'test', image: 'ipfs://123456789', isTransferable: false, salePrice: 1.5, royaltyBasis: 150,

@@ -34,7 +34,7 @@ jest.mock('../../../../components/manageProjects/memberNftV2/Tiers', () => ({
   default: () => <p>TIERS COMPONENT</p>,
 }));
 
-jest.mock('../../../../components/manageProjects/memberNftV2/Drops', () => ({
+jest.mock('../../../../components/manageProjects/memberNftV2/drops/Drops', () => ({
   __esModule: true,
   default: () => <p>DROPS COMPONENT</p>,
 }));

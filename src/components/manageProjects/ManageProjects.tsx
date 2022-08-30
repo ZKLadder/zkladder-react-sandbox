@@ -10,16 +10,26 @@ import AllProjects from './AllProjects';
 import ProjectBodyV1 from './memberNftV1/ProjectBody';
 import ProjectBodyV2 from './memberNftV2/ProjectBody';
 import { selectedContractState } from '../../state/contract';
+import { manageProjectsPageState, dropSectionState, currentDropState } from '../../state/page';
 
 function ManageProjects() {
   const { contractId } = useParams();
   const setSelectedContract = useSetRecoilState(selectedContractState);
+
+  const setManageProjectsSection = useSetRecoilState(manageProjectsPageState);
+  const setDropSection = useSetRecoilState(dropSectionState);
+  const setCurrentDrop = useSetRecoilState(currentDropState);
 
   useEffect(() => {
     if (contractId) {
       const [address, templateId, chainId] = contractId.split('-');
       setSelectedContract({ address, templateId, chainId });
     }
+
+    // Reset management navigation when user switches contracts
+    setManageProjectsSection('collection');
+    setDropSection('dropTable');
+    setCurrentDrop(undefined);
   }, [contractId]);
 
   if (contractId) {

@@ -24,7 +24,7 @@ import Collection from '../Collection';
 import config from '../../../config';
 import Settings from './Settings';
 import Tiers from './Tiers';
-import Drops from './Drops';
+import Drops from './drops/Drops';
 import Admins from '../Admins';
 
 function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
