@@ -9,18 +9,18 @@ import {
 import { Box, XCircleFill } from 'react-bootstrap-icons';
 import { useDropzone } from 'react-dropzone';
 import { Ipfs } from '@zkladder/zkladder-sdk-ts';
-import style from '../../../styles/deploy.module.css';
-import projectStyle from '../../../styles/manageProjects.module.css';
-import { contractsWithMetadataState, selectedContractState, writableContractState } from '../../../state/contract';
+import style from '../../../../styles/deploy.module.css';
+import projectStyle from '../../../../styles/manageProjects.module.css';
+import { contractsWithMetadataState, selectedContractState, writableContractState } from '../../../../state/contract';
 import {
   dropSectionState, errorState, loadingState, manageProjectsPageState,
-} from '../../../state/page';
-import { ContractWithMetadata } from '../../../interfaces/contract';
-import { NftMintParams } from '../../../interfaces/nft';
-import Tooltip from '../../shared/Tooltip';
-import config from '../../../config';
-import { shortenAddress } from '../../../utils/helpers';
-import { walletState } from '../../../state/wallet';
+} from '../../../../state/page';
+import { ContractWithMetadata } from '../../../../interfaces/contract';
+import { NftMintParams } from '../../../../interfaces/nft';
+import Tooltip from '../../../shared/Tooltip';
+import config from '../../../../config';
+import { shortenAddress } from '../../../../utils/helpers';
+import { walletState } from '../../../../state/wallet';
 
 function AirDrop() {
   const setDropSection = useSetRecoilState(dropSectionState);
@@ -65,50 +65,6 @@ function AirDrop() {
       });
     },
   });
-
-  // No membership tiers created yet
-  if ((contractData?.tiers?.length || 0) < 1) {
-    return (
-      <Row
-        className={`${style['form-wrapper']} mx-0 px-0 py-4`}
-        style={{ margin: '3px 0px 0px 0px' }}
-      >
-        {/* No Tiers Message */}
-        <Col lg={8} className="align-items-end pt-3">
-          <p style={{ color: '#525252', fontSize: '14px', fontWeight: 'bold' }}>
-            {'You must create at least one tier for this community before you can mint any NFT\'s'}
-          </p>
-        </Col>
-
-        {/* Add Tier Button */}
-        <Col className="pt-3">
-          <div
-            role="button"
-            className={projectStyle['switch-chain-notice']}
-            tabIndex={0}
-            style={{ fontWeight: 'bold', fontSize: '14px', color: '#4EB9B1' }}
-            onClick={() => { setManageProjectsSection('tiers'); }}
-          >
-            ADD A NEW TIER
-          </div>
-        </Col>
-
-        {/* Cancel Button */}
-        <Col className="text-right pt-3">
-          <div
-            role="button"
-            className={projectStyle['switch-chain-notice']}
-            tabIndex={0}
-            style={{ fontWeight: 'bold', fontSize: '14px' }}
-            onClick={() => { setDropSection('dropTable'); }}
-          >
-            CANCEL
-          </div>
-        </Col>
-
-      </Row>
-    );
-  }
 
   // At least membership one tier already created
   return (
@@ -444,7 +400,7 @@ function AirDrop() {
 
         {/* Mint Button */}
         <Col>
-          {(chainId?.toString() === contractData.chainId) ? (
+          {(chainId?.toString() === contractData?.chainId) ? (
             <Button
               className={projectStyle['add-whitelist-record']}
               onClick={async () => {

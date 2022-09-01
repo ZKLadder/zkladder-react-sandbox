@@ -41,6 +41,19 @@ interface MintVoucher {
   redeemed?:boolean
 }
 
+interface Drop {
+  id:number,
+  contractAddress:string,
+  chainId:string,
+  tierId:number,
+  name?:string,
+  startTime?:string,
+  endTime?:string,
+  totalTokens?:number,
+  isArchived?:boolean,
+  assets: {id:number, tokenUri:string, isMinted:boolean}[]
+}
+
 export type {
-  Contract, ContractWithMetadata, ContractMetrics, MintVoucher,
+  Contract, ContractWithMetadata, ContractMetrics, MintVoucher, Drop,
 };

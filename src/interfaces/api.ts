@@ -77,6 +77,38 @@ interface UpdateAccessSchemaOptions {
   accessSchema?: { [key: string]: any; }[]
 }
 
+interface UpdateDropOptions {
+  tierId:number,
+  name?:string,
+  startTime?: string,
+  endTime?:string,
+  accessSchemaId?:number,
+  totalTokens?:number
+ }
+
+interface CreateDropOptions extends UpdateDropOptions {
+ contractAddress:string,
+ chainId:string,
+}
+
+interface GetDropOptions {
+  id?:number,
+  contractAddress?:string,
+  chainId?:string
+ }
+
+ interface UploadAssetsOptions {
+  assets:{
+    dropId:number,
+    tokenUri:string,
+    isMinted?:boolean
+  }[]
+ }
+
+ interface DeleteAssetOptions {
+  assetIds: number[]
+ }
+
 export type {
   HttpOptions,
   StoreVoucherOptions,
@@ -89,4 +121,9 @@ export type {
   GetAccessSchemasOptions,
   CreateAccessSchemaOptions,
   UpdateAccessSchemaOptions,
+  CreateDropOptions,
+  GetDropOptions,
+  UpdateDropOptions,
+  UploadAssetsOptions,
+  DeleteAssetOptions,
 };

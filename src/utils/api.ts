@@ -11,6 +11,11 @@ import {
   GetAccessSchemasOptions,
   CreateAccessSchemaOptions,
   UpdateAccessSchemaOptions,
+  CreateDropOptions,
+  GetDropOptions,
+  UpdateDropOptions,
+  UploadAssetsOptions,
+  DeleteAssetOptions,
 } from '../interfaces/api';
 import config from '../config';
 
@@ -158,6 +163,56 @@ const updateAccessSchema = async (options: UpdateAccessSchemaOptions) => {
   return response;
 };
 
+const createDrop = async (options: CreateDropOptions) => {
+  const response = await request({
+    method: 'post',
+    url: '/v1/drops',
+    data: options,
+  });
+
+  return response;
+};
+
+const getDrops = async (options: GetDropOptions) => {
+  const response = await request({
+    method: 'get',
+    url: '/v1/drops',
+    params: options,
+  });
+
+  return response;
+};
+
+const updateDrop = async (options: UpdateDropOptions) => {
+  const response = await request({
+    method: 'patch',
+    url: '/v1/drops',
+    data: options,
+  });
+
+  return response;
+};
+
+const uploadAssets = async (options: UploadAssetsOptions) => {
+  const response = await request({
+    method: 'post',
+    url: '/v1/assets',
+    data: options,
+  });
+
+  return response;
+};
+
+const deleteAssets = async (options: DeleteAssetOptions) => {
+  const response = await request({
+    method: 'delete',
+    url: '/v1/assets',
+    data: options,
+  });
+
+  return response;
+};
+
 export {
   getSession,
   createSession,
@@ -172,7 +227,11 @@ export {
   getAccessSchemas,
   createAccessSchema,
   updateAccessSchema,
-
+  createDrop,
+  getDrops,
+  updateDrop,
+  uploadAssets,
+  deleteAssets,
   // exported for unit testing
   request,
 };
