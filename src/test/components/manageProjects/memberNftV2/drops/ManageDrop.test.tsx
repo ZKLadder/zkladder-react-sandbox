@@ -90,7 +90,7 @@ describe('ManageDrop component tests', () => {
       </RecoilRoot>,
     );
 
-    await userEvent.click(screen.getByText('CANCEL'));
+    await userEvent.click(screen.getByText('GO BACK'));
 
     await waitFor(() => {
       expect(dropSectionObserver).toHaveBeenCalledWith('dropTable');

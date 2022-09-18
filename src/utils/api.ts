@@ -213,6 +213,26 @@ const deleteAssets = async (options: DeleteAssetOptions) => {
   return response;
 };
 
+const activateVoucherService = async (options: {contractAddress:string, chainId:string}) => {
+  const response = await request({
+    method: 'post',
+    url: '/v1/vouchers/activate',
+    data: options,
+  });
+
+  return response;
+};
+
+const getMinterAddress = async (options: {minterKeyId:string}) => {
+  const response = await request({
+    method: 'get',
+    url: '/v1/vouchers/address',
+    params: options,
+  });
+
+  return response;
+};
+
 export {
   getSession,
   createSession,
@@ -232,6 +252,8 @@ export {
   updateDrop,
   uploadAssets,
   deleteAssets,
+  activateVoucherService,
+  getMinterAddress,
   // exported for unit testing
   request,
 };

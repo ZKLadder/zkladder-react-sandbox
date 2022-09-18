@@ -16,6 +16,8 @@ import {
   updateDrop,
   uploadAssets,
   deleteAssets,
+  activateVoucherService,
+  getMinterAddress,
 } from '../../utils/api';
 
 jest.mock('axios', () => ({ request: jest.fn() }));
@@ -442,6 +444,54 @@ describe('deleteAssets tests', () => {
       method: 'delete',
       url: '/v1/assets',
       data: options,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ transactions: 'mocked' });
+  });
+});
+
+describe('activateVoucherService tests', () => {
+  test('activateVoucherService correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { transactions: 'mocked' } });
+
+    const options = {
+      contractAddress: '0x123', chainId: '1',
+    };
+    const response = await activateVoucherService(options);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'post',
+      url: '/v1/vouchers/activate',
+      data: options,
+      headers: {
+        Accept: '*/*',
+      },
+      baseURL: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+      withCredentials: true,
+    });
+
+    expect(response).toStrictEqual({ transactions: 'mocked' });
+  });
+});
+
+describe('getMinterAddress tests', () => {
+  test('getMinterAddress correctly calls dependencies and returns correct response', async () => {
+    mockAxios.request.mockResolvedValueOnce({ data: { transactions: 'mocked' } });
+
+    const options = {
+      minterKeyId: '12345',
+    };
+    const response = await getMinterAddress(options);
+
+    expect(axios.request).toHaveBeenCalledWith({
+      method: 'get',
+      url: '/v1/vouchers/address',
+      params: options,
       headers: {
         Accept: '*/*',
       },

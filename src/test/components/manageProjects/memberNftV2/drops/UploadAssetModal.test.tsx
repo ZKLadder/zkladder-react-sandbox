@@ -6,7 +6,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { Ipfs } from '@zkladder/zkladder-sdk-ts';
 import UploadAssetModal from '../../../../../components/manageProjects/memberNftV2/drops/UploadAssetModal';
-import { currentDropState } from '../../../../../state/page';
+import { currentDropState } from '../../../../../state/drop';
 import { mockMemberNftInstance, mockIpfsInstance } from '../../../../mocks';
 import { contractsState, selectedContractState } from '../../../../../state/contract';
 import { walletState } from '../../../../../state/wallet';

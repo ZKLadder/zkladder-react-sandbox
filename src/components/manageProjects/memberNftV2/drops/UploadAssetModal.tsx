@@ -11,7 +11,7 @@ import ErrorComponent from '../../../shared/Error';
 import style from '../../../../styles/deploy.module.css';
 import projectStyle from '../../../../styles/manageProjects.module.css';
 import config from '../../../../config';
-import { currentDropState } from '../../../../state/page';
+import { currentDropState } from '../../../../state/drop';
 import { getDrops, uploadAssets } from '../../../../utils/api';
 import { Drop } from '../../../../interfaces/contract';
 

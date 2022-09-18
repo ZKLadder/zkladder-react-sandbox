@@ -10,7 +10,8 @@ import AllProjects from './AllProjects';
 import ProjectBodyV1 from './memberNftV1/ProjectBody';
 import ProjectBodyV2 from './memberNftV2/ProjectBody';
 import { selectedContractState } from '../../state/contract';
-import { manageProjectsPageState, dropSectionState, currentDropState } from '../../state/page';
+import { manageProjectsPageState, dropSectionState } from '../../state/page';
+import { currentDropState } from '../../state/drop';
 
 function ManageProjects() {
   const { contractId } = useParams();

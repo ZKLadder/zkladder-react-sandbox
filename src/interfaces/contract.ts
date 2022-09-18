@@ -9,6 +9,7 @@ interface Contract {
   creator:string,
   admins:string[],
   projectId?:string
+  minterKeyId?:string,
 }
 
 interface ContractWithMetadata extends Contract{
@@ -22,7 +23,8 @@ interface ContractWithMetadata extends Contract{
   memberNft: MemberNftReadOnly | MemberNftV2ReadOnly,
   roles?:MemberNftRole[],
   adminAccounts?: string[],
-  minterAccounts?: string[]
+  minterAccounts?: string[],
+  minterAddress?:string
 }
 
 interface ContractMetrics {
@@ -51,9 +53,20 @@ interface Drop {
   endTime?:string,
   totalTokens?:number,
   isArchived?:boolean,
-  assets: {id:number, tokenUri:string, isMinted:boolean}[]
+  assets?: {id:number, tokenUri:string, isMinted:boolean}[],
+  accessSchemaId?:number,
+  accessSchema?:{ accessSchema:{ [key: string]: any }[] }
+}
+
+interface DropUpdates {
+  id?:number,
+  tierId?:number,
+  name?:string,
+  startTime?:string,
+  endTime?:string,
+  accessSchema?: { [key: string]: any }[]
 }
 
 export type {
-  Contract, ContractWithMetadata, ContractMetrics, MintVoucher, Drop,
+  Contract, ContractWithMetadata, ContractMetrics, MintVoucher, Drop, DropUpdates,
 };

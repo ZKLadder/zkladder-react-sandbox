@@ -30,10 +30,19 @@ const mockIpfsInstance = {
   addFiles: jest.fn(),
 };
 
+const mockAccessValidatorInstance = {
+  getAccessSchema: jest.fn(),
+  addAccessCondition: jest.fn(),
+  updateAccessCondition: jest.fn(),
+  deleteAccessCondition: jest.fn(),
+};
+
 function RecoilObserver({ node, onChange }:{node:any, onChange:any}) {
   const value = useRecoilValue(node);
   useEffect(() => onChange(value), [onChange, value]);
   return null;
 }
 
-export { mockMemberNftInstance, mockIpfsInstance, RecoilObserver };
+export {
+  mockMemberNftInstance, mockIpfsInstance, mockAccessValidatorInstance, RecoilObserver,
+};

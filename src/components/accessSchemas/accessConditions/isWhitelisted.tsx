@@ -1,51 +1,122 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Col, Form, Button,
+  Row, Col, Form, Dropdown,
 } from 'react-bootstrap';
 import { useRecoilState } from 'recoil';
-import { AccessValidator } from '@zkladder/zkladder-sdk-ts';
+import {
+  AccessValidator, utilities,
+} from '@zkladder/zkladder-sdk-ts';
+import { isEthereumAddress } from '@zkladder/zkladder-sdk-ts/dist/interfaces/address';
 import networks from '../../../constants/networks';
-import { accessValidatorState } from '../SchemaBuilder';
+import { dropUpdatesState } from '../../../state/drop';
+import style from '../../../styles/deploy.module.css';
 
-/* eslint-disable-next-line */
-function IsWhitelisted({ accessOperator }: { accessOperator?:string}) {
-  const [jsonSchema, setJsonSchema] = useRecoilState(accessValidatorState);
-  const [chainId, setChainId] = useState(1);
-  const [whitelistedAddress, setWhitelistedAddress] = useState('');
+function IsWhitelisted({ index }: { index:number }) {
+  const [dropUpdates, setDropUpdates] = useRecoilState(dropUpdatesState);
+  const accessCondition = dropUpdates?.accessSchema?.[index];
 
-  const validator = new AccessValidator(jsonSchema);
+  const [error, setError] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+
+  // useEffect to validate address input
+  useEffect(() => {
+    const checkAddress = async () => {
+      if (accessCondition?.returnValueTest.value) {
+        try {
+          utilities.isEthereumAddress(accessCondition?.returnValueTest.value);
+          setIsValid(true);
+          setError(false);
+        } catch (err:any) {
+          setError(true);
+        }
+      } else {
+        setIsValid(false);
+        setError(false);
+      }
+    };
+    checkAddress();
+  }, [dropUpdates]);
 
   return (
-    <Col style={{ border: '1px solid #D5D5D5', margin: '10px', padding: '10px' }}>
-      <Form.Label style={{ display: 'block', margin: '0px' }}>ChainId</Form.Label>
-      <Form.Select
-        value={chainId}
-        onChange={(event) => { setChainId(parseInt(event.target.value, 10)); }}
-      >
-        {Object.keys(networks).map((id) => <option value={id}>{(networks as any)[id]?.label}</option>)}
-      </Form.Select>
+    <Row style={{ marginTop: '5px' }}>
 
-      <Form.Label style={{ display: 'block', margin: '15px 0px 0px 0px' }}>Whitelisted Address</Form.Label>
-      <Form.Control
-        type="text"
-        value={whitelistedAddress}
-        onChange={(event) => { setWhitelistedAddress(event.target.value); }}
-      />
+      {/* Network Field */}
+      <Col lg={12}>
+        <Form.Label
+          className={style['form-label']}
+          style={{ marginTop: '5px', display: 'block' }}
+        >
+          NETWORK
+        </Form.Label>
+        <Dropdown>
+          <Dropdown.Toggle
+            data-testid="toggleNetwork"
+            style={{
+              minWidth: '100%', textAlign: 'left', color: '#16434B', display: 'inline',
+            }}
+            variant="light"
+            className={style['form-dropdown']}
+          >
+            {(networks as any)[accessCondition?.chainId]?.label}
+          </Dropdown.Toggle>
+          <Dropdown.Menu align="end" style={{ minWidth: '100%', padding: '1px' }} className={style['form-dropdown']}>
+            {Object.keys(networks).map((network) => (
+              <Dropdown.Item
+                key={(networks as any)[network].label}
+                onClick={() => {
+                  const validator = new AccessValidator(dropUpdates?.accessSchema);
+                  validator.updateAccessCondition({ index, chainId: parseInt(network, 10) });
+                  setDropUpdates({
+                    ...dropUpdates,
+                    accessSchema: validator.getAccessSchema(),
+                  });
+                }}
+              >
+                {(networks as any)[network].label}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+      </Col>
 
-      <Button
-        style={{ marginTop: '10px' }}
-        onClick={
-            () => {
-              validator.addAccessCondition({
-                key: 'isWhitelisted', chainId, whitelistedAddress,
-              }, accessOperator);
-              setJsonSchema(validator.getAccessSchema());
+      {/* Whitelisted Address Field */}
+      <Col lg={12}>
+        <Form.Label className={style['form-label']} style={{ marginTop: '10px' }}>WHITELISTED ADDRESS</Form.Label>
+        <Form.Control
+          key="whitelistedAddress"
+          className={style['form-input']}
+          type="text"
+          data-testid="whitelistedAddress"
+          isValid={!error && isValid}
+          isInvalid={error}
+          value={accessCondition?.returnValueTest.value}
+          onChange={async (event) => {
+            const address = event.target.value;
+            try {
+              isEthereumAddress(event.target.value);
+
+              const validator = new AccessValidator(dropUpdates?.accessSchema);
+              validator.updateAccessCondition({ index, whitelistedAddress: address });
+
+              setDropUpdates({
+                ...dropUpdates,
+                accessSchema: validator.getAccessSchema(),
+              });
+              setError(false);
+              setIsValid(true);
+            } catch (err:any) {
+              const validator = new AccessValidator(dropUpdates?.accessSchema);
+              validator.updateAccessCondition({ index, whitelistedAddress: address });
+              setDropUpdates({
+                ...dropUpdates,
+                accessSchema: validator.getAccessSchema(),
+              });
+              setError(error);
             }
-          }
-      >
-        Add Gate Condition
-      </Button>
-    </Col>
+          }}
+        />
+      </Col>
+    </Row>
   );
 }
 

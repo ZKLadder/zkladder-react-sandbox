@@ -3,11 +3,13 @@ import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DropTable from '../../../../../components/manageProjects/memberNftV2/drops/DropTable';
-import { currentDropState, dropSectionState } from '../../../../../state/page';
+import { dropSectionState } from '../../../../../state/page';
+import { currentDropState } from '../../../../../state/drop';
 import { mockMemberNftInstance, RecoilObserver } from '../../../../mocks';
 import { contractsState, selectedContractState } from '../../../../../state/contract';
 import { walletState } from '../../../../../state/wallet';
 import { createDrop, getDrops } from '../../../../../utils/api';
+import { nftContractUpdates } from '../../../../../state/nftContract';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(() => ({ getGatewayUrl: jest.fn() })),
@@ -33,6 +35,17 @@ const initializeState = (settings: any) => {
   });
 };
 
+const initializeUpdatesState = (settings:any) => {
+  settings.set(selectedContractState, { address: '0xselectedContract', chainId: '1', templateId: '3' });
+  settings.set(contractsState, contracts);
+  settings.set(walletState, {
+    chainId: '1', provider: jest.fn(),
+  });
+  settings.set(nftContractUpdates, {
+    voucherServiceToggle: true,
+  });
+};
+
 const mockCreateDrop = createDrop as jest.Mocked<any>;
 const mockGetDrops = getDrops as jest.Mocked<any>;
 
@@ -52,6 +65,8 @@ describe('DropTable component tests', () => {
     );
 
     await waitFor(() => {
+      expect(screen.getByText('Active Drops')).toBeVisible();
+      expect(screen.getByText('Upcoming Drops')).toBeVisible();
       expect(screen.getByText('SCHEDULE A NEW DROP')).toBeVisible();
       expect(screen.getByText('MINT A SINGLE NFT')).toBeVisible();
       expect(screen.getByText('No drops created yet')).toBeVisible();
@@ -71,10 +86,48 @@ describe('DropTable component tests', () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     await waitFor(() => {
+      expect(screen.getByText('Active Drops')).toBeVisible();
+      expect(screen.getByText('Upcoming Drops')).toBeVisible();
       expect(screen.getByText('SCHEDULE A NEW DROP')).toBeVisible();
       expect(screen.getByText('MINT A SINGLE NFT')).toBeVisible();
       expect(screen.getByText('DROP NAME')).toBeVisible();
       expect(screen.getByText('MOCKDROP')).toBeVisible();
+    });
+  });
+
+  test('Activate drop service correctly updates state when service is OFF', async () => {
+    mockMemberNftInstance.getTiers.mockResolvedValueOnce([{ tierId: 'TEST TIER' }]);
+    mockGetDrops.mockResolvedValueOnce([{ id: 1, name: 'MOCKDROP' }]);
+    const updatesObserver = jest.fn();
+    render(
+      <RecoilRoot initializeState={initializeState}>
+        <RecoilObserver node={nftContractUpdates} onChange={updatesObserver} />
+        <DropTable />
+      </RecoilRoot>,
+    );
+
+    await userEvent.click(screen.getByTestId('activateVouchers'));
+
+    await waitFor(() => {
+      expect(updatesObserver).toHaveBeenCalledWith({ voucherServiceToggle: true });
+    });
+  });
+
+  test('Activate drop service correctly updates state when service is ON', async () => {
+    mockMemberNftInstance.getTiers.mockResolvedValueOnce([{ tierId: 'TEST TIER' }]);
+    mockGetDrops.mockResolvedValueOnce([{ id: 1, name: 'MOCKDROP' }]);
+    const updatesObserver = jest.fn();
+    render(
+      <RecoilRoot initializeState={initializeUpdatesState}>
+        <RecoilObserver node={nftContractUpdates} onChange={updatesObserver} />
+        <DropTable />
+      </RecoilRoot>,
+    );
+
+    await userEvent.click(screen.getByTestId('activateVouchers'));
+
+    await waitFor(() => {
+      expect(updatesObserver).toHaveBeenCalledWith({ voucherServiceToggle: false });
     });
   });
 

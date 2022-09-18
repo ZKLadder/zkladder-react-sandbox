@@ -3,7 +3,7 @@ import { RecoilRoot } from 'recoil';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import UploadAssets from '../../../../../components/manageProjects/memberNftV2/drops/UploadAssets';
-import { currentDropState } from '../../../../../state/page';
+import { currentDropState } from '../../../../../state/drop';
 import { mockMemberNftInstance } from '../../../../mocks';
 import { contractsState, selectedContractState } from '../../../../../state/contract';
 import { walletState } from '../../../../../state/wallet';

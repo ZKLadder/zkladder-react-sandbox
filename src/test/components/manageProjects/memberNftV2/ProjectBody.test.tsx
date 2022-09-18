@@ -10,6 +10,7 @@ import { mockMemberNftInstance } from '../../../mocks';
 import { walletState } from '../../../../state/wallet';
 import { switchChain } from '../../../../utils/walletConnect';
 import { nftContractUpdates } from '../../../../state/nftContract';
+import { activateVoucherService, getMinterAddress } from '../../../../utils/api';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(() => ({ getGatewayUrl: jest.fn() })),
@@ -46,6 +47,11 @@ jest.mock('../../../../components/manageProjects/Admins', () => ({
 
 jest.mock('../../../../utils/walletConnect', () => ({
   switchChain: jest.fn(),
+}));
+
+jest.mock('../../../../utils/api', () => ({
+  activateVoucherService: jest.fn(),
+  getMinterAddress: jest.fn(),
 }));
 
 const contracts = [
@@ -92,8 +98,32 @@ const initializeContractUpdatesState = (settings:any) => {
   });
 };
 
+const initializeToggleVoucherState = (settings:any) => {
+  settings.set(selectedContractState, { address: '0xselectedContract', chainId: 123 });
+  settings.set(contractsState, [{ ...contracts[0], minterKeyId: '12345' }]);
+  settings.set(walletState, {
+    chainId: '1', provider: jest.fn(),
+  });
+  settings.set(nftContractUpdates, {
+    voucherServiceToggle: true,
+  });
+};
+
+const initializeNoMinterKey = (settings:any) => {
+  settings.set(selectedContractState, { address: '0xselectedContract', chainId: 123 });
+  settings.set(contractsState, contracts);
+  settings.set(walletState, {
+    chainId: '1', provider: jest.fn(),
+  });
+  settings.set(nftContractUpdates, {
+    voucherServiceToggle: true,
+  });
+};
+
 const mockIpfs = Ipfs as jest.Mocked<any>;
 const mockSwitchChain = switchChain as jest.Mocked<any>;
+const mockGetMinterAddress = getMinterAddress as jest.Mocked<any>;
+const mockActivateVoucherService = activateVoucherService as jest.Mocked<any>;
 
 describe('ProjectBody tests', () => {
   beforeEach(() => {
@@ -209,6 +239,67 @@ describe('ProjectBody tests', () => {
           name: 'test1', description: 'test1', image: 'ipfs://123456789', isTransferable: true, salePrice: 2.5, royaltyBasis: 250,
         },
       }]);
+    });
+  });
+
+  test('Enable voucher service', async () => {
+    mockIpfs.mockImplementation(() => ({
+      addFiles: () => [{
+        Hash: 'metaDataCid',
+      }],
+    }));
+    mockMemberNftInstance.getRoleMembers.mockResolvedValueOnce([]);
+    mockActivateVoucherService.mockResolvedValue({ address: 'newMinterAddress' });
+    mockMemberNftInstance.grantRole.mockResolvedValue({ wait: jest.fn() });
+
+    render(
+      <RecoilRoot initializeState={initializeNoMinterKey}>
+        <MemoryRouter>
+          <ProjectBody isUnitTest />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('You have changes pending for this contract')).toBeVisible();
+    });
+
+    await userEvent.click(screen.getByText('SAVE CHANGES'));
+
+    await waitFor(() => {
+      expect(mockActivateVoucherService).toHaveBeenCalledWith({ chainId: 123, contractAddress: '0xselectedContract' });
+      expect(mockMemberNftInstance.grantRole).toHaveBeenCalledWith('MINTER_ROLE', 'newMinterAddress');
+    });
+  });
+
+  test('Disable voucher service', async () => {
+    mockIpfs.mockImplementation(() => ({
+      addFiles: () => [{
+        Hash: 'metaDataCid',
+      }],
+    }));
+
+    mockGetMinterAddress.mockResolvedValue({ address: 'minterAddress' });
+
+    mockMemberNftInstance.getRoleMembers.mockResolvedValue(['minterAddress']);
+    mockMemberNftInstance.grantRole.mockResolvedValue({ wait: jest.fn() });
+
+    render(
+      <RecoilRoot initializeState={initializeToggleVoucherState}>
+        <MemoryRouter>
+          <ProjectBody isUnitTest />
+        </MemoryRouter>
+      </RecoilRoot>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('You have changes pending for this contract')).toBeVisible();
+    });
+
+    await userEvent.click(screen.getByText('SAVE CHANGES'));
+
+    await waitFor(() => {
+      expect(mockMemberNftInstance.revokeRole).toHaveBeenCalledWith('MINTER_ROLE', 'minterAddress');
     });
   });
 });

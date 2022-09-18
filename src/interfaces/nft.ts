@@ -27,6 +27,7 @@ interface NftContractUpdates {
   roles?: MemberNftRole[],
   tiers?: Tier[],
   external_link?: string,
+  voucherServiceToggle?:boolean,
   errors?:{ [key: string]: any }
 }
 

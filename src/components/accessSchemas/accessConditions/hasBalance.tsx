@@ -1,48 +1,82 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Col, Form, Button,
+  Row, Col, Form, Dropdown,
 } from 'react-bootstrap';
 import { useRecoilState } from 'recoil';
-import { AccessValidator } from '@zkladder/zkladder-sdk-ts';
+import { AccessValidator, utilities } from '@zkladder/zkladder-sdk-ts';
 import networks from '../../../constants/networks';
-import { accessValidatorState } from '../SchemaBuilder';
+import { dropUpdatesState } from '../../../state/drop';
+import style from '../../../styles/deploy.module.css';
 
-/* eslint-disable-next-line */
-function HasBalance({ accessOperator }: { accessOperator?:string}) {
-  const [jsonSchema, setJsonSchema] = useRecoilState(accessValidatorState);
-  const [chainId, setChainId] = useState(1);
-  const [minBalance, setMinBalance] = useState(0);
-
-  const validator = new AccessValidator(jsonSchema);
+function HasBalance({ index }: { index:number }) {
+  const [dropUpdates, setDropUpdates] = useRecoilState(dropUpdatesState);
+  const accessCondition = dropUpdates?.accessSchema?.[index];
 
   return (
-    <Col style={{ border: '1px solid #D5D5D5', margin: '10px', padding: '10px' }}>
-      <Form.Label style={{ display: 'block', margin: '0px' }}>ChainId</Form.Label>
-      <Form.Select
-        value={chainId}
-        onChange={(event) => { setChainId(parseInt(event.target.value, 10)); }}
-      >
-        {Object.keys(networks).map((id) => <option value={id}>{(networks as any)[id]?.label}</option>)}
-      </Form.Select>
+    <Row style={{ marginTop: '5px' }}>
 
-      <Form.Label style={{ display: 'block', margin: '15px 0px 0px 0px' }}>Minimum Balance</Form.Label>
-      <Form.Control
-        type="number"
-        value={minBalance}
-        onChange={(event) => { setMinBalance(parseFloat(event.target.value)); }}
-      />
-      <Button
-        style={{ marginTop: '10px' }}
-        onClick={
-            () => {
-              validator.addAccessCondition({ key: 'hasBalance', chainId, minBalance }, accessOperator);
-              setJsonSchema(validator.getAccessSchema());
-            }
-          }
-      >
-        Add Gate Condition
-      </Button>
-    </Col>
+      {/* Network Field */}
+      <Col>
+        <Form.Label
+          className={style['form-label']}
+          style={{ marginTop: '5px', display: 'block' }}
+        >
+          NETWORK
+        </Form.Label>
+        <Dropdown>
+          <Dropdown.Toggle
+            data-testid="toggleNetwork"
+            style={{
+              minWidth: '100%', textAlign: 'left', color: '#16434B', display: 'inline',
+            }}
+            variant="light"
+            className={style['form-dropdown']}
+          >
+            {(networks as any)[accessCondition?.chainId]?.label}
+          </Dropdown.Toggle>
+          <Dropdown.Menu
+            align="end"
+            style={{
+              minWidth: '100%', padding: '1px', maxHeight: '110px', overflow: 'auto',
+            }}
+            className={style['form-dropdown']}
+          >
+            {Object.keys(networks).map((network) => (
+              <Dropdown.Item
+                key={(networks as any)[network].label}
+                onClick={() => {
+                  const validator = new AccessValidator(dropUpdates?.accessSchema);
+                  validator.updateAccessCondition({ index, chainId: parseInt(network, 10) });
+                  setDropUpdates({
+                    ...dropUpdates,
+                    accessSchema: validator.getAccessSchema(),
+                  });
+                }}
+              >
+                {(networks as any)[network].label}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        {/* Minimum Balance Field */}
+        <Form.Label className={style['form-label']} style={{ marginTop: '10px' }}>MINIMUM BALANCE</Form.Label>
+        <Form.Control
+          className={style['form-input']}
+          type="number"
+          data-testid="minBalance"
+          value={utilities.weiToEth(accessCondition?.returnValueTest.value).toString()}
+          onChange={(event) => {
+            const validator = new AccessValidator(dropUpdates?.accessSchema);
+            validator.updateAccessCondition({ index, minBalance: parseFloat(event.target.value) });
+            setDropUpdates({
+              ...dropUpdates,
+              accessSchema: validator.getAccessSchema(),
+            });
+          }}
+        />
+      </Col>
+    </Row>
   );
 }
 
