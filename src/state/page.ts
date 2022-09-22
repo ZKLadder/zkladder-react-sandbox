@@ -1,7 +1,6 @@
 import { atom } from 'recoil';
 import { ErrorStateInterface, LoadingStateInterface } from '../interfaces/page';
 import networks from '../constants/networks';
-import { Drop } from '../interfaces/contract';
 
 const loadingState = atom({
   key: 'loadingState',
@@ -38,11 +37,6 @@ const dropSectionState = atom({
   default: 'dropTable',
 });
 
-const currentDropState = atom({
-  key: 'currentDropState',
-  default: undefined as undefined | Drop,
-});
-
 // @TODO Remove this temporary atom when refactoring access schema components
 const schemaPageState = atom({
   key: 'schemaPageState',
@@ -58,5 +52,4 @@ export {
   schemaPageState,
   dropSectionState,
   manageProjectsPageState,
-  currentDropState,
 };

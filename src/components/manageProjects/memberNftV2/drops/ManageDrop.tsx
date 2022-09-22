@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap-icons';
 import { useSetRecoilState } from 'recoil';
 import projectStyle from '../../../../styles/manageProjects.module.css';
-import Settings from './ConfigureDrop';
+import ConfigureDrop from './ConfigureDrop';
 import { dropSectionState } from '../../../../state/page';
 import UploadAssets from './UploadAssets';
 
@@ -15,17 +15,17 @@ function ManageDrop() {
 
   return (
     <div>
-      <Row style={{ margin: '15px 0px 0px 0px' }}>
+      <Row style={{ margin: '3px 0px 0px 0px' }}>
 
         {/* Configure Drop Tab */}
         <Col className="px-0 pr-1" lg={3}>
           <span
-            className={`${manageDropSection === 'settings' ? projectStyle['drop-form-step-active'] : projectStyle['drop-form-step']} text-center`}
+            className={`${manageDropSection === 'configure' ? projectStyle['drop-form-step-active'] : projectStyle['drop-form-step']} text-center`}
             role="button"
             onClick={() => { setManageDropSection('configure'); }}
             tabIndex={0}
           >
-            <Gear size={22} className={manageDropSection === 'settings' ? projectStyle['drop-form-step-icon-active'] : projectStyle['drop-form-step-icon']} />
+            <Gear size={22} className={manageDropSection === 'configure' ? projectStyle['drop-form-step-icon-active'] : projectStyle['drop-form-step-icon']} />
             CONFIGURE DROP
           </span>
         </Col>
@@ -67,11 +67,11 @@ function ManageDrop() {
             className={projectStyle['switch-chain-notice']}
             onClick={() => { setDropSection('dropTable'); }}
           >
-            CANCEL
+            GO BACK
           </span>
         </Col>
       </Row>
-      {manageDropSection === 'configure' ? <Settings /> : null}
+      {manageDropSection === 'configure' ? <ConfigureDrop /> : null}
       {manageDropSection === 'assets' ? <UploadAssets /> : null}
     </div>
   );

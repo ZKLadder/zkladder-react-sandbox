@@ -4,18 +4,18 @@ import {
 } from 'react-bootstrap';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import { schemaPageState } from '../../state/page';
-import HasBalance from './accessConditions/hasBalance';
-import HasBalanceERC20 from './accessConditions/hasBalanceERC20';
+// import HasBalance from './accessConditions/hasBalance';
+// import HasBalanceERC20 from './accessConditions/hasBalanceERC20';
 import ConditionDisplay from './ConditionDisplay';
-import HasERC721 from './accessConditions/hasERC721';
-import HasERC1155 from './accessConditions/hasERC1155';
-import IsBlacklisted from './accessConditions/isBlacklisted';
-import IsWhitelisted from './accessConditions/isWhitelisted';
+// import HasERC721 from './accessConditions/hasERC721';
+// import HasERC1155 from './accessConditions/hasERC1155';
+// import IsBlacklisted from './accessConditions/isBlacklisted';
+// import IsWhitelisted from './accessConditions/isWhitelisted';
 import { createAccessSchema, updateAccessSchema } from '../../utils/api';
 import { walletState } from '../../state/wallet';
 import Timelock from './accessConditions/timelock';
 
-// @TODO Remove temporary atom when refactoring access schemas feature
+// @TODO REMOVE/REFACTOR
 const accessValidatorState = atom({
   key: 'accessValidatorState',
   default: [] as { [key: string]: any; }[],
@@ -111,12 +111,12 @@ function SchemaBuilder() {
       </Row>
       <Row>
         {{
-          hasBalance: <HasBalance accessOperator={accessOperator} />,
-          hasBalanceERC20: <HasBalanceERC20 accessOperator={accessOperator} />,
-          hasERC721: <HasERC721 accessOperator={accessOperator} />,
-          hasERC1155: <HasERC1155 accessOperator={accessOperator} />,
-          isBlacklisted: <IsBlacklisted accessOperator={accessOperator} />,
-          isWhitelisted: <IsWhitelisted accessOperator={accessOperator} />,
+          // hasBalance: <HasBalance accessOperator={accessOperator} />,
+          // hasBalanceERC20: <HasBalanceERC20 accessOperator={accessOperator} />,
+          // hasERC721: <HasERC721 accessOperator={accessOperator} />,
+          // hasERC1155: <HasERC1155 accessOperator={accessOperator} />,
+          // isBlacklisted: <IsBlacklisted accessOperator={accessOperator} />,
+          // isWhitelisted: <IsWhitelisted accessOperator={accessOperator} />,
           timelock: <Timelock accessOperator={accessOperator} />,
         }[newGateType]}
       </Row>

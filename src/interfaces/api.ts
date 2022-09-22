@@ -78,7 +78,8 @@ interface UpdateAccessSchemaOptions {
 }
 
 interface UpdateDropOptions {
-  tierId:number,
+  id?:number,
+  tierId?:number,
   name?:string,
   startTime?: string,
   endTime?:string,

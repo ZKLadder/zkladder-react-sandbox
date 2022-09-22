@@ -26,10 +26,11 @@ import Settings from './Settings';
 import Tiers from './Tiers';
 import Drops from './drops/Drops';
 import Admins from '../Admins';
+import { activateVoucherService } from '../../../utils/api';
 
 function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const { address } = useRecoilValue(selectedContractState);
+  const { address, chainId: contractChainId } = useRecoilValue(selectedContractState);
   const contractData = contractsWithMetadata?.contents?.[address as string];
   const [changes, setChanges] = useRecoilState(nftContractUpdates);
   const { chainId } = useRecoilValue(walletState);
@@ -56,6 +57,8 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
       && changes.beneficiaryAddress !== contractData?.beneficiaryAddress) changesPending = true;
 
     if (changes.tiers && JSON.stringify(changes.tiers) !== JSON.stringify(contractData?.tiers)) changesPending = true;
+
+    if (changes.voucherServiceToggle) changesPending = true;
 
     return changesPending;
   };
@@ -117,6 +120,41 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
         setTransactionLoading({
           loading: true,
           header: `Creating a transaction to set the beneficiary address to ${changes.beneficiaryAddress}`,
+          content: 'Transaction is being mined',
+        });
+
+        await tx?.wait();
+      }
+
+      // Create transaction for voucher service active/inactive toggle
+      if (changes.voucherServiceToggle) {
+        setTransactionLoading({
+          loading: true,
+          header: 'Creating a transaction to toggle the voucher service',
+          content: 'Awaiting user signature',
+        });
+
+        let minterAddress = contractData?.minterAddress;
+
+        if (!minterAddress) {
+          minterAddress = (await activateVoucherService({
+            contractAddress: address as string,
+            chainId: contractChainId as string,
+          })).address;
+        }
+
+        let tx;
+        if (contractData?.minterAccounts?.includes(contractData?.minterAddress as string)) {
+          // toggle it off
+          tx = (await memberNft.revokeRole('MINTER_ROLE', minterAddress)).tx;
+        } else {
+          // toggle it on
+          tx = (await memberNft.grantRole('MINTER_ROLE', minterAddress)).tx;
+        }
+
+        setTransactionLoading({
+          loading: true,
+          header: 'Creating a transaction to toggle the voucher service',
           content: 'Transaction is being mined',
         });
 

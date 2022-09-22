@@ -52,7 +52,7 @@ export default {
     label: 'Gnosis Chain',
     token: 'xDai',
     id: '0x64',
-    rpcUrl: 'https://rpc.xdaichain.com',
+    rpcUrl: 'https://rpc.gnosischain.com ',
     blockExplorer: 'https://blockscout.com/xdai/mainnet/',
     logo: gnosisLogo,
     hide: false,

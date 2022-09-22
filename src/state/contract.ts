@@ -1,7 +1,7 @@
 import { atom, selector } from 'recoil';
 import { MemberNft, MemberNftV2 } from '@zkladder/zkladder-sdk-ts';
 import { Contract, ContractWithMetadata } from '../interfaces/contract';
-import { getAllVouchers } from '../utils/api';
+import { getAllVouchers, getMinterAddress } from '../utils/api';
 import { generateNftMetrics, nftContractRevenueAndTransfers, getOwnerBalances } from '../utils/blockchainData';
 import { contractAddressSearch, networkFiltersState } from './page';
 import config from '../config';
@@ -91,6 +91,12 @@ const contractsWithMetadataState = selector({
         const minterAccounts = await memberNft.getRoleMembers('MINTER_ROLE');
         const tiers = await memberNft.getTiers();
 
+        const { minterKeyId } = record;
+        let minterAddress;
+        if (minterKeyId) {
+          minterAddress = (await getMinterAddress({ minterKeyId })).address;
+        }
+
         return {
           ...record,
           ...contractMetadata,
@@ -100,6 +106,7 @@ const contractsWithMetadataState = selector({
           beneficiary,
           adminAccounts,
           minterAccounts,
+          minterAddress,
         };
       }
 

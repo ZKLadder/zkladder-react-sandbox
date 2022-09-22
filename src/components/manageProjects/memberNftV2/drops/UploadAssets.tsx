@@ -4,7 +4,7 @@ import {
   CheckSquare, PlusCircleFill, TrashFill, XCircle,
 } from 'react-bootstrap-icons';
 import { useRecoilState } from 'recoil';
-import { currentDropState } from '../../../../state/page';
+import { currentDropState } from '../../../../state/drop';
 import style from '../../../../styles/deploy.module.css';
 import projectStyle from '../../../../styles/manageProjects.module.css';
 import { deleteAssets, getDrops } from '../../../../utils/api';
@@ -16,12 +16,12 @@ function UploadAssets() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <div style={{ margin: '3px 0px 0px 0px' }} className={style['form-wrapper']}>
+    <div>
       <AssetUploadModal show={modalOpen} onHide={() => { setModalOpen(false); }} />
-      <Row>
+      <Row style={{ margin: '3px 0px 0px 0px' }} className={style['form-wrapper']}>
 
         {/* Uploaded Count */}
-        <Col lg={4} className="pt-2">
+        <Col lg={4} className="py-2">
           <span style={{ fontSize: '14px', fontWeight: 'bold' }}>
             ASSETS UPLOADED:
             {' '}
@@ -29,7 +29,7 @@ function UploadAssets() {
               padding: '5px 8px 5px 8px', backgroundColor: '#F5F5F5', margin: '0px 0px 0px 5px', borderRadius: '5px',
             }}
             >
-              {currentDrop?.assets.length}
+              {currentDrop?.assets?.length || 0}
             </span>
           </span>
         </Col>
@@ -49,8 +49,8 @@ function UploadAssets() {
             UPLOAD MORE
           </span>
         </Col>
-        <Col lg={12}><hr /></Col>
-
+      </Row>
+      <Row style={{ margin: '3px 0px 0px 0px' }} className={style['form-wrapper']}>
         {/* Assets Button */}
         <Col style={{ maxHeight: '300px', overflow: 'auto' }}>
           {currentDrop?.assets?.length ? (

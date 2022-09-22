@@ -74,8 +74,6 @@ describe('Drops component tests', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Active Drops')).toBeVisible();
-      expect(screen.getByText('Upcoming Drops')).toBeVisible();
       expect(screen.getByText('DROP TABLE COMPONENT')).toBeVisible();
     });
   });
@@ -105,8 +103,6 @@ describe('Drops component tests', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Active Drops')).toBeVisible();
-      expect(screen.getByText('Upcoming Drops')).toBeVisible();
       expect(screen.getByText('AIRDROP COMPONENT')).toBeVisible();
     });
   });
@@ -124,8 +120,6 @@ describe('Drops component tests', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Active Drops')).toBeVisible();
-      expect(screen.getByText('Upcoming Drops')).toBeVisible();
       expect(screen.getByText('MANAGE DROP COMPONENT')).toBeVisible();
     });
   });
