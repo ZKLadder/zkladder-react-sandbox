@@ -53,7 +53,7 @@ interface Drop {
   endTime?:string,
   totalTokens?:number,
   isArchived?:boolean,
-  assets?: {id:number, tokenUri:string, isMinted:boolean}[],
+  assets?: {id:number, tokenUri:string, mintStatus:string}[],
   accessSchemaId?:number,
   accessSchema?:{ accessSchema:{ [key: string]: any }[] }
 }

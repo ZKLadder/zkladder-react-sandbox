@@ -6,12 +6,13 @@ import {
 import { useDropzone } from 'react-dropzone';
 import { XSquare } from 'react-bootstrap-icons';
 import { Ipfs } from '@zkladder/zkladder-sdk-ts';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import ErrorComponent from '../../../shared/Error';
 import style from '../../../../styles/deploy.module.css';
 import projectStyle from '../../../../styles/manageProjects.module.css';
 import config from '../../../../config';
 import { currentDropState } from '../../../../state/drop';
+import { selectedContractState } from '../../../../state/contract';
 import { getDrops, uploadAssets } from '../../../../utils/api';
 import { Drop } from '../../../../interfaces/contract';
 
@@ -19,6 +20,8 @@ function UploadAssetModal({ show, onHide }:{show:boolean, onHide:()=>void}) {
   const [acceptedFiles, setAcceptedFiles] = useState([]) as any;
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
+
+  const { address, chainId } = useRecoilValue(selectedContractState);
 
   const [currentDrop, setCurrentDrop] = useRecoilState(currentDropState);
 
@@ -127,10 +130,12 @@ function UploadAssetModal({ show, onHide }:{show:boolean, onHide:()=>void}) {
                     tokenUri: `ipfs://${cid.Hash}`,
                   }));
 
-                  await uploadAssets({assets});
+                  await uploadAssets({assets, chainId:chainId as string, contractAddress: address as string});
 
                   const [drop] = await getDrops({
-                    id: currentDrop?.id,
+                    id: currentDrop?.id, 
+                    contractAddress:address as string, 
+                    chainId: chainId as string
                   });
 
                   setCurrentDrop(drop);

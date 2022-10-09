@@ -160,6 +160,8 @@ describe('ConfigureDrop component tests', () => {
 
       expect(mockGetDrops).toHaveBeenCalledWith({
         id: 234,
+        contractAddress: '0xselectedContract',
+        chainId: '1',
       });
     });
   });
@@ -234,6 +236,8 @@ describe('ConfigureDrop component tests', () => {
     await waitFor(() => {
       expect(mockUpdateDrop).toHaveBeenCalledWith({
         id: 234,
+        contractAddress: '0xselectedContract',
+        chainId: '1',
         tierId: 1,
         name: 'New name',
         accessSchema: [],
@@ -241,6 +245,8 @@ describe('ConfigureDrop component tests', () => {
 
       expect(mockGetDrops).toHaveBeenCalledWith({
         id: 234,
+        contractAddress: '0xselectedContract',
+        chainId: '1',
       });
     });
   });

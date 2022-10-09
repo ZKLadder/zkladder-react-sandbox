@@ -100,10 +100,14 @@ describe('UploadAssets component tests', () => {
 
     await waitFor(() => {
       expect(mockDeleteAssets).toHaveBeenCalledWith({
+        contractAddress: '0xselectedContract',
+        chainId: '1',
         assetIds: [1111],
       });
 
       expect(mockGetDrops).toHaveBeenCalledWith({
+        contractAddress: '0xselectedContract',
+        chainId: '1',
         id: 234,
       });
     });

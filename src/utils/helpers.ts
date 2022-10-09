@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid');
+
 const shortenAddress = (address: string) => {
   if (!address || address.length < 10) return address;
   return `${address.substring(0, 6)}...${address.substring(address.length, address.length - 4)}`;
@@ -28,6 +30,20 @@ const isValidUrl = (url:string) => {
   return true;
 };
 
+/* eslint-disable no-bitwise */
+const uid = () => {
+  const uniqueId = uuidv4();
+
+  let hash = 0;
+
+  for (let i = 0; i < uniqueId.length; i += 1) {
+    const char = uniqueId.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash &= hash;
+  }
+  return Math.abs(hash);
+};
+
 export {
-  shortenAddress, weiToEth, hashString, isValidUrl,
+  shortenAddress, weiToEth, hashString, isValidUrl, uid,
 };

@@ -19,7 +19,7 @@ import { ContractWithMetadata } from '../../../../interfaces/contract';
 import { NftMintParams } from '../../../../interfaces/nft';
 import Tooltip from '../../../shared/Tooltip';
 import config from '../../../../config';
-import { shortenAddress } from '../../../../utils/helpers';
+import { shortenAddress, uid } from '../../../../utils/helpers';
 import { walletState } from '../../../../state/wallet';
 
 function AirDrop() {
@@ -424,7 +424,7 @@ function AirDrop() {
                       mintMetadata.image = `ipfs://${cids[0].Hash}`;
                     }
 
-                    const tx = await memberNft?.mintTo(newNft.userAddress, mintMetadata);
+                    const tx = await memberNft?.mintTo(newNft.userAddress, uid(), mintMetadata);
 
                     setTransactionLoading({
                       loading: true,

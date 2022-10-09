@@ -125,10 +125,14 @@ describe('UploadAssetModal component tests', () => {
             tokenUri: 'ipfs://HASH 2',
           },
         ],
+        contractAddress: '0xselectedContract',
+        chainId: '1',
       });
 
       expect(getDrops).toHaveBeenCalledWith({
         id: 234,
+        contractAddress: '0xselectedContract',
+        chainId: '1',
       });
     });
   });

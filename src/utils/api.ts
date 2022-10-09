@@ -11,7 +11,6 @@ import {
   GetAccessSchemasOptions,
   CreateAccessSchemaOptions,
   UpdateAccessSchemaOptions,
-  CreateDropOptions,
   GetDropOptions,
   UpdateDropOptions,
   UploadAssetsOptions,
@@ -163,7 +162,7 @@ const updateAccessSchema = async (options: UpdateAccessSchemaOptions) => {
   return response;
 };
 
-const createDrop = async (options: CreateDropOptions) => {
+const createDrop = async (options: UpdateDropOptions) => {
   const response = await request({
     method: 'post',
     url: '/v1/drops',

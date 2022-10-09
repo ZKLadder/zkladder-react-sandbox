@@ -3,8 +3,9 @@ import { Row, Col, Table } from 'react-bootstrap';
 import {
   CheckSquare, PlusCircleFill, TrashFill, XCircle,
 } from 'react-bootstrap-icons';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentDropState } from '../../../../state/drop';
+import { selectedContractState } from '../../../../state/contract';
 import style from '../../../../styles/deploy.module.css';
 import projectStyle from '../../../../styles/manageProjects.module.css';
 import { deleteAssets, getDrops } from '../../../../utils/api';
@@ -12,6 +13,8 @@ import AssetUploadModal from './UploadAssetModal';
 
 function UploadAssets() {
   const [currentDrop, setCurrentDrop] = useRecoilState(currentDropState);
+
+  const { address, chainId } = useRecoilValue(selectedContractState);
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -66,7 +69,7 @@ function UploadAssets() {
                       <div className={projectStyle['table-data']}>{asset.tokenUri}</div>
                     </td>
                     <td style={{ padding: '2px' }}>
-                      <div className={`${projectStyle['table-data']} text-center`}>{asset.isMinted ? <CheckSquare style={{ color: '#4EB9B1' }} size={15} /> : <XCircle style={{ color: '#DB0056' }} size={15} />}</div>
+                      <div className={`${projectStyle['table-data']} text-center`}>{asset.mintStatus === 'minted' ? <CheckSquare style={{ color: '#4EB9B1' }} size={15} /> : <XCircle style={{ color: '#DB0056' }} size={15} />}</div>
                     </td>
                     <td style={{ padding: '10px 0px 0px 0px' }} className="text-center">
                       <TrashFill
@@ -74,10 +77,14 @@ function UploadAssets() {
                         onClick={async () => {
                           await deleteAssets({
                             assetIds: [asset.id],
+                            contractAddress: address as string,
+                            chainId: chainId as string,
                           });
 
                           const [drop] = await getDrops({
                             id: currentDrop?.id,
+                            contractAddress: address as string,
+                            chainId: chainId as string,
                           });
 
                           setCurrentDrop(drop);

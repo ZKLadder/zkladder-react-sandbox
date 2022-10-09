@@ -1,7 +1,15 @@
 /* eslint-disable no-loss-of-precision */
 import {
-  shortenAddress, weiToEth, hashString, isValidUrl,
+  shortenAddress, weiToEth, hashString, isValidUrl, uid,
 } from '../../utils/helpers';
+
+const { v4 } = require('uuid');
+
+jest.mock('uuid', () => ({
+  v4: jest.fn(),
+}));
+
+const mockUUID = v4 as jest.Mocked<any>;
 
 describe('shortenAddress', () => {
   test('shortenAddress functions as expected', () => {
@@ -37,5 +45,18 @@ describe('isValidUrl', () => {
     expect(isValidUrl('https://abc.123')).toStrictEqual(true);
     expect(isValidUrl('http://www.zkladder.com')).toStrictEqual(true);
     expect(isValidUrl('notaurl')).toStrictEqual(false);
+  });
+});
+
+describe('uid', () => {
+  test('uid returns correct value', () => {
+    // precomputed
+    mockUUID.mockReturnValueOnce('7654321')
+      .mockReturnValueOnce('1234567')
+      .mockReturnValueOnce('auniquestring');
+
+    expect(uid()).toStrictEqual(1130384588);
+    expect(uid()).toStrictEqual(2018166324);
+    expect(uid()).toStrictEqual(1509719549);
   });
 });

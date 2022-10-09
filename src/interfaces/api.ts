@@ -78,6 +78,8 @@ interface UpdateAccessSchemaOptions {
 }
 
 interface UpdateDropOptions {
+  contractAddress:string,
+  chainId:string,
   id?:number,
   tierId?:number,
   name?:string,
@@ -87,18 +89,15 @@ interface UpdateDropOptions {
   totalTokens?:number
  }
 
-interface CreateDropOptions extends UpdateDropOptions {
- contractAddress:string,
- chainId:string,
-}
-
 interface GetDropOptions {
   id?:number,
-  contractAddress?:string,
-  chainId?:string
+  contractAddress:string,
+  chainId:string
  }
 
  interface UploadAssetsOptions {
+  contractAddress:string,
+  chainId:string,
   assets:{
     dropId:number,
     tokenUri:string,
@@ -107,6 +106,8 @@ interface GetDropOptions {
  }
 
  interface DeleteAssetOptions {
+  contractAddress:string,
+  chainId:string,
   assetIds: number[]
  }
 
@@ -122,7 +123,6 @@ export type {
   GetAccessSchemasOptions,
   CreateAccessSchemaOptions,
   UpdateAccessSchemaOptions,
-  CreateDropOptions,
   GetDropOptions,
   UpdateDropOptions,
   UploadAssetsOptions,

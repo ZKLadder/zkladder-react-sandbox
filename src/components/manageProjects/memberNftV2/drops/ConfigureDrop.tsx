@@ -19,7 +19,7 @@ import SchemaContainer from '../../../accessSchemas/SchemaContainer';
 
 function ConfigureDrop() {
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const { address } = useRecoilValue(selectedContractState);
+  const { address, chainId } = useRecoilValue(selectedContractState);
   const contractData = contractsWithMetadata?.contents?.[address as string] as ContractWithMetadata;
 
   const wallet = useRecoilValue(walletState);
@@ -40,12 +40,15 @@ function ConfigureDrop() {
         async () => {
           // Drop fields have changed
           if (dropUpdates.tierId || dropUpdates.name || dropUpdates.startTime || dropUpdates.endTime) {
+            if (dropUpdates.tierId) dropUpdates.tierId = parseInt(dropUpdates.tierId as any, 10);
             await updateDrop({
               ...dropUpdates,
               id: currentDrop?.id,
+              chainId: chainId as string,
+              contractAddress: address as string,
             });
             const [drop] = await getDrops({
-              id: currentDrop?.id,
+              id: currentDrop?.id, chainId: chainId as string, contractAddress: address as string,
             });
 
             const validator = new AccessValidator(drop?.accessSchema?.accessSchema || []);
@@ -66,10 +69,12 @@ function ConfigureDrop() {
               await updateDrop({
                 id: currentDrop?.id,
                 accessSchemaId: id,
+                chainId: chainId as string,
+                contractAddress: address as string,
               });
             }
             const [drop] = await getDrops({
-              id: currentDrop?.id,
+              id: currentDrop?.id, chainId: chainId as string, contractAddress: address as string,
             });
 
             const validator = new AccessValidator(drop?.accessSchema?.accessSchema || []);
@@ -112,7 +117,7 @@ function ConfigureDrop() {
                   onClick={() => {
                     setDropUpdates({
                       ...dropUpdates,
-                      tierId: tier.tierId,
+                      tierId: tier.tierId.toString(),
                     });
                   }}
                 >

@@ -12,7 +12,7 @@ jobs: # each workflow consists of 1+ jobs; by default, all jobs run in parallel
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: '16.x'
 
       - name: Set NPM Registry
         run: npm set registry https://npm.pkg.github.com/zkladder
