@@ -47,7 +47,7 @@ describe('ConfigureDrop component tests', () => {
       expect(screen.getByText('CODE SNIPPET')).toBeVisible();
       expect(screen.getByText('Embed the code snippet below into your application to enable minting')).toBeVisible();
       expect(screen.getByText('<div id="anchor" data-dropid="234" />')).toBeVisible();
-      expect(screen.getByText('<script type="module" src="http://localhost:5173/build/index-widget.js"></script>')).toBeVisible();
+      expect(screen.getByText('<script type="module" src="https://embeds.zkladder.com"></script>')).toBeVisible();
     });
   });
 });

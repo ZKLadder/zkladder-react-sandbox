@@ -28,7 +28,7 @@ function MintWidget() {
         <Col style={{ minHeight: '100px' }}>
           <div className={projectStyle['table-data']}>
             <p style={{ margin: '5px 0px 5px 0px' }}>{`<div id="anchor" data-dropid="${currentDrop?.id}" />`}</p>
-            <p style={{ margin: '5px 0px 5px 0px' }}>{'<script type="module" src="http://localhost:5173/build/index-widget.js"></script>'}</p>
+            <p style={{ margin: '5px 0px 5px 0px' }}>{'<script type="module" src="https://embeds.zkladder.com"></script>'}</p>
           </div>
         </Col>
       </Row>
