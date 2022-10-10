@@ -53,7 +53,7 @@ const initializeState = (settings: any) => {
 };
 
 const initializeNoNftState = (settings: any) => {
-  settings.set(selectedContractState, { address: '0xselectedContract' });
+  settings.set(selectedContractState, { address: '0xselectedContract', templateId: '1' });
   settings.set(contractsState, contracts);
   settings.set(walletState, {
     chainId: '1', provider: jest.fn(),
@@ -61,7 +61,7 @@ const initializeNoNftState = (settings: any) => {
 };
 
 const initializeSearchState = (settings: any) => {
-  settings.set(selectedContractState, { address: '0xselectedContract' });
+  settings.set(selectedContractState, { address: '0xselectedContract', templateId: '1' });
   settings.set(contractsState, contracts);
   settings.set(walletState, {
     chainId: '1', provider: jest.fn(),
@@ -73,6 +73,10 @@ const mockIpfs = Ipfs as jest.Mocked<any>;
 const mockAxios = axios as jest.Mocked<any>;
 
 describe('NftBox component tests', () => {
+  beforeEach(() => {
+    // Silence react act warning
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
   test('It renders', async () => {
     mockIpfs.mockImplementation(() => ({ getGatewayUrl: () => ('https://mockCID') }));
     render(

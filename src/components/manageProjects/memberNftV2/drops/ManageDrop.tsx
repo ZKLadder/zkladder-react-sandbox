@@ -8,6 +8,7 @@ import projectStyle from '../../../../styles/manageProjects.module.css';
 import ConfigureDrop from './ConfigureDrop';
 import { dropSectionState } from '../../../../state/page';
 import UploadAssets from './UploadAssets';
+import MintWidget from './MintWidget';
 
 function ManageDrop() {
   const [manageDropSection, setManageDropSection] = useState('configure');
@@ -52,7 +53,7 @@ function ManageDrop() {
             tabIndex={0}
           >
             <Shop size={22} className={manageDropSection === 'style' ? projectStyle['drop-form-step-icon-active'] : projectStyle['drop-form-step-icon']} />
-            CUSTOMIZE MINT PAGE
+            MINT WIDGET
           </span>
         </Col>
 
@@ -73,6 +74,7 @@ function ManageDrop() {
       </Row>
       {manageDropSection === 'configure' ? <ConfigureDrop /> : null}
       {manageDropSection === 'assets' ? <UploadAssets /> : null}
+      {manageDropSection === 'style' ? <MintWidget /> : null}
     </div>
   );
 }

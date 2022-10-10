@@ -14,7 +14,9 @@ import { Link } from 'react-router-dom';
 import { Ipfs } from '@zkladder/zkladder-sdk-ts';
 import { CloudUpload, ExclamationTriangle } from 'react-bootstrap-icons';
 import style from '../../../styles/manageProjects.module.css';
-import { contractsWithMetadataState, writableContractState, selectedContractState } from '../../../state/contract';
+import {
+  contractsWithMetadataState, writableContractState, selectedContractState, contractsState,
+} from '../../../state/contract';
 import { loadingState, manageProjectsPageState } from '../../../state/page';
 import { walletState } from '../../../state/wallet';
 import { nftContractUpdates } from '../../../state/nftContract';
@@ -29,6 +31,7 @@ import Admins from '../Admins';
 import { activateVoucherService } from '../../../utils/api';
 
 function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
+  const [contracts, setContracts] = useRecoilState(contractsState);
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
   const { address, chainId: contractChainId } = useRecoilValue(selectedContractState);
   const contractData = contractsWithMetadata?.contents?.[address as string];
@@ -127,6 +130,7 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
       }
 
       // Create transaction for voucher service active/inactive toggle
+      let minterKeyId:string;
       if (changes.voucherServiceToggle) {
         setTransactionLoading({
           loading: true,
@@ -137,19 +141,21 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
         let minterAddress = contractData?.minterAddress;
 
         if (!minterAddress) {
-          minterAddress = (await activateVoucherService({
+          const serviceData = await activateVoucherService({
             contractAddress: address as string,
             chainId: contractChainId as string,
-          })).address;
+          });
+          minterAddress = serviceData?.address;
+          minterKeyId = serviceData?.minterKeyId;
         }
 
         let tx;
         if (contractData?.minterAccounts?.includes(contractData?.minterAddress as string)) {
           // toggle it off
-          tx = (await memberNft.revokeRole('MINTER_ROLE', minterAddress)).tx;
+          tx = await memberNft.revokeRole('MINTER_ROLE', minterAddress);
         } else {
           // toggle it on
-          tx = (await memberNft.grantRole('MINTER_ROLE', minterAddress)).tx;
+          tx = await memberNft.grantRole('MINTER_ROLE', minterAddress);
         }
 
         setTransactionLoading({
@@ -249,8 +255,22 @@ function ProjectBody({ isUnitTest }:{isUnitTest:boolean}) {
         }
       }
 
+      // Add newly created minterKeyId to contract state
+      if (!contractData?.minterAddress && changes.voucherServiceToggle) {
+        // Triggers a refresh in contract data
+        setContracts([
+          ...contracts.map((contract) => {
+            if (contract.address === address) {
+              return { ...contract, minterKeyId };
+            }
+            return { ...contract };
+          }),
+        ]);
+      } else {
       // Refresh contract data to capture all changes
-      refresh();
+        refresh();
+      }
+
       setTransactionLoading({ loading: false });
     } catch (err:any) {
       // If error occured anywhere above, set error text and refresh data

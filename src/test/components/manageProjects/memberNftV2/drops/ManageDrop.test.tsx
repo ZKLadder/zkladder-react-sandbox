@@ -25,6 +25,11 @@ jest.mock('../../../../../components/manageProjects/memberNftV2/drops/UploadAsse
   default: () => <p>UPLOAD ASSETS COMPONENT</p>,
 }));
 
+jest.mock('../../../../../components/manageProjects/memberNftV2/drops/MintWidget', () => ({
+  __esModule: true,
+  default: () => <p>MINT WIDGET COMPONENT</p>,
+}));
+
 const contracts = [
   { address: '0xselectedContract', chainId: '1', templateId: '3' },
 ];
@@ -55,7 +60,7 @@ describe('ManageDrop component tests', () => {
     await waitFor(() => {
       expect(screen.getByText('CONFIGURE DROP')).toBeVisible();
       expect(screen.getByText('UPLOAD ASSETS')).toBeVisible();
-      expect(screen.getByText('CUSTOMIZE MINT PAGE')).toBeVisible();
+      expect(screen.getByText('MINT WIDGET')).toBeVisible();
     });
   });
 
@@ -76,6 +81,12 @@ describe('ManageDrop component tests', () => {
 
     await waitFor(() => {
       expect(screen.getByText('UPLOAD ASSETS COMPONENT')).toBeVisible();
+    });
+
+    await userEvent.click(screen.getByText('MINT WIDGET'));
+
+    await waitFor(() => {
+      expect(screen.getByText('MINT WIDGET COMPONENT')).toBeVisible();
     });
   });
 

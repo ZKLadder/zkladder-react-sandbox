@@ -387,6 +387,8 @@ describe('updateDrop tests', () => {
       id: 1,
       tierId: 23,
       totalTokens: 100,
+      chainId: '123',
+      contractAddress: '0xmockaddress',
     };
     const response = await updateDrop(options);
 
@@ -410,6 +412,8 @@ describe('uploadAssets tests', () => {
     mockAxios.request.mockResolvedValueOnce({ data: { transactions: 'mocked' } });
 
     const options = {
+      chainId: '123',
+      contractAddress: '0xmockaddress',
       assets: [
         { tokenUri: 'ipfs://123456789', dropId: 123 },
       ],
@@ -437,6 +441,8 @@ describe('deleteAssets tests', () => {
 
     const options = {
       assetIds: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      chainId: '123',
+      contractAddress: '0xmockaddress',
     };
     const response = await deleteAssets(options);
 

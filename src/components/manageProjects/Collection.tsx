@@ -62,12 +62,12 @@ function Collection() {
               <Row style={{ margin: '0px' }}>
                 <Col lg={7} style={{ margin: '0px', padding: '0px' }}>
                   <div className={style['nft-sidebar-field']}>
-                    <span>TOKEN ID:</span>
-                    <span style={{ marginLeft: '5px' }} className={style['nft-field']}>{selectedNft.tokenId}</span>
+                    <p style={{ marginBottom: '2px' }}>TOKEN ID:</p>
+                    <span className={style['nft-field']}>{selectedNft.tokenId}</span>
                   </div>
                 </Col>
                 <Col lg={5} style={{ marginLeft: '0px', padding: '0px' }}>
-                  <div className={style['nft-sidebar-field']} style={{ marginLeft: '2px' }}>
+                  <div className={style['nft-sidebar-field']} style={{ marginLeft: '2px', height: '90%' }}>
                     <span
                       style={{
                         backgroundColor: '#16434B', color: 'white', padding: '4px', borderRadius: '5px',
@@ -133,7 +133,7 @@ function Collection() {
         </InputGroup>
 
         {/* No tokens message || virtualized grid with individual Nft boxes */}
-        {contractData?.totalSupply <= 0
+        {(!contractData?.totalSupply || contractData?.totalSupply <= 0)
           ? <p style={{ marginTop: '20px' }} className={style['metrics-title']}>No tokens minted yet</p>
           : (
             <VirtualGrid

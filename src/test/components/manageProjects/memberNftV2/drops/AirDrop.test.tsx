@@ -7,6 +7,7 @@ import { manageProjectsPageState } from '../../../../../state/page';
 import { selectedContractState, contractsState } from '../../../../../state/contract';
 import { walletState } from '../../../../../state/wallet';
 import { RecoilObserver, mockMemberNftInstance } from '../../../../mocks';
+import { uid } from '../../../../../utils/helpers';
 
 jest.mock('@zkladder/zkladder-sdk-ts', () => ({
   Ipfs: jest.fn(() => ({ getGatewayUrl: jest.fn() })),
@@ -14,6 +15,11 @@ jest.mock('@zkladder/zkladder-sdk-ts', () => ({
     setup: () => (mockMemberNftInstance),
   },
   utilities: { isEthereumAddress: () => (true) },
+}));
+
+jest.mock('../../../../../utils/helpers', () => ({
+  uid: jest.fn(),
+  shortenAddress: jest.fn(),
 }));
 
 const contracts = [
@@ -27,6 +33,8 @@ const initializeState = (settings:any) => {
     chainId: '1', provider: jest.fn(),
   });
 };
+
+const mockUid = uid as jest.Mocked<any>;
 
 describe('DropTable component tests', () => {
   beforeEach(() => {
@@ -75,6 +83,8 @@ describe('DropTable component tests', () => {
       wait: jest.fn(),
     });
 
+    mockUid.mockReturnValue('uniqueId');
+
     const pageStateObserver = jest.fn();
 
     render(
@@ -92,6 +102,7 @@ describe('DropTable component tests', () => {
     await waitFor(() => {
       expect(mockMemberNftInstance.mintTo).toHaveBeenCalledWith(
         '0xmockuser',
+        'uniqueId',
         { description: 'Mock Description', name: 'Mock Name', tierId: 0 },
       );
       expect(pageStateObserver).toHaveBeenCalledWith('collection');

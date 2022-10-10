@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useRecoilValueLoadable, useRecoilState, useRecoilValue } from 'recoil';
 import { Figure, Card } from 'react-bootstrap';
-import { Ipfs } from '@zkladder/zkladder-sdk-ts';
+import { Ipfs, MemberNftV2ReadOnly } from '@zkladder/zkladder-sdk-ts';
 import axios from 'axios';
+import { MemberNftV1ReadOnly } from '@zkladder/zkladder-sdk-ts/dist/services/memberNftV1';
 import CopyToClipboard from '../shared/CopyToClipboard';
 import { ContractWithMetadata } from '../../interfaces/contract';
 import { contractsWithMetadataState, selectedContractState } from '../../state/contract';
@@ -15,7 +16,7 @@ import { shortenAddress } from '../../utils/helpers';
 function NftBox({ index }:{index:number}) {
   const ipfs = new Ipfs(config.ipfs.projectId, config.ipfs.projectId);
   const contractsWithMetadata = useRecoilValueLoadable(contractsWithMetadataState);
-  const { address } = useRecoilValue(selectedContractState);
+  const { address, templateId } = useRecoilValue(selectedContractState);
   const [nftToken, setNftToken] = useRecoilState(nftTokenState(`${address}:${index}`));
   const [selectedNft, setSelectedNft] = useRecoilState(selectedNftState);
   const nftSearch = useRecoilValue(nftSearchText);
@@ -26,7 +27,14 @@ function NftBox({ index }:{index:number}) {
     async function fetchNftData() {
       try {
         const { memberNft } = contractData;
-        const token = await memberNft.getToken(index);
+
+        let token;
+        if (templateId === '1') {
+          token = await (memberNft as MemberNftV1ReadOnly).getToken(index);
+        } else {
+          token = await (memberNft as MemberNftV2ReadOnly).getTokenByIndex(index);
+        }
+
         const { data } = await axios(ipfs.getGatewayUrl(token?.tokenUri as string));
         setNftToken({ ...token, ...data });
       } catch (err:any) {
@@ -60,8 +68,8 @@ function NftBox({ index }:{index:number}) {
 
       {/* NFT ID */}
       <p style={{ margin: '10px' }}>
-        <span>TOKEN ID:</span>
-        <span style={{ marginLeft: '10px' }} className={style['nft-field']}>{index}</span>
+        <p style={{ marginBottom: '2px' }}>TOKEN ID:</p>
+        <span className={style['nft-field']}>{nftToken.tokenId}</span>
       </p>
 
       {/* NFT Owner */}
