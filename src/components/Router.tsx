@@ -19,6 +19,7 @@ import Onboarding from './onboarding/Onboarding';
 import Unauthenticated from './unauthenticated/Unauthenticated';
 import { postsState } from '../state/cms';
 import { getPosts } from '../utils/cms';
+import TestMint from './unauthenticated/TestMint';
 
 let timeOutId:any;
 
@@ -165,6 +166,10 @@ function ZklRouter() {
         <Route
           path="/mint"
           element={<Onboarding />}
+        />
+        <Route
+          path="/test-mint/:dropId"
+          element={<TestMint />}
         />
 
         {/* Default Route */}
