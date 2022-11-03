@@ -57,6 +57,15 @@ export default {
     logo: gnosisLogo,
     hide: false,
   },
+  80001: {
+    label: 'Polygon Mumbai',
+    token: 'TEST-MATIC',
+    id: '0x13881',
+    rpcUrl: 'https://matic-mumbai.chainstacklabs.com',
+    blockExplorer: 'https://mumbai.polygonscan.com/',
+    logo: polygonLogo,
+    hide: true,
+  },
   1337: {
     label: 'Ganache',
     token: 'LOCAL',
