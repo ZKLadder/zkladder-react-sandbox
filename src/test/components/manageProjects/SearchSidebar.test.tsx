@@ -70,7 +70,7 @@ describe('SearchSidebar component tests', () => {
     await userEvent.click(screen.getByTestId('checkbox-137'));
 
     await waitFor(() => {
-      expect(viewStateObserver).toHaveBeenCalledWith(['3', '4', '5', '100', '1337', '31337']);
+      expect(viewStateObserver).toHaveBeenCalledWith(['3', '4', '5', '100', '1337', '31337', '80001']);
     });
   });
 });
