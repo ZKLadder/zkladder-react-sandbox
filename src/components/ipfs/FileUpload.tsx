@@ -10,6 +10,20 @@ import Error from '../shared/Error';
 import style from '../../styles/ipfs.module.css';
 import { FileUploadProps } from '../../interfaces/ipfs';
 
+function saveFile(filename:string, text:string) {
+  const pom = document.createElement('a');
+  pom.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`);
+  pom.setAttribute('download', filename);
+
+  if (document.createEvent) {
+    const event = document.createEvent('MouseEvents');
+    event.initEvent('click', true, true);
+    pom.dispatchEvent(event);
+  } else {
+    pom.click();
+  }
+}
+
 function FileUpload(props: FileUploadProps) {
   const [acceptedFiles, setAcceptedFiles] = useState([]) as any;
   const [loading, setLoading] = useState() as any;
@@ -24,6 +38,8 @@ function FileUpload(props: FileUploadProps) {
       setAcceptedFiles(files);
     },
   });
+
+  const [download, setDownload] = useState({});
 
   return (
     <div>
@@ -64,8 +80,13 @@ function FileUpload(props: FileUploadProps) {
                       const cids = await instance?.addFiles(
                         acceptedFiles.map((file:any) => ({ file, fileName: file.name })),
                       );
-                      newDirectoryCid = cids?.find((cid) => (cid.Name.length < 1));
-                      setViewState({ ...view, refreshCounter: view.refreshCounter + 1 });
+
+                      const files:{ [key: string]: any } = {};
+                      cids?.forEach((cid) => {
+                        if (cid.Name.length > 1) files[cid.Name] = `ipfs://${cid.Hash}`;
+                      });
+
+                      setDownload(files);
                     } else {
                       newDirectoryCid = await instance?.addFilesToDirectory(
                         acceptedFiles.map((file:any) => ({ file, fileName: file.name })),
@@ -106,6 +127,17 @@ function FileUpload(props: FileUploadProps) {
           ) : null}
       </aside>
       <hr />
+      {Object.keys(download).length > 0
+        ? (
+          <Button
+            style={{ margin: '10px' }}
+            onClick={() => {
+              saveFile('Ipfs-Hashes.json', JSON.stringify(download, null, 4));
+            }}
+          >
+            Download IPFS Hashes
+          </Button>
+        ) : null}
     </div>
   );
 }
