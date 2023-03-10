@@ -27,6 +27,9 @@ jest.mock('@zkladder/zkladder-sdk-ts', () => ({
 }));
 
 jest.mock('../../../../config', () => ({
+  api: {
+    infuraApiKey: 'mockApiKey',
+  },
   ipfs: {
     projectId: 'mockProjectId',
     projectSecret: 'mockProjectSecret',
