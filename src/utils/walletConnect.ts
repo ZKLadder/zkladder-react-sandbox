@@ -10,7 +10,7 @@ import { createSession, deleteSession } from './api';
 
 const appMetadata = {
   name: 'ZKLadder',
-  icon: 'https://www.zkladder.com/media/logo-mobile-hover.png',
+  icon: 'https://www.zkladder.com/images/logos/zk-red.svg',
   description: 'Web3 Venture Studio',
   gettingStartedGuide: 'https://zkladder.com',
 };

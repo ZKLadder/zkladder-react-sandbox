@@ -10,6 +10,9 @@ import SelectContract from '../../../components/nft/SelectContract';
 // const mockNftWhitelisted = jest.fn();
 
 jest.mock('../../../config', () => ({
+  api: {
+    infuraApiKey: 'mockApiKey',
+  },
   ipfs: {
     projectId: 'mockProjectId',
     projectSecret: 'mockProjectSecret',
