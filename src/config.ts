@@ -1,6 +1,7 @@
 export default {
   api: {
     url: process.env.REACT_APP_ZKL_API || 'https://api.zkladder.com/api',
+    infuraApiKey: process.env.REACT_APP_INFURA_API_KEY as string,
   },
   ipfs: {
     projectId: process.env.REACT_APP_INFURA_IPFS_ID as string,

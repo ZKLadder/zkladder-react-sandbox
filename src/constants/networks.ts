@@ -1,13 +1,14 @@
 import ethereumLogo from '../images/networkLogos/ethereum-logo.png';
 import polygonLogo from '../images/networkLogos/polygon-logo.png';
 import gnosisLogo from '../images/networkLogos/gnosis-logo.png';
+import config from '../config';
 
 export default {
   1: {
     label: 'Ethereum Mainnet',
     token: 'ETH',
     id: '0x1',
-    rpcUrl: 'https://mainnet.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
+    rpcUrl: `https://mainnet.infura.io/v3/${config.api.infuraApiKey}`,
     blockExplorer: 'https://etherscan.io/tx/',
     logo: ethereumLogo,
     hide: false,
@@ -16,7 +17,7 @@ export default {
     label: 'Ropsten',
     token: 'ROP',
     id: '0x3',
-    rpcUrl: 'https://ropsten.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
+    rpcUrl: `https://ropsten.infura.io/v3/${config.api.infuraApiKey}`,
     blockExplorer: 'https://ropsten.etherscan.io/tx/',
     logo: ethereumLogo,
     hide: false,
@@ -25,7 +26,7 @@ export default {
     label: 'Rinkeby',
     token: 'RIN',
     id: '0x4',
-    rpcUrl: 'https://rinkeby.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
+    rpcUrl: `https://rinkeby.infura.io/v3/${config.api.infuraApiKey}`,
     blockExplorer: 'https://rinkeby.etherscan.io/tx/',
     logo: ethereumLogo,
     hide: false,
@@ -34,7 +35,7 @@ export default {
     label: 'Goerli',
     token: 'GOR',
     id: '0x5',
-    rpcUrl: 'https://goerli.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
+    rpcUrl: `https://goerli.infura.io/v3/${config.api.infuraApiKey}`,
     blockExplorer: 'https://goerli.etherscan.io/tx/',
     logo: ethereumLogo,
     hide: false,
@@ -43,7 +44,7 @@ export default {
     label: 'Polygon',
     token: 'MATIC',
     id: '0x89',
-    rpcUrl: 'https://polygon-mainnet.infura.io/v3/2d33fc4d9a9b4140b8582c1ef3bd12e8',
+    rpcUrl: `https://polygon-mainnet.infura.io/v3/${config.api.infuraApiKey}`,
     blockExplorer: 'https://polygonscan.com/tx/',
     logo: polygonLogo,
     hide: false,

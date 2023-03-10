@@ -3,60 +3,61 @@ name: Deploy React App
 on:
   push:
     branches:
-    - "main"
+      - "main"
 
 jobs:
   build:
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Use Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '12.x'
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
 
-    - name: Set NPM Registry
-      run: npm set registry https://npm.pkg.github.com/zkladder
+      - name: Set NPM Registry
+        run: npm set registry https://npm.pkg.github.com/zkladder
 
-    - name: Inject Personal Access Token
-      env:
-        ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-      run: npm set //npm.pkg.github.com/:_authToken $ACCESS_TOKEN
+      - name: Inject Personal Access Token
+        env:
+          ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: npm set //npm.pkg.github.com/:_authToken $ACCESS_TOKEN
 
-    - name: Cache NPM # leverage npm cache on repeated workflow runs if package.json didn't change
-      uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Cache NPM # leverage npm cache on repeated workflow runs if package.json didn't change
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Build static file
-      run: npm run build
-      env:
-        generate_sourcemap: false
-        REACT_APP_ZKL_API: https://api.zkladder.com/api
-        REACT_APP_INFURA_IPFS_ID: ${{secrets.INFURA_IPFS_ID}}
-        REACT_APP_INFURA_IPFS_SECRET: ${{secrets.INFURA_IPFS_SECRET}}
+      - name: Build static file
+        run: npm run build
+        env:
+          generate_sourcemap: false
+          REACT_APP_ZKL_API: https://api.zkladder.com/api
+          REACT_APP_INFURA_IPFS_ID: ${{secrets.INFURA_IPFS_ID}}
+          REACT_APP_INFURA_IPFS_SECRET: ${{secrets.INFURA_IPFS_SECRET}}
+          REACT_APP_INFURA_API_KEY: ${{secrets.INFURA_API_KEY}}
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-    - name: Deploy static site to S3 bucket
-      run: aws s3 sync ./build s3://${{secrets.AWS_S3_BUCKET_NAME}}
+      - name: Deploy static site to S3 bucket
+        run: aws s3 sync ./build s3://${{secrets.AWS_S3_BUCKET_NAME}}
 
-    - name: Invalidate CloudFront cache
-      uses: chetan/invalidate-cloudfront-action@v2
-      env:
-        DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_ID }}
-        PATHS: "/*"
-        AWS_REGION: "us-east-1"
+      - name: Invalidate CloudFront cache
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_ID }}
+          PATHS: "/*"
+          AWS_REGION: "us-east-1"
